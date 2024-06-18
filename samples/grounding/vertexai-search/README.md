@@ -26,7 +26,21 @@ Response:
 
 ![Without grounding](images/without-grounding.png)
 
-As you can see, the model thinks it's a ship and cannot really answer the question.
+As you can see, the model thinks it's a ship and cannot really answer the
+question.
+
+There's also a sample Python app you can run as follows:
+
+```sh
+python main.py --project_id your-project-id
+```
+
+You get a similar response:
+
+```sh
+Prompt: What is the cargo capacity of Cymbal Starlight?
+Response text: I do not have access to real-time information, including specific details about ships like the "Cymbal Starlight."
+```
 
 ## Create datastore with PDF
 
@@ -116,15 +130,26 @@ Prompt:
 Response:
 > The Cymbal Starlight 2024 has a cargo capacity of 13.5 cubic feet.
 
-
 Let's ask another question:
 
 Prompt:
->  What's the emergency roadside assistance phone number?
+> What's the emergency roadside assistance phone number?
 
 Response:
-
 > 1-800-555-1212
+
+You can run the Python sample with grounding:
+
+```sh
+python main.py --project_id your-project-id --data_store_path projects/your-project-id/locations/global/collections/default_collection/dataStores/your-datastore-id
+```
+
+You get a similar response:
+
+```sh
+Prompt: What is the cargo capacity of Cymbal Starlight?
+Response text: The Cymbal Starlight 2024 has a cargo capacity of 13.5 cubic feet.
+```
 
 Yay, it works!
 
