@@ -1,7 +1,7 @@
 # Grounding with your own data with Vertex AI Search
 
 In this sample, you'll learn how to use Vertex AI Search to ground LLM with your
-own data. More specifically, you'll:
+own private data. More specifically, you'll:
 
 1. Ask the LLM questions about a fictional vehicle, Cymbal Starlight 2024,
    and see that it cannot answer questions.
@@ -13,7 +13,7 @@ own data. More specifically, you'll:
 
 First, let's ask a question to the LLM about the vehicle without any
 grounding. You can do this in [Vertex AI section of Google Cloud
-Console](https://console.cloud.google.com/vertex-ai/generative/language/create/text))
+Console](https://console.cloud.google.com/vertex-ai/generative/language/create/text)
 against any model.
 
 Prompt:
@@ -26,10 +26,10 @@ Response:
 
 ![Without grounding](images/without-grounding.png)
 
-As you can see, the model thinks it's a ship and cannot really answer the
+As you can see, the model thinks we're talking about a ship and cannot really answer the
 question.
 
-There's also a [main.py](main.py) Python sample that you can run **without** grounding:
+There's also a [main.py](main.py) sample that you can run **without** grounding:
 
 ```sh
 python main.py --project_id your-project-id
@@ -47,7 +47,7 @@ Response text: I do not have access to real-time information, including specific
 To use a PDF for grounding, you need to upload the PDF to a Cloud Storage
 bucket and setup a datastore to import from that bucket.
 
-We'll use the [cymbal-starlight-2024.pdf](cymbal-starlight-2024.pdf) user manual file.
+We'll use the fictitious [cymbal-starlight-2024.pdf](cymbal-starlight-2024.pdf) user manual file.
 
 Create a Cloud Storage bucket with uniform bucket-level access and upload the
 PDF file:
@@ -65,7 +65,7 @@ Point to the PDF file in the bucket and continue:
 
 ![PDF in bucket](images/pdf-in-bucket.png)
 
-Finally, give your datastore a click `Create`:
+Give your datastore a name and click `Create`:
 
 ![Cymbal datastore](images/cymbal-datastore.png)
 
@@ -86,6 +86,8 @@ of the Google Cloud Console and click on `Create App` button:
 1. Make sure `Enterprise edition features` is enabled
 1. Give your app a name and enter company info.
 
+![Cymbal Starlight app](images/cymbal-starlight-app.png)
+
 In the next page, choose the data store you created earlier and click `Create`:
 
 ![Create app datastore](images/create-app-datastore.png)
@@ -97,20 +99,19 @@ In the next page, choose the data store you created earlier and click `Create`:
 > If you get an error message: "Cannot use enterprise edition features" or
 > something similar, you might need to wait a little before trying again.
 
-Let's setup the grounding with Vertex AI Search now.
+Let's setup grounding with Vertex AI Search now.
 
 Go back to [Vertex AI section of Google Cloud
-Console](https://console.cloud.google.com/vertex-ai/generative/language/create/text))
+Console](https://console.cloud.google.com/vertex-ai/generative/language/create/text)
 and in the `Advanced` section, select `Enable grounding`:
 
 ![Enable grounding](images/enable-grounding.png)
 
-You also need to customize grounding and point to the datastore you just
-created:
+Customize grounding and point to the datastore you just created:
 
 ![Customize grounding](images/customise-grounding.png)
 
-The format of the datastore string:
+This is the format of the datastore string:
 
 `projects/{}/locations/{}/collections/{}/dataStores/{}`
 
@@ -138,7 +139,7 @@ Prompt:
 Response:
 > 1-800-555-1212
 
-Also run [main.py](main.py) Python sample with grounding:
+Also run [main.py](main.py) Python sample **with** grounding:
 
 ```sh
 python main.py --project_id your-project-id --data_store_path projects/your-project-id/locations/global/collections/default_collection/dataStores/your-datastore-id
