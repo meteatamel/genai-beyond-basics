@@ -158,4 +158,5 @@ Yay, it works!
 * [Get started with generic search docs](https://cloud.google.com/generative-ai-app-builder/docs/try-enterprise-search)
 * [Grounding decision flowchart](https://cloud.google.com/docs/ai-ml/generative-ai#grounding)
 * [Getting Started with Grounding with Gemini in Vertex AI notebook](https://github.com/GoogleCloudPlatform/generative-ai/blob/main/gemini/grounding/intro-grounding-gemini.ipynb)
+* [Grounding for Gemini with Vertex AI Search and DIY RAG talk](https://youtu.be/v4s5eU2tfd4)
 * [Fix My Car sample app](https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/sample-apps/fixmycar)
