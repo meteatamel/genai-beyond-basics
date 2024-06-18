@@ -29,7 +29,7 @@ Response:
 As you can see, the model thinks it's a ship and cannot really answer the
 question.
 
-There's also a sample Python app you can run as follows:
+There's also a [main.py](main.py) Python sample that you can run **without** grounding:
 
 ```sh
 python main.py --project_id your-project-id
@@ -120,7 +120,7 @@ In my case, it's as follows:
 
 ## With grounding
 
-Finally, we're ready to ask questions about the vehicle with grounding enabled.
+Finally, we're ready to ask questions about the vehicle **with** grounding enabled.
 
 Let's start with the previous question:
 
@@ -138,7 +138,7 @@ Prompt:
 Response:
 > 1-800-555-1212
 
-You can run the Python sample with grounding:
+Also run [main.py](main.py) Python sample with grounding:
 
 ```sh
 python main.py --project_id your-project-id --data_store_path projects/your-project-id/locations/global/collections/default_collection/dataStores/your-datastore-id
