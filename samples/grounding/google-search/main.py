@@ -44,7 +44,11 @@ def parse_args():
     return parser.parse_args()
 
 
-if __name__ == '__main__':
+def main():
     logging.basicConfig(level=logging.INFO, format='%(message)s')
     args = parse_args()
     generate_text_with_grounding_vertex_ai_search(args.project_id, args.google_search_grounding)
+
+
+if __name__ == '__main__':
+    main()

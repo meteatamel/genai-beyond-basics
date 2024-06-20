@@ -14,7 +14,7 @@ def generate_text_with_grounding_vertex_ai_search(project_id: str, datastore_pat
     model = GenerativeModel(model_name="gemini-1.5-flash-001")
 
     tools = [Tool.from_retrieval(
-        grounding.Retrieval(grounding.VertexAISearch(datastore=data_store_path)))] if data_store_path else None
+        grounding.Retrieval(grounding.VertexAISearch(datastore=datastore_path)))] if datastore_path else None
 
     logger.debug(f"Project id: {project_id}")
     logger.debug(f"Grounding with data store path: {datastore_path}")
@@ -44,8 +44,11 @@ def parse_args():
 
     return parser.parse_args()
 
-
-if __name__ == '__main__':
+def main():
     logging.basicConfig(level=logging.INFO, format='%(message)s')
     args = parse_args()
     generate_text_with_grounding_vertex_ai_search(args.project_id, args.datastore_path)
+
+
+if __name__ == '__main__':
+    main()
