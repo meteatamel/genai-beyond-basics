@@ -3,12 +3,11 @@ import logging
 from typing import Optional
 
 import vertexai
-from google.cloud.aiplatform_v1beta1.services.vertex_rag_data_service.pagers import ListRagCorporaPager, \
-    ListRagFilesPager
-
+from google.cloud.aiplatform_v1beta1.services.vertex_rag_data_service.pagers import (ListRagCorporaPager,
+                                                                                     ListRagFilesPager)
 from vertexai.generative_models import GenerationConfig, GenerativeModel
 from vertexai.preview import rag
-from vertexai.preview.generative_models import GenerativeModel, Tool
+from vertexai.preview.generative_models import Tool
 from vertexai.preview.rag.utils.resources import RagCorpus, RagFile
 
 logger = logging.getLogger(__name__)
@@ -42,7 +41,6 @@ def delete_corpus(corpus_name: str):
 
 def get_or_upload_file(corpus_name: str, path: str, display_name: Optional[str] = None,
                        description: Optional[str] = None) -> RagFile:
-
     rag_file = get_file_by_display_name(corpus_name, display_name)
     if rag_file:
         logger.info(f"Existing file fetched: {rag_file.display_name}")
@@ -77,7 +75,6 @@ def delete_file(file_name: str):
 
 
 def direct_retrieval(rag_corpus: RagCorpus, text: str):
-
     response = rag.retrieval_query(
         rag_resources=[
             rag.RagResource(
@@ -95,7 +92,6 @@ def direct_retrieval(rag_corpus: RagCorpus, text: str):
 
 
 def generate_text_with_llamaindex_vertexai(rag_corpus: RagCorpus, prompt: str):
-
     model = GenerativeModel(model_name="gemini-1.5-flash-001")
 
     rag_retrieval_tool = Tool.from_retrieval(
