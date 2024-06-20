@@ -4,12 +4,11 @@ import vertexai
 
 from vertexai.generative_models import GenerationConfig, GenerativeModel, Tool
 from vertexai.preview.generative_models import grounding
-from vertexai.preview.generative_models import GenerationResponse
 
 logger = logging.getLogger(__name__)
 
-def generate_text_with_grounding_vertex_ai_search(
-    project_id: str, google_search_grounding: bool) -> GenerationResponse:
+
+def generate_text_with_grounding_vertex_ai_search(project_id: str, google_search_grounding: bool):
 
     vertexai.init(project=project_id, location="us-central1")
 
@@ -36,14 +35,14 @@ def generate_text_with_grounding_vertex_ai_search(
     logger.info(f"Response text: {response.candidates[0].content.parts[0].text}")
 
 
-
 def parse_args():
-    parser = argparse.ArgumentParser(description='Process project and datastore information.')
+    parser = argparse.ArgumentParser(description='Grounding with public data with Google Search')
     parser.add_argument('--project_id', type=str, required=True, help='Google Cloud project id (required)')
-    parser.add_argument('--google_search_grounding', action='store_true', help='Use Vertex AI Google Search grounding (default: False)')
+    parser.add_argument('--google_search_grounding', action='store_true',
+                        help='Use Vertex AI Google Search grounding (default: False)')
 
-    args = parser.parse_args()
-    return args
+    return parser.parse_args()
+
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format='%(message)s')
