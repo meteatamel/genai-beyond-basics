@@ -13,12 +13,12 @@ from vertexai.preview.rag.utils.resources import RagCorpus, RagFile
 logger = logging.getLogger(__name__)
 
 
-def get_or_create_corpus(display_name: str) -> RagCorpus:
-    rag_corpus = get_corpus_by_display_name(display_name)
+def get_or_create_corpus(corpus_display_name: str) -> RagCorpus:
+    rag_corpus = get_corpus_by_display_name(corpus_display_name)
     if rag_corpus:
         logger.info(f"Existing corpus fetched: {rag_corpus.name}")
     else:
-        rag_corpus = rag.create_corpus(display_name=display_name)
+        rag_corpus = rag.create_corpus(display_name=corpus_display_name)
         logger.info(f"Corpus created: {rag_corpus.name}")
     return rag_corpus
 
@@ -74,11 +74,11 @@ def delete_file(file_name: str):
     logger.info(f"File {file_name} deleted.")
 
 
-def direct_retrieval(rag_corpus: RagCorpus, text: str):
+def direct_retrieve_from_rag_corpus(corpus_name: str, text: str):
     response = rag.retrieval_query(
         rag_resources=[
             rag.RagResource(
-                rag_corpus=rag_corpus.name,
+                rag_corpus=corpus_name
                 # Supply IDs from `rag.list_files()`.
                 # rag_file_ids=["rag-file-1", "rag-file-2", ...],
             )
@@ -87,34 +87,36 @@ def direct_retrieval(rag_corpus: RagCorpus, text: str):
         similarity_top_k=10,  # Optional
         vector_distance_threshold=0.5,  # Optional
     )
-    logger.info(f"Text: {text}")
+
     logger.info(f"Response: {response}")
 
 
-def generate_text_with_llamaindex_vertexai(rag_corpus: RagCorpus, prompt: str):
+def generate_text_with_llamaindex_vertexai(corpus_name: str, prompt: str):
     model = GenerativeModel(model_name="gemini-1.5-flash-001")
 
-    rag_retrieval_tool = Tool.from_retrieval(
-        retrieval=rag.Retrieval(
-            source=rag.VertexRagStore(
-                rag_resources=[
-                    rag.RagResource(
-                        rag_corpus=rag_corpus.name,  # Currently only 1 corpus is allowed.
-                        # Supply IDs from `rag.list_files()`.
-                        # rag_file_ids=["rag-file-1", "rag-file-2", ...],
-                    )
-                ],
-                similarity_top_k=3,  # Optional
-                vector_distance_threshold=0.5,  # Optional
-            ),
-        )
-    )
+    logger.info(f"RAG corpus name: {corpus_name}")
 
-    logger.info(f"Prompt: {prompt}")
+    tools = None
+    if corpus_name:
+        tools = [Tool.from_retrieval(
+            retrieval=rag.Retrieval(
+                source=rag.VertexRagStore(
+                    rag_resources=[
+                        rag.RagResource(
+                            rag_corpus=corpus_name,  # Currently only 1 corpus is allowed.
+                            # Supply IDs from `rag.list_files()`.
+                            # rag_file_ids=["rag-file-1", "rag-file-2", ...],
+                        )
+                    ],
+                    similarity_top_k=3,  # Optional
+                    vector_distance_threshold=0.5,  # Optional
+                ),
+            )
+        )]
 
     response = model.generate_content(
         prompt,
-        tools=[rag_retrieval_tool],
+        tools=tools,
         generation_config=GenerationConfig(
             temperature=0.0,
         ),
@@ -125,9 +127,23 @@ def generate_text_with_llamaindex_vertexai(rag_corpus: RagCorpus, prompt: str):
     logger.info(f"Response text: {response.candidates[0].content.parts[0].text}")
 
 
+def prepare_rag_corpus(corpus_display_name: str):
+
+    rag_corpus = get_or_create_corpus(corpus_display_name)
+
+    get_or_upload_file(corpus_name=rag_corpus.name, path="cymbal-starlight-2024.pdf",
+                       display_name="cymbal-starlight-2024.pdf", description="User manual for Cymbal Starlight 2024")
+
+
 def parse_args():
     parser = argparse.ArgumentParser(description='RAG with LlamaIndex on Vertex AI')
     parser.add_argument('--project_id', type=str, required=True, help='Google Cloud project id (required)')
+    parser.add_argument('--rag_corpus_display_name', type=str, help='RAG corpus display name '
+                                                                    '(required unless --generate_text is used)')
+    parser.add_argument('--prepare_rag_corpus', action='store_true', help='Prepare RAG corpus')
+    parser.add_argument('--direct_retrieve_from_rag_corpus', action='store_true', help='Directly retrieve '
+                                                                                       'from RAG corpus')
+    parser.add_argument('--generate_text', action='store_true', help='Generate text with LLM')
 
     return parser.parse_args()
 
@@ -138,16 +154,17 @@ def main():
 
     vertexai.init(project=args.project_id, location="us-central1")
 
-    rag_corpus = get_or_create_corpus("llamaindex-vertexai-sample-corpus")
-
-    get_or_upload_file(corpus_name=rag_corpus.name, path="cymbal-starlight-2024.pdf",
-                       display_name="cymbal-starlight-2024.pdf", description="User manual for Cymbal Starlight 2024")
-
-    direct_retrieval(rag_corpus=rag_corpus,
-                     text="What is the cargo capacity of Cymbal Starlight?")
-
-    generate_text_with_llamaindex_vertexai(rag_corpus=rag_corpus,
-                                           prompt="What is the cargo capacity of Cymbal Starlight?")
+    if args.prepare_rag_corpus:
+        prepare_rag_corpus(args.rag_corpus_display_name)
+    else:
+        corpus = get_corpus_by_display_name(args.rag_corpus_display_name)
+        prompt = "What is the cargo capacity of Cymbal Starlight?"
+        logger.info(f"Prompt: {prompt}")
+        if args.direct_retrieve_from_rag_corpus:
+            direct_retrieve_from_rag_corpus(corpus.name, prompt)
+        elif args.generate_text:
+            corpus_name = corpus.name if corpus else None
+            generate_text_with_llamaindex_vertexai(corpus_name, prompt)
 
 
 if __name__ == '__main__':
