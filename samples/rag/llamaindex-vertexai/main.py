@@ -14,13 +14,15 @@ logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 
 def get_or_create_corpus(corpus_display_name: str) -> RagCorpus:
-    rag_corpus = get_corpus_by_display_name(corpus_display_name)
-    if rag_corpus:
-        logger.info(f"Existing corpus fetched: {rag_corpus.name}")
+    corpus = get_corpus_by_display_name(corpus_display_name)
+    if corpus:
+        logger.info("Existing corpus fetched:")
+        log_names(corpus)
     else:
-        rag_corpus = rag.create_corpus(display_name=corpus_display_name)
-        logger.info(f"Corpus created: {rag_corpus.name}")
-    return rag_corpus
+        corpus = rag.create_corpus(display_name=corpus_display_name)
+        logger.info("Corpus created:")
+        log_names(corpus)
+    return corpus
 
 
 def get_corpus_by_display_name(display_name: str) -> RagCorpus:
@@ -31,7 +33,7 @@ def get_corpus_by_display_name(display_name: str) -> RagCorpus:
 def list_corpus():
     corpora = rag.list_corpora()
     for corpus in corpora:
-        logger.info(f"-{corpus.name}")
+        log_names(corpus)
 
 
 def delete_corpus(corpus_name: str):
@@ -53,7 +55,7 @@ def get_or_upload_file(corpus_name: str, path: str, display_name: Optional[str] 
         )
         logger.info(f"File upload to corpus: {corpus_name}")
 
-    log_file(rag_file)
+    log_names(rag_file)
     return rag_file
 
 
@@ -67,11 +69,11 @@ def list_files(corpus_name: str) -> ListRagFilesPager:
     files = rag.list_files(corpus_name=corpus_name)
     logger.info(f"Files in corpus: {corpus_name}")
     for file in files:
-        log_file(file)
+        log_names(file)
     return files
 
 
-def log_file(file):
+def log_names(file):
     logger.info(f"-name: {file.name}")
     logger.info(f" display_name: {file.display_name}")
 
@@ -151,7 +153,7 @@ def get_args_parser():
     delete_corpus_parser = subparsers.add_parser("delete_corpus", help="Delete a RAG corpus")
     delete_corpus_parser.add_argument("--corpus_name", type=str, required=True, help="Name of the corpus to delete")
 
-    upload_file_parser = subparsers.add_parser("upload_file", help="Upload a file to a RAG corpus")
+    upload_file_parser = subparsers.add_parser("upload_file", help="Upload a local file to a RAG corpus")
     upload_file_parser.add_argument("--corpus_name", type=str, required=True, help="Name of the corpus")
     upload_file_parser.add_argument("--path", type=str, required=True, help="Path to the file")
     upload_file_parser.add_argument("--display_name", type=str, help="Display name for the file (optional)")
