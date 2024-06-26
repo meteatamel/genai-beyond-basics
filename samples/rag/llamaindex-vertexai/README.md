@@ -1,23 +1,41 @@
 # LlamaIndex on Vertex AI with RAG API
 
-LlamaIndex is a data framework for developing context-augmented large language model (LLM) applications.
+## Introduction
 
-In this sample, you'll learn how to use LlamaIndex on Vertex AI with RAG API.
+[LlamaIndex](https://www.llamaindex.ai/) is a popular data framework for developing context-augmented LLM apps.
+[RAG API](https://cloud.google.com/vertex-ai/generative-ai/docs/model-reference/rag-api) is a new LlamaIndex powered API
+that provides everything you need for retrieval augmented generation (RAG): indexing, embedding, retrieval, and generation. 
 
-More specifically, you'll:
+There are a few reasons why you might consider LlamaIndex with RAG API:
 
-1. Ask the LLM questions about a fictional vehicle, Cymbal Starlight 2024,
-   and see that it cannot answer questions.
-2. Create a RAG corpus, upload the PDF of user manual for Cymbal Starlight 2024
-   to the corpus.
-3. Ask the LLM questions about the vehicle with the supplied RAG corpus 
-   and see that you get answers back.
+1. Easy to set up and use.
+1. Connects to a range of data sources: local files, Google Cloud Storage, Google Drive.
+1. Supports a number of different file types: Google docs, drawings, slides, HTML, JSON, markdown, PPTX, DOCX, PDF, and text files.
+1. Supports a number of customizations: `chunk_size` and `chunk_overlap` for ingestion, `similarity_top_k` and
+   `vector_distance_threshold` for retrieval.  
 
-Take a look at the sample [main.py](./main.py) on how to implement and use a RAG corpus.
+## Cymbal Starlight 2024
+Imagine you own the 2024 model of a fictitious vehicle called Cymbal Starlight. It has a user’s manual in PDF format 
+([cymbal-starlight-2024.pdf](cymbal-starlight-2024.pdf)) and you want to ask LLM questions about this vehicle from the manual. 
+
+LLMs are not trained with this user manual and they won’t be able to answer any questions about the vehicle but we’ll 
+see how to use the RAG API to augment our LLM.
+
+There's a [main.py](./main.py) sample to show how to use the RAG API.
 
 ## Without RAG
 
-First, let's ask a question to the LLM about the vehicle without any RAG.
+First, let's ask a question to the LLM about the vehicle without any RAG:
+
+```python
+model = GenerativeModel(model_name="gemini-1.5-flash-001")
+response = model.generate_content(
+  "What is the cargo capacity of Cymbal Starlight?",
+  generation_config=GenerationConfig(temperature=0.0)
+)
+```
+
+Run it:
 
 ```sh
  python main.py --project your-project-id generate_text \
@@ -27,14 +45,22 @@ First, let's ask a question to the LLM about the vehicle without any RAG.
 You get a response like this:
 
 ```sh
-Corpus name: None
 Prompt: What is the cargo capacity of Cymbal Starlight?
-Response text: I do not have access to real-time information, including specific details about ships like the "Cymbal Starlight." 
+Response text: I do not have access to real-time information, including specific details 
+about ships like the "Cymbal Starlight." 
 ```
+
+Not surprisingly, the LLM does not know about the vehicle.
 
 ## Create a RAG corpus
 
-First, you need to create a RAG corpus:
+Before you can ingest a PDF, you need to create a RAG corpus, an index to import or upload documents:
+
+```python
+corpus = rag.create_corpus(display_name=corpus_display_name)
+```
+
+Run it:
 
 ```sh
 python main.py --project_id your-project-id create_corpus --display_name cymbal-starlight-corpus
@@ -44,13 +70,24 @@ Corpus created: projects/207195257545/locations/us-central1/ragCorpora/893514166
 
 ## Upload a file
 
-To use a PDF for RAG, you need to either upload corpus directly or host it on Google 
+Next, you need to either a file to the corpus directly or host it on Google 
 Cloud Storage or Google Drive and point to it. 
 
 In this case, let's upload the fictitious [cymbal-starlight-2024.pdf](cymbal-starlight-2024.pdf) user manual file.
 
+```python
+rag_file = rag.upload_file(
+   corpus_name=corpus_name,
+   path=path,
+   display_name=display_name,
+   description=description,
+)
+```
+
+Run it:
+
 ```sh
-python main.py --project_id genai-atamel upload_file \
+python main.py --project_id your-project-id upload_file \
   --corpus_name projects/207195257545/locations/us-central1/ragCorpora/8935141660703064064 \ 
   --path cymbal-starlight-2024.pdf --display_name cymbal-starlight-2024.pdf
   
@@ -61,36 +98,86 @@ File upload to corpus: projects/207195257545/locations/us-central1/ragCorpora/89
 
 ## Direct retrieve
 
-Before asking the LLM, you can do a direct retrieve with top k relevant docs/chunks:
+At this point, you can do a direct retrieve from the corpus with top k relevant docs/chunks:
+
+```python
+response = rag.retrieval_query(
+  rag_resources=[
+      rag.RagResource(
+          rag_corpus=corpus_name
+          # Supply IDs from `rag.list_files()`.
+          # rag_file_ids=["rag-file-1", "rag-file-2", ...],
+      )
+  ],
+  text="What is the cargo capacity of Cymbal Starlight?",
+  similarity_top_k=10,  # Optional
+  vector_distance_threshold=0.5,  # Optional
+)
+```
+
+Run it:
 
 ```sh
-python main.py --project_id genai-atamel direct_retrieve \
+python main.py --project_id your-project-id direct_retrieve \
   --corpus_name projects/207195257545/locations/us-central1/ragCorpora/8935141660703064064 \ 
   --text "What is the cargo capacity of Cymbal Starlight?"
 ```
 
 And you should get back a list of chunks:
 
-```sh
+```log
 Text: What is the cargo capacity of Cymbal Starlight?
 Response: contexts {
   contexts {
     source_uri: "cymbal-starlight-2024.pdf"
-    text: "This light may illuminate for a variety of reasons, i
-    ...
+    text: "This light may illuminate for a variety of reasons, ..."
+    distance: 0.37499325722150889
+  },
+ contexts {
+ ...
+}
 ```
 
 ## With grounding
 
-Finally, we're ready to ask questions about the vehicle **with** RAG corpus.
+Finally, we're ready to ground the LLM with the RAG corpus and ask questions about the vehicle.
 
-Let's ask the same question but with the RAG corpus this time:
+```python
+model = GenerativeModel(model_name="gemini-1.5-flash-001")
+
+tools = [Tool.from_retrieval(
+   retrieval=rag.Retrieval(
+       source=rag.VertexRagStore(
+           rag_resources=[
+               rag.RagResource(
+                   rag_corpus=corpus_name,  # Currently only 1 corpus is allowed.
+                   # Supply IDs from `rag.list_files()`.
+                   # rag_file_ids=["rag-file-1", "rag-file-2", ...],
+               )
+           ],
+           similarity_top_k=3,  # Optional
+           vector_distance_threshold=0.5,  # Optional
+       ),
+   )
+)]
+
+response = model.generate_content(
+  "What is the cargo capacity of Cymbal Starlight?",
+  tools=tools,
+  generation_config=GenerationConfig(
+      temperature=0.0,
+  ),
+)
+```
+
+Run it:
 
 ```sh
 python main.py --project genai-atamel generate_text \
   --corpus_name projects/207195257545/locations/us-central1/ragCorpora/8935141660703064064 \
   --prompt "What is the cargo capacity of Cymbal Starlight?" 
 ```
+
 You get a response like this:
 
 ```sh
