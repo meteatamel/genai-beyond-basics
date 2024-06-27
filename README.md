@@ -7,4 +7,4 @@ A collection of more advanced GenAI samples.
 * [Grounding with public data with Google Search](./samples/grounding/google-search/)
 * [Grounding with your own data with Vertex AI Search](./samples/grounding/vertexai-search/)
 * [LlamaIndex on Vertex AI with RAG API](./samples/rag/llamaindex-vertexai/)
-* [Controlled generation](./samples/controlled-generation)
+* [Control generated output](./samples/controlled-generation)

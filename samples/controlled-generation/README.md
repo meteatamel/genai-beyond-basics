@@ -1,4 +1,4 @@
-# Controlled generation
+# Control generated output
 
 In this sample, you'll learn how to use controlled generation of Vertex AI
 to control the response format of the LLM.
@@ -18,7 +18,7 @@ response = model.generate_content(prompt)
 Run it:
 
 ```shell
-python main.py --project_id genai-atamel without_controlled_generation1
+python main.py --project_id your-project-id without_controlled_generation1
 ```
 
 You get a response in free text:
@@ -46,7 +46,7 @@ prompt = """
 response = model.generate_content(prompt)
 ```
 
-And you get the following response:
+You get the following response:
 
 ```log
 Prompt: 
@@ -66,11 +66,11 @@ Response: ```json
 ]
 ```
 
-The response is in JSON markdown format but not quite JSON.
+The response is better but it's in JSON markdown format and not quite JSON.
 
 ## Generate with response mime type
 
-One easy way of forcing JSON in response is to use the response mime type:
+One easy way of forcing JSON in response is to use the `response_mime_type` type:
 
 ```python
 model = GenerativeModel('gemini-1.5-flash-001',
@@ -88,7 +88,7 @@ response = model.generate_content(prompt)
 Run it:
 
 ```shell
-python main.py --project_id genai-atamel with_response_mime_type
+python main.py --project_id your-project-id with_response_mime_type
 ```
 
 Now you should get proper JSON back:
@@ -99,13 +99,28 @@ Prompt:
         Recipe = {"recipe_name": str}
         Return: list[Recipe]
 
-Response: [{"recipe_name": "Chocolate Chip Cookies"}, {"recipe_name": "Oatmeal Raisin Cookies"}, {"recipe_name": "Snickerdoodles"}, {"recipe_name": "Sugar Cookies"}, {"recipe_name": "Peanut Butter Cookies"}]
+Response: [
+  {
+    "recipe_name": "Chocolate Chip Cookies"
+  },
+  {
+    "recipe_name": "Oatmeal Raisin Cookies"
+  },
+  {
+    "recipe_name": "Snickerdoodles"
+  },
+  {
+    "recipe_name": "Sugar Cookies"
+  },
+  {
+    "recipe_name": "Peanut Butter Cookies"
+  }
+]
 ```
 
 ## Generate with response schema
 
-You can further enforce a schema for the response. Note that the prompt does not have to talk 
-about a schema at all:
+You can further enforce a schema for the response with `response_schema`: 
 
 ```python
 response_schema = {
@@ -127,24 +142,43 @@ prompt = "List a few popular cookie recipes"
 response = model.generate_content(prompt)
 ```
 
+Note that the prompt does not talk about a format at all.
+
 Run it:
 
 ```shell
-python main.py --project_id genai-atamel with_response_schema1
+python main.py --project_id your-project-id with_response_schema1
 ```
 
 The response respects the schema:
 
 ```log
 Prompt: List a few popular cookie recipes
-Response: [{"recipe_name": "Chocolate Chip Cookies", "calories": 150}, {"recipe_name": "Peanut Butter Cookies", "calories": 160}, {"recipe_name": "Oatmeal Raisin Cookies", "calories": 140}, {"recipe_name": "Sugar Cookies", "calories": 130}] 
+Response: [
+  {
+    "recipe_name": "Chocolate Chip Cookies",
+    "calories": 150
+  },
+  {
+    "recipe_name": "Peanut Butter Cookies",
+    "calories": 160
+  },
+  {
+    "recipe_name": "Oatmeal Raisin Cookies",
+    "calories": 140
+  },
+  {
+    "recipe_name": "Sugar Cookies",
+    "calories": 130
+  }
+] 
 ```
 
 ## Extract with response schema
 
-You can also use response schema to extract information in more structured format.
+You can also use response schema to extract information in a more structured format.
 
-For example, you can extract social media comments in a structured JSON like this:
+For example, you can extract social media comments from free-form text into a structured JSON format like this:
 
 ```python
 response_schema = {
@@ -178,7 +212,7 @@ response = model.generate_content(prompt)
 Run it:
 
 ```shell
-python main.py --project_id genai-atamel with_response_schema2
+python main.py --project_id your-project-id with_response_schema2
 ```
 
 You'll get back the extracted information in JSON:
@@ -191,5 +225,26 @@ Prompt:
       - "Quite good cheese cake, but a bit too sweet for my taste." Rating: 2
       - "Did not like the tiramisu." Rating: 0
     
-Response: [{"dessert_name": "ice cream", "message": "Absolutely loved it! Best ice cream I've ever had", "rating": 4}, {"dessert_name": "cheese cake", "message": "Quite good cheese cake, but a bit too sweet for my taste", "rating": 2}, {"dessert_name": "tiramisu", "message": "Did not like the tiramisu", "rating": 0}] 
+Response: [
+  {
+    "dessert_name": "ice cream",
+    "message": "Absolutely loved it! Best ice cream I've ever had",
+    "rating": 4
+  },
+  {
+    "dessert_name": "cheese cake",
+    "message": "Quite good cheese cake, but a bit too sweet for my taste",
+    "rating": 2
+  },
+  {
+    "dessert_name": "tiramisu",
+    "message": "Did not like the tiramisu",
+    "rating": 0
+  }
+] 
 ```
+
+## References
+
+* [Control generated output docs page](https://cloud.google.com/vertex-ai/generative-ai/docs/multimodal/control-generated-output)
+* [Controlled generation Python samples](https://github.com/GoogleCloudPlatform/python-docs-samples/tree/8346b62496b2160c458bb338124c3b8e4d316316/generative_ai/controlled_generation)
