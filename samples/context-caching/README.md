@@ -37,7 +37,7 @@ Response: Please provide me with the papers you are referring to. I need the tit
 
 ## Create cached content
 
-Let's create a cached content that can be used as context:
+Let's create a cached content that can be used as context. The content has some system instructions and refers to a couple of PDFs:
 
 ```python
 system_instruction = """
@@ -84,7 +84,7 @@ Cached content: <vertexai.caching._caching.CachedContent object at 0x12b652e50>:
 
 ## Generate with cached content
 
-Finally, generate with the cached content: 
+Now, let's try generating with the cache content we just created:
 
 ```python
 cached_content = caching.CachedContent(cached_content_name=cache_id)
@@ -100,7 +100,7 @@ python main.py --project_id your-project-id generate_content \
   --cache_id projects/207195257545/locations/us-central1/cachedContents/3207266622129569792
 ```
 
-And the model now knows what the papers are about from the cached content:
+The model now knows what the papers are about from the cached content:
 
 ```log
 Prompt: What are the papers about?
@@ -109,9 +109,13 @@ Response: The provided text describes the Gemini family of models, versions 1.0 
 **Gemini 1.0** is a family of multimodal models trained on text, ...
 ```
 
+The bigger the cached content and the more prompts use that content, you'll be
+saving more money in the long run. The number of input tokens cached are billed
+at a reduced rate when included in subsequent prompts.
+
 ## Delete cached content
 
-Once you're done, delete the cached content to avoid costs:
+You can either let the cache expire or delete it manually before the expiration:
 
 ```python
 cached_content = caching.CachedContent(cached_content_name=cache_id)
