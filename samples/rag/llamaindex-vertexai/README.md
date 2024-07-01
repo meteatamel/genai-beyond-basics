@@ -1,5 +1,7 @@
 # LlamaIndex on Vertex AI with RAG API
 
+![LlamaIndex on Vertex AI](images/llamaindex_vertexai.png)
+
 ## Introduction
 
 [LlamaIndex](https://www.llamaindex.ai/) is a popular data framework for developing context-augmented LLM apps.
