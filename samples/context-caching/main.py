@@ -68,7 +68,7 @@ def log_prompt_response(prompt, response):
 
 
 def get_args_parser():
-    parser = argparse.ArgumentParser(description="Controlled generation with Vertex AI")
+    parser = argparse.ArgumentParser(description="Context caching")
 
     parser.add_argument('--project_id', type=str, required=True, help='Google Cloud project id (required)')
 
