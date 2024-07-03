@@ -74,6 +74,8 @@ def create_tool_with_function_declarations():
 
 
 def generate_content_with_function_calls(prompt: str):
+    logger.info(f"Prompt: {prompt}")
+
     model = GenerativeModel(
         model_name="gemini-1.5-pro-001",
         system_instruction=[
@@ -83,8 +85,7 @@ def generate_content_with_function_calls(prompt: str):
         ]
     )
 
-    weather_tool = create_tool_with_function_declarations()
-    logger.info(f"Prompt: {prompt}")
+    tool = create_tool_with_function_declarations()
 
     # Define a contents list that can be reused in model calls
     contents = [Content(role="user", parts=[Part.from_text(prompt)])]
@@ -93,7 +94,7 @@ def generate_content_with_function_calls(prompt: str):
         response = model.generate_content(
             contents,
             generation_config=GenerationConfig(temperature=0),
-            tools=[weather_tool],
+            tools=[tool],
         )
         logger.debug(f"Response: {response}")
 
