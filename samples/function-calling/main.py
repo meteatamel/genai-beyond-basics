@@ -24,13 +24,13 @@ def api_request(url):
 
 
 def location_to_lat_long(location: str):
-    logger.debug(f"Calling location_to_lat_long({location})")
+    logger.info(f"Calling location_to_lat_long({location})")
     url = f"https://geocoding-api.open-meteo.com/v1/search?name={location}&count=1"
     return api_request(url)
 
 
 def lat_long_to_weather(latitude: str, longitude: str):
-    logger.debug(f"Calling lat_long_to_weather({latitude}, {longitude})")
+    logger.info(f"Calling lat_long_to_weather({latitude}, {longitude})")
     url = (f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,"
            f"relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m&forecast_days=1")
     return api_request(url)

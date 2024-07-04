@@ -5,7 +5,7 @@ LLMs with more up-to-date data via external API calls.
 
 You can use function calling to define custom functions and provide these to an LLM. While processing a prompt, 
 the LLM can choose to delegate tasks to the functions that you identify. The model does not call the functions directly
-but rather makes function call requests with certain parameters. Your application code responds to function call
+but rather makes function call requests with parameters. Your application code responds to function call
 requests by calling external APIs and providing the responses back to the model, allowing the LLM to complete its
 response to the prompt. 
 
@@ -18,19 +18,21 @@ More specifically, you'll:
 
 1. Define a function to use a geocoding API to locate the latitude and longitude of a city.
 1. Define a function to use a weather API to get the weather information for a latitude and longitude.
-1. Register both functions in a weather tool.
-1. Use the weather tool to generate response from the LLM while taking multiple functions that can be called in parallel.
-1. Ask the LLM about the weather from single and multiple cities and observe how everything works.
+1. Register both functions in a tool for the LLM.
+1. Use the tool to generate a response from the LLM with multiple function calls, some in parallel.
+1. Ask the LLM about the weather from single and multiple cities and observe how LLM responds with function calls.
 
 ## Introduction
 
-The question we want LLM to answer is: `What's the temperature, wind, humidity like in these cities: London, Tokyo, Paris?`
+The question we want LLM to answer is: 
 
-A few points:
+`What's the temperature, wind, humidity like in London, Tokyo, Paris?`
 
-1. The question requires a weather API. Most weather APIs work for a certain latitude and longitude.
-1. The question also requires a geocoding API to go from a city name to latitude and longitude for the weather API.
-1. The question also requires answers for multiple cities which means we can take advantage of the parallel function
+The question requires:
+
+1. A weather API. Most weather APIs work for a certain latitude and longitude.
+1. A geocoding API to go from a city name to a latitude and a longitude for the weather API.
+1. Answers for multiple cities. That means we can take advantage of the parallel function
    calling feature of Gemini.  
 
 ## Geocoding function
@@ -58,7 +60,7 @@ def location_to_lat_long(location: str):
     return api_request(url)
 ```
 
-This function uses [Open Meteo](https://open-meteo.com/) an open source weather/geocoding API and it simply returns 
+This function uses [Open Meteo](https://open-meteo.com/), an open source weather/geocoding API, and it simply returns 
 a JSON with latitude and longitude of a given location:  
 
 ```json
@@ -173,7 +175,7 @@ def create_tool_with_function_declarations():
     )
 ```
 
-## Generate content with function calls
+## Define model
 
 Now, we're ready to generate content with function calls.
 
@@ -202,13 +204,26 @@ Next, create a tool with our function declarations and also a content list with 
     contents = [Content(role="user", parts=[Part.from_text(prompt)])]
 ```
 
-Now, we're ready to generate some content but a couple of points:
+We're ready to generate some content but first let's talk about function calls.
 
-1. The model can request one or more different function calls. For example, `location_to_lat_long("London")` followed by
-   `lat_long_to_weather("London")`. We need to handle these requests and append both the function request and also the 
-   function responses in contents. 
-2. The model can (but doesn't have to) also request the same function call in parallel. For example, it can request
-   `lat_long_to_weather("London")` and `lat_long_to_weather("Paris")` in parallel.
+## Multiple function calls
+
+The model can request one or more different function calls in sequence. For example, `location_to_lat_long("London")` 
+followed by `lat_long_to_weather("London")`. We need to handle these requests in order and append both the function 
+request and also the function responses in contents.
+
+## Parallel function calls
+
+The recent versions of Gemini has the ability to return two or more function calls in parallel
+(i.e., two or more function call responses within the first function call response object). 
+Parallel function calling allows you to fan out and parallelize your API calls, so you don't have to do each API call
+one-by-one. Note that, the model doesn't have to request parallel calls but it can, so you need to design your code accordingly.
+
+![Parallel function calling](https://camo.githubusercontent.com/c5e9118987bbb4d5f4aab90f326a8b34c798f909a932c07a25fcf3c7c888cb89/68747470733a2f2f73746f726167652e676f6f676c65617069732e636f6d2f6769746875622d7265706f2f67656e657261746976652d61692f67656d696e692f66756e6374696f6e2d63616c6c696e672f706172616c6c656c2d66756e6374696f6e2d63616c6c696e672d696e2d67656d696e692e706e67)
+
+In our sample, the model can request `lat_long_to_weather("London")` and `lat_long_to_weather("Paris")` in a single response. 
+
+## Generate content with function calls
 
 Given these points, this is the code we need:
 
@@ -258,13 +273,153 @@ def handle_function_call(function_call):
         raise ValueError(f"Unknown function: {function_call.name}")
 ```
 
-## Parallel function calls
+## Run
 
-TODO
+We're finally ready to run the sample. Let's start with a single city:
 
-## Tests
+```shell
+python main.py --project_id your-project-id --prompt "What's the temperature, wind, humidity like in London?"
+```
 
-TODO
+You can see that there were calls to our 2 functions and the final response from the model:
+
+```log
+Prompt: What's the temperature, wind, humidity like in London?
+Calling location_to_lat_long(London)
+Calling lat_long_to_weather(51.50853, -0.12574)
+Response: The temperature in London is 16°C, the wind speed is 16.9 km/h, and the humidity is 48%.
+```
+
+Now, let's try with multiple cities:
+
+```shell
+python main.py --project_id your-project-id --prompt "What's the temperature, wind, humidity like in London, Paris, Tokyo?"
+```
+
+We get multiple function calls and a final response:
+
+```log
+Prompt: What's the temperature, wind, humidity like in London, Paris, Tokyo?
+Calling location_to_lat_long(London)
+Calling location_to_lat_long(Paris)
+Calling location_to_lat_long(Tokyo)
+Calling lat_long_to_weather(51.50853, -0.12574)
+Calling lat_long_to_weather(48.85341, 2.3488)
+Calling lat_long_to_weather(35.6895, 139.69171)
+Response: The current weather in London is 16 degrees Celsius, wind speed is 16.9 km/h, humidity is 48%. The current weather in Paris is 18.1 degrees Celsius, wind speed is 15.5 km/h, humidity is 59%. The current weather in Tokyo is 30.9 degrees Celsius, wind speed is 2.9 km/h, humidity is 68%. 
+```
+
+To see what happens under the covers, let's now enable the `--debug` flag:
+
+```shell
+python main.py --project_id genai-atamel --prompt "What's the temperature, wind, humidity like in Mumbai, Seoul, Jakarta?" --debug
+```
+
+You can see that you get parallel function requests sometimes:
+
+```log
+Response: candidates {
+  content {
+    role: "model"
+    parts {
+      function_call {
+        name: "location_to_lat_long"
+        args {
+          fields {
+            key: "location"
+            value {
+              string_value: "Mumbai"
+            }
+          }
+        }
+      }
+    }
+    parts {
+      function_call {
+        name: "location_to_lat_long"
+        args {
+          fields {
+            key: "location"
+            value {
+              string_value: "Seoul"
+            }
+          }
+        }
+      }
+    }
+    parts {
+      function_call {
+        name: "location_to_lat_long"
+        args {
+          fields {
+            key: "location"
+            value {
+              string_value: "Jakarta"
+            }
+          }
+        }
+      }
+    }
+  }
+```
+
+But other times, you might still get sequential function calls. It's up to the model to decide:
+
+```log
+Response: candidates {
+  content {
+    role: "model"
+    parts {
+      function_call {
+        name: "location_to_lat_long"
+        args {
+          fields {
+            key: "location"
+            value {
+              string_value: "Mumbai"
+            }
+          }
+        }
+      }
+    }
+  }
+  ...
+Response: candidates {
+  content {
+    role: "model"
+    parts {
+      function_call {
+        name: "location_to_lat_long"
+        args {
+          fields {
+            key: "location"
+            value {
+              string_value: "Seoul"
+            }
+          }
+        }
+      }
+    }
+  }
+...
+Response: candidates {
+  content {
+    role: "model"
+    parts {
+      function_call {
+        name: "location_to_lat_long"
+        args {
+          fields {
+            key: "location"
+            value {
+              string_value: "Jakarta"
+            }
+          }
+        }
+      }
+    }
+  }
+```
 
 ## References
 
