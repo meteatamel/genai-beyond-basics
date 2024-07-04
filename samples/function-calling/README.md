@@ -265,10 +265,9 @@ Given these points, this is the code we need:
 
 
 def handle_function_call(function_call):
-    if function_call.name == location_to_lat_long.__name__:
-        return location_to_lat_long(function_call.args["location"])
-    elif function_call.name == lat_long_to_weather.__name__:
-        return lat_long_to_weather(function_call.args["latitude"], function_call.args["longitude"])
+    function = globals().get(function_call.name)
+    if function and callable(function):
+        return function(**function_call.args)
     else:
         raise ValueError(f"Unknown function: {function_call.name}")
 ```
