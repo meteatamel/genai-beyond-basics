@@ -293,7 +293,8 @@ Response: The temperature in London is 16°C, the wind speed is 16.9 km/h, and t
 Now, let's try with multiple cities:
 
 ```shell
-python main.py --project_id your-project-id --prompt "What's the temperature, wind, humidity like in London, Paris, Tokyo?"
+python main.py --project_id your-project-id \
+  --prompt "What's the temperature, wind, humidity like in London, Paris, Tokyo?"
 ```
 
 We get multiple function calls and a final response:
@@ -306,13 +307,16 @@ Calling location_to_lat_long(Tokyo)
 Calling lat_long_to_weather(51.50853, -0.12574)
 Calling lat_long_to_weather(48.85341, 2.3488)
 Calling lat_long_to_weather(35.6895, 139.69171)
-Response: The current weather in London is 16 degrees Celsius, wind speed is 16.9 km/h, humidity is 48%. The current weather in Paris is 18.1 degrees Celsius, wind speed is 15.5 km/h, humidity is 59%. The current weather in Tokyo is 30.9 degrees Celsius, wind speed is 2.9 km/h, humidity is 68%. 
+Response: The current weather in London is 16 degrees Celsius, wind speed is 16.9 km/h, humidity is 48%. 
+The current weather in Paris is 18.1 degrees Celsius, wind speed is 15.5 km/h, humidity is 59%. 
+The current weather in Tokyo is 30.9 degrees Celsius, wind speed is 2.9 km/h, humidity is 68%. 
 ```
 
 To see what happens under the covers, let's now enable the `--debug` flag:
 
 ```shell
-python main.py --project_id genai-atamel --prompt "What's the temperature, wind, humidity like in Mumbai, Seoul, Jakarta?" --debug
+python main.py --project_id genai-atamel \
+  --prompt "What's the temperature, wind, humidity like in Mumbai, Seoul, Jakarta?" --debug
 ```
 
 You can see that you get parallel function requests sometimes:
