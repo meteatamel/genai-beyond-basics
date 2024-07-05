@@ -87,16 +87,11 @@ def generate_content_with_function_calls(prompt: str):
         tools=[create_tool_with_function_declarations()]
     )
 
-    # Define a contents list that can be reused in model calls
-    contents = [Content(role="user", parts=[Part.from_text(prompt)])]
-
-    response = model.generate_content(contents)
+    chat = model.start_chat()
+    response = chat.send_message(prompt)
     logger.debug(f"Response: {response}")
 
     while response.candidates[0].function_calls:
-
-        # Add the function call request to the contents
-        contents.append(response.candidates[0].content)
 
         # You can have parallel function call requests for the same function type.
         # For example, 'location_to_lat_long("London")' and 'location_to_lat_long("Paris")'
@@ -112,10 +107,7 @@ def generate_content_with_function_calls(prompt: str):
                 )
             )
 
-        # Add the function call response to the contents
-        contents.append(Content(role="user", parts=function_response_parts))
-
-        response = model.generate_content(contents)
+        response = chat.send_message(function_response_parts)
         logger.debug(f"Response: {response}")
 
     logger.info(f"Response: {response.text}")

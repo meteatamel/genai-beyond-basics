@@ -179,7 +179,7 @@ def create_tool_with_function_declarations():
 
 Now, we're ready to generate content with function calls.
 
-First, define the model with some system instructions:
+First, define the model with some system instructions and the tool:
 
 ```python
 def generate_content_with_function_calls(prompt: str):
@@ -191,20 +191,13 @@ def generate_content_with_function_calls(prompt: str):
             "You are a helpful weather assistant.",
             "Your mission is to provide weather information for different cities."
             "Make sure your responses are plain text format and include all the cities asked.",
-        ]
+        ],
+        generation_config=GenerationConfig(temperature=0),
+        tools=[create_tool_with_function_declarations()]
     )
 ```
 
-Next, create a tool with our function declarations and also a content list with the first prompt:
-
-```python
-    tool = create_tool_with_function_declarations()
-
-    # Define a contents list that can be reused in model calls
-    contents = [Content(role="user", parts=[Part.from_text(prompt)])]
-```
-
-We're ready to generate some content but first let's talk about function calls.
+e're ready to generate some content but first let's talk about function calls.
 
 ## Multiple function calls
 
@@ -228,17 +221,13 @@ In our sample, the model can request `lat_long_to_weather("London")` and `lat_lo
 Given these points, this is the code we need:
 
 ```python
-    while True:
-        response = model.generate_content(
-            contents,
-            generation_config=GenerationConfig(temperature=0),
-            tools=[weather_tool],
-        )
-        logger.debug(f"Response: {response}")
+    # Define a contents list that can be reused in model calls
+    contents = [Content(role="user", parts=[Part.from_text(prompt)])]
 
-        # Exit the loop if there are no more function calls
-        if not response.candidates[0].function_calls:
-            break
+    response = model.generate_content(contents)
+    logger.debug(f"Response: {response}")
+
+    while response.candidates[0].function_calls:
 
         # Add the function call request to the contents
         contents.append(response.candidates[0].content)
@@ -259,6 +248,9 @@ Given these points, this is the code we need:
 
         # Add the function call response to the contents
         contents.append(Content(role="user", parts=function_response_parts))
+
+        response = model.generate_content(contents)
+        logger.debug(f"Response: {response}")
 
     logger.info(f"Response: {response.text}")
     return response.text
