@@ -3,7 +3,10 @@ import logging
 import requests
 import vertexai
 from vertexai.generative_models import (
-    Content, FunctionDeclaration, GenerationConfig, GenerativeModel, Part, Tool
+    FunctionDeclaration, GenerationConfig, Part, Tool
+)
+from vertexai.preview.generative_models import (
+    AutomaticFunctionCallingResponder, GenerativeModel
 )
 
 logger = logging.getLogger(__name__)
@@ -24,6 +27,14 @@ def api_request(url):
 
 
 def location_to_lat_long(location: str):
+    """Given a location, returns the latitude and longitude of that location
+
+    Args:
+        location: The location for which to get the weather.
+
+    Returns:
+        The latitude and longitude information as JSON.
+    """
     logger.info(f"Calling location_to_lat_long({location})")
     url = f"https://geocoding-api.open-meteo.com/v1/search?name={location}&count=1"
     return api_request(url)
@@ -87,36 +98,28 @@ def generate_content_with_function_calls(prompt: str):
         tools=[create_tool_with_function_declarations()]
     )
 
-    # Define a contents list that can be reused in model calls
-    contents = [Content(role="user", parts=[Part.from_text(prompt)])]
-
-    response = model.generate_content(contents)
+    chat = model.start_chat(responder=AutomaticFunctionCallingResponder())
+    response = chat.send_message(prompt)
     logger.debug(f"Response: {response}")
 
-    while response.candidates[0].function_calls:
-
-        # Add the function call request to the contents
-        contents.append(response.candidates[0].content)
-
-        # You can have parallel function call requests for the same function type.
-        # For example, 'location_to_lat_long("London")' and 'location_to_lat_long("Paris")'
-        # In that case, collect API responses in parts and send them back to the model
-        function_response_parts = []
-
-        for function_call in response.candidates[0].function_calls:
-            api_response = handle_function_call(function_call)
-            function_response_parts.append(
-                Part.from_function_response(
-                    name=function_call.name,
-                    response={"contents": api_response}
-                )
-            )
-
-        # Add the function call response to the contents
-        contents.append(Content(role="user", parts=function_response_parts))
-
-        response = model.generate_content(contents)
-        logger.debug(f"Response: {response}")
+    # while response.candidates[0].function_calls:
+    #
+    #     # You can have parallel function call requests for the same function type.
+    #     # For example, 'location_to_lat_long("London")' and 'location_to_lat_long("Paris")'
+    #     # In that case, collect API responses in parts and send them back to the model
+    #     function_response_parts = []
+    #
+    #     for function_call in response.candidates[0].function_calls:
+    #         api_response = handle_function_call(function_call)
+    #         function_response_parts.append(
+    #             Part.from_function_response(
+    #                 name=function_call.name,
+    #                 response={"contents": api_response}
+    #             )
+    #         )
+    #
+    #     response = chat.send_message(function_response_parts)
+    #     logger.debug(f"Response: {response}")
 
     logger.info(f"Response: {response.text}")
     return response.text

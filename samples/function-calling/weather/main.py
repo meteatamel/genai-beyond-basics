@@ -24,57 +24,42 @@ def api_request(url):
 
 
 def location_to_lat_long(location: str):
+    """Given a location, returns the latitude and longitude
+
+    Args:
+        location: The location for which to get the weather.
+
+    Returns:
+        The latitude and longitude information in JSON.
+    """
     logger.info(f"Calling location_to_lat_long({location})")
     url = f"https://geocoding-api.open-meteo.com/v1/search?name={location}&count=1"
     return api_request(url)
 
 
 def lat_long_to_weather(latitude: str, longitude: str):
+    """Given a latitude and longitude, returns the weather information
+
+    Args:
+        latitude: The latitude of a location
+        longitude: The longitude of a location
+
+    Returns:
+        The weather information for the location in JSON.
+    """
     logger.info(f"Calling lat_long_to_weather({latitude}, {longitude})")
     url = (f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&current=temperature_2m,"
            f"relative_humidity_2m,surface_pressure,wind_speed_10m,wind_direction_10m&forecast_days=1")
     return api_request(url)
 
 
-def create_tool_with_function_declarations():
-    return Tool(
+def create_model_with_tool():
+    weather_tool = Tool(
         function_declarations=[
-            FunctionDeclaration(
-                name=location_to_lat_long.__name__,
-                description="Given a location name, return the latitude and the longitude",
-                parameters={
-                    "type": "object",
-                    "properties": {
-                        "location": {
-                            "type": "string",
-                            "description": "Location to search the latitude and longitude for",
-                        }
-                    }
-                }
-            ),
-            FunctionDeclaration(
-                name=lat_long_to_weather.__name__,
-                description="Given a latitude and longitude, return the weather information",
-                parameters={
-                    "type": "object",
-                    "properties": {
-                        "latitude": {
-                            "type": "string",
-                            "description": "The latitude of the location",
-                        },
-                        "longitude": {
-                            "type": "string",
-                            "description": "The longitude of the location",
-                        }
-                    }
-                }
-            )
+            FunctionDeclaration.from_func(location_to_lat_long),
+            FunctionDeclaration.from_func(lat_long_to_weather)
         ],
     )
-
-
-def generate_content_with_function_calls(prompt: str):
-    logger.info(f"Prompt: {prompt}")
 
     model = GenerativeModel(
         model_name="gemini-1.5-pro-001",
@@ -84,9 +69,54 @@ def generate_content_with_function_calls(prompt: str):
             "Make sure your responses are plain text format and include all the cities asked.",
         ],
         generation_config=GenerationConfig(temperature=0),
-        tools=[create_tool_with_function_declarations()]
+        tools=[weather_tool]
     )
 
+    return model
+
+
+def generate_content_with_function_calls(prompt: str):
+    model = create_model_with_tool()
+
+    # Define a contents list that can be reused in model calls
+    contents = [Content(role="user", parts=[Part.from_text(prompt)])]
+
+    logger.info(f"Prompt: {prompt}")
+    response = model.generate_content(contents)
+    logger.debug(f"Response: {response}")
+
+    while response.candidates[0].function_calls:
+
+        # Add the function call request to the contents
+        contents.append(response.candidates[0].content)
+
+        # You can have parallel function call requests for the same function type.
+        # For example, 'location_to_lat_long("London")' and 'location_to_lat_long("Paris")'
+        # In that case, collect API responses in parts and send them back to the model
+        function_response_parts = []
+
+        for function_call in response.candidates[0].function_calls:
+            api_response = handle_function_call(function_call)
+            function_response_parts.append(
+                Part.from_function_response(
+                    name=function_call.name,
+                    response={"contents": api_response}
+                )
+            )
+
+        # Add the function call response to the contents
+        contents.append(Content(role="user", parts=function_response_parts))
+
+        response = model.generate_content(contents)
+        logger.debug(f"Response: {response}")
+
+    logger.info(f"Response: {response.text}")
+
+
+def chat_with_function_calls(prompt: str):
+    model = create_model_with_tool()
+
+    logger.info(f"Prompt: {prompt}")
     chat = model.start_chat()
     response = chat.send_message(prompt)
     logger.debug(f"Response: {response}")
@@ -111,7 +141,6 @@ def generate_content_with_function_calls(prompt: str):
         logger.debug(f"Response: {response}")
 
     logger.info(f"Response: {response.text}")
-    return response.text
 
 
 def handle_function_call(function_call):
@@ -129,8 +158,9 @@ def get_args_parser():
     parser.add_argument('--prompt', type=str, required=True, help='Prompt')
     parser.add_argument('--debug', action='store_true', help='Enable debug logging (default: False)')
 
-    parser.add_argument('--google_search_grounding', action='store_true',
-                        help='Use Vertex AI Google Search grounding (default: False)')
+    subparsers = parser.add_subparsers(dest="command", required=True)
+    subparsers.add_parser("generate_content", help="Generate content with function calls")
+    subparsers.add_parser("chat", help="Chat with function calls")
 
     return parser.parse_args()
 
@@ -143,8 +173,18 @@ def setup_logging_level(debug=False):
 def main():
     args = get_args_parser()
     setup_logging_level(args.debug)
+
     vertexai.init(project=args.project_id, location="us-central1")
-    generate_content_with_function_calls(args.prompt)
+
+    command_map = {
+        "generate_content": lambda: generate_content_with_function_calls(args.prompt),
+        "chat": lambda: chat_with_function_calls(args.prompt),
+    }
+
+    if args.command in command_map:
+        command_map[args.command]()
+    else:
+        print(f"Unknown command: {args.command}")
 
 
 if __name__ == '__main__':
