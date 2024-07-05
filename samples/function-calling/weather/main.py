@@ -146,7 +146,7 @@ def chat_with_function_calls(prompt: str):
     logger.info(f"Response: {response.text}")
 
 
-def chat_with_auto_function_calls(prompt: str):
+def chat_auto_with_function_calls(prompt: str):
     model = create_model_with_tool()
 
     logger.info(f"Prompt: {prompt}")
@@ -183,22 +183,20 @@ def setup_logging_level(debug=False):
     logging.basicConfig(level=level, format='%(message)s')
 
 
+def run_command(args):
+    try:
+        func = globals()[f"{args.command}_with_function_calls"]
+        func(args.prompt)
+    except KeyError:
+        print(f"Error: Unknown command '{args.command}'")
+        exit(1)
+
+
 def main():
     args = get_args_parser()
     setup_logging_level(args.debug)
-
     vertexai.init(project=args.project_id, location="us-central1")
-
-    command_map = {
-        "generate_content": lambda: generate_content_with_function_calls(args.prompt),
-        "chat": lambda: chat_with_function_calls(args.prompt),
-        "chat_auto": lambda: chat_with_auto_function_calls(args.prompt),
-    }
-
-    if args.command in command_map:
-        command_map[args.command]()
-    else:
-        print(f"Unknown command: {args.command}")
+    run_command(args)
 
 
 if __name__ == '__main__':

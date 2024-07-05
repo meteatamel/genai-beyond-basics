@@ -117,23 +117,19 @@ def get_args_parser():
     return parser.parse_args()
 
 
+def run_command(args):
+    try:
+        func = globals()[f"{args.command}"]
+        func()
+    except KeyError:
+        print(f"Error: Unknown command '{args.command}'")
+        exit(1)
+
+
 def main():
     args = get_args_parser()
-
     vertexai.init(project=args.project_id, location="us-central1")
-
-    command_map = {
-        "without_controlled_generation1": lambda: without_controlled_generation1(),
-        "without_controlled_generation2": lambda: without_controlled_generation2(),
-        "with_response_mime_type": lambda: with_response_mime_type(),
-        "with_response_schema1": lambda: with_response_schema1(),
-        "with_response_schema2": lambda: with_response_schema2()
-    }
-
-    if args.command in command_map:
-        command_map[args.command]()
-    else:
-        print(f"Unknown command: {args.command}")
+    run_command(args)
 
 
 if __name__ == '__main__':
