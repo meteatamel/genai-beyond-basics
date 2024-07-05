@@ -5,6 +5,9 @@ import vertexai
 from vertexai.generative_models import (
     Content, FunctionDeclaration, GenerationConfig, GenerativeModel, Part, Tool
 )
+from vertexai.preview.generative_models import (
+    AutomaticFunctionCallingResponder, GenerativeModel
+)
 
 logger = logging.getLogger(__name__)
 
@@ -143,6 +146,15 @@ def chat_with_function_calls(prompt: str):
     logger.info(f"Response: {response.text}")
 
 
+def chat_with_auto_function_calls(prompt: str):
+    model = create_model_with_tool()
+
+    logger.info(f"Prompt: {prompt}")
+    chat = model.start_chat(responder=AutomaticFunctionCallingResponder(max_automatic_function_calls=10))
+    response = chat.send_message(prompt)
+    logger.info(f"Response: {response.text}")
+
+
 def handle_function_call(function_call):
     function = globals().get(function_call.name)
     if function and callable(function):
@@ -161,6 +173,7 @@ def get_args_parser():
     subparsers = parser.add_subparsers(dest="command", required=True)
     subparsers.add_parser("generate_content", help="Generate content with function calls")
     subparsers.add_parser("chat", help="Chat with function calls")
+    subparsers.add_parser("chat_auto", help="Chat with auto function calls")
 
     return parser.parse_args()
 
@@ -179,6 +192,7 @@ def main():
     command_map = {
         "generate_content": lambda: generate_content_with_function_calls(args.prompt),
         "chat": lambda: chat_with_function_calls(args.prompt),
+        "chat_auto": lambda: chat_with_auto_function_calls(args.prompt),
     }
 
     if args.command in command_map:
