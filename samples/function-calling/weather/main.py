@@ -56,15 +56,54 @@ def lat_long_to_weather(latitude: str, longitude: str):
     return api_request(url)
 
 
-def create_model_with_tool():
-    weather_tool = Tool(
+def create_weather_tool_with_declarations():
+    return Tool(
+        function_declarations=[
+            FunctionDeclaration(
+                name=location_to_lat_long.__name__,
+                description="Given a location name, return the latitude and the longitude",
+                parameters={
+                    "type": "object",
+                    "properties": {
+                        "location": {
+                            "type": "string",
+                            "description": "Location to search the latitude and longitude for",
+                        }
+                    }
+                }
+            ),
+            FunctionDeclaration(
+                name=lat_long_to_weather.__name__,
+                description="Given a latitude and longitude, return the weather information",
+                parameters={
+                    "type": "object",
+                    "properties": {
+                        "latitude": {
+                            "type": "string",
+                            "description": "The latitude of the location",
+                        },
+                        "longitude": {
+                            "type": "string",
+                            "description": "The longitude of the location",
+                        }
+                    }
+                }
+            )
+        ],
+    )
+
+
+def create_weather_tool():
+    return Tool(
         function_declarations=[
             FunctionDeclaration.from_func(location_to_lat_long),
             FunctionDeclaration.from_func(lat_long_to_weather)
         ],
     )
 
-    model = GenerativeModel(
+
+def create_model_with_tool():
+    return GenerativeModel(
         model_name="gemini-1.5-pro-001",
         system_instruction=[
             "You are a helpful weather assistant.",
@@ -72,10 +111,8 @@ def create_model_with_tool():
             "Make sure your responses are plain text format and include all the cities asked.",
         ],
         generation_config=GenerationConfig(temperature=0),
-        tools=[weather_tool]
+        tools=[create_weather_tool()]
     )
-
-    return model
 
 
 def generate_content_with_function_calls(prompt: str):
