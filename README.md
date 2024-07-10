@@ -10,3 +10,5 @@ A collection of more advanced GenAI samples.
 * [Function calling - Weather](./samples/function-calling/weather)
 * [Control generated output](./samples/controlled-generation)
 * [Context caching](./samples/context-caching)
+* [DeepEval and Vertex AI](./samples/deepeval-vertexai)
+* 
