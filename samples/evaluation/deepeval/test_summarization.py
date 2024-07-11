@@ -1,8 +1,15 @@
-from deepeval import assert_test, evaluate
+import os
+
+from deepeval import evaluate, assert_test
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import SummarizationMetric
 
 from vertex_ai.google_vertex_ai import GoogleVertexAI
+
+# The summarization metric uses LLMs to determine whether your LLM (application) is generating factually correct
+# summaries while including the necessary details from the original text
+# https://docs.confident-ai.com/docs/metrics-summarization
+
 
 def get_project_id():
     project_id = os.environ.get("GOOGLE_PROJECT_ID")
@@ -44,5 +51,4 @@ def test_summarization():
     print(f"Metric score: {metric.score}")
     print(f"Metric reason: {metric.reason}")
 
-    # or evaluate test cases in bulk
-    evaluate([test_case], [metric])
+    assert_test(test_case, [metric])
