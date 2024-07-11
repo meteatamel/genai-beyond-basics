@@ -17,4 +17,4 @@ A collection of more advanced GenAI samples.
 * [Context caching](./samples/context-caching)
 
 ### Evaluation
-* [DeepEval and Vertex AI](./samples/evaluation/deepeval-vertexai)
+* [DeepEval and Vertex AI](./samples/evaluation/deepeval)
