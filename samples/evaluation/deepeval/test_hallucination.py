@@ -1,6 +1,6 @@
 import os
 
-from deepeval import evaluate, assert_test
+from deepeval import assert_test
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import HallucinationMetric
 
