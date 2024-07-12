@@ -1,5 +1,7 @@
 # DeepEval and Vertex AI
 
+![DeepEval and Vertex AI](images/deepeval_vertexai.png)
+
 [DeepEval](https://docs.confident-ai.com/) is an open-source evaluation framework for LLMs. It allows to "unit test" 
 LLM outputs in a similar way to Pytest with 14+ LLM-evaluated metrics backed by research.
 
