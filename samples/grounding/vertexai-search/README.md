@@ -142,7 +142,7 @@ Response:
 Also run [main.py](main.py) Python sample **with** grounding:
 
 ```sh
-python main.py --project_id your-project-id --data_store_path projects/your-project-id/locations/global/collections/default_collection/dataStores/your-datastore-id
+python main.py --project_id your-project-id --datastore_path projects/your-project-id/locations/global/collections/default_collection/dataStores/your-datastore-id
 ```
 
 You get a similar response:
