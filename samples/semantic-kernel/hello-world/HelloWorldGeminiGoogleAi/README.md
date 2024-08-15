@@ -1,5 +1,7 @@
 # HelloWorld Semantic Kernel with Gemini on Google AI
 
+![Semantic Kernel and Gemini](../images/semantic_kernel_gemini.png)
+
 ## Introduction
 
 [Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/overview/)
