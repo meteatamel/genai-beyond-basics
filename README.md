@@ -1,8 +1,12 @@
 # GenAI beyond basics
 
-A collection of more advanced GenAI samples.
+A collection of GenAI samples and links beyond introduction.
 
 ## Samples
+
+### Frameworks
+
+* [A comparative overview of LangChain, Semantic Kernel, AutoGen and more](https://medium.com/data-science-at-microsoft/harnessing-the-power-of-large-language-models-a-comparative-overview-of-langchain-semantic-c21f5c19f93e)
 
 ### Grounding & RAG
 * [Grounding with public data with Google Search](./samples/grounding/google-search/)
