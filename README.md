@@ -10,6 +10,7 @@ A collection of GenAI samples and links beyond introduction.
 
 * [A comparative overview of LangChain, Semantic Kernel, AutoGen and more](https://medium.com/data-science-at-microsoft/harnessing-the-power-of-large-language-models-a-comparative-overview-of-langchain-semantic-c21f5c19f93e)
 * [HelloWorld Semantic Kernel with Gemini on Google AI](./samples/semantic-kernel/hello-world/HelloWorldGeminiGoogleAi/)
+* [HelloWorld Semantic Kernel with Gemini on Vertex AI](./samples/semantic-kernel/hello-world/HelloWorldGeminiVertexAi/)
 
 ### Grounding & RAG
 
