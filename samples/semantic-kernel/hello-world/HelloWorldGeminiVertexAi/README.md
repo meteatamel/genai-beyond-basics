@@ -27,7 +27,7 @@ gcloud auth print-access-token
 Create a C# console application:
 
 ```sh
-dotnet new console -o SemanticKernelGeminiGoogleAi
+dotnet new console -o HelloWorldGeminiVertexAi
 ```
 
 ## Install Semantic Kernel and Google connector
@@ -73,9 +73,9 @@ will need to add #pragma warning disable SKEXP0070:
 ```csharp
 static async Task Main()
 {
-    // Create a kernel with Google AI's Gemini chat completion
+    // Create a kernel with Vertex AI's Gemini chat completion
 #pragma warning disable SKEXP0070
-    var builder = Kernel.CreateBuilder().AddGoogleAIGeminiChatCompletion(ModelId, ApiKey);
+    var builder = Kernel.CreateBuilder().AddVertexAIGeminiChatCompletion(ModelId, BearerKey, Location, ProjectId);
 ```
 
 Build the kernel and initialize some settings for Gemini:
@@ -160,5 +160,6 @@ What about you? How are you doing today?
 
 ## References
 
+* [A comparative overview of LangChain, Semantic Kernel, AutoGen and more](https://medium.com/data-science-at-microsoft/harnessing-the-power-of-large-language-models-a-comparative-overview-of-langchain-semantic-c21f5c19f93e).
 * [Getting started with Semantic Kernel](https://learn.microsoft.com/en-us/semantic-kernel/get-started/quick-start-guide?). 
 * [Chat completion tutorial - C# and Google Gemini](https://learn.microsoft.com/en-us/semantic-kernel/concepts/ai-services/chat-completion/?tabs=csharp-Google)
