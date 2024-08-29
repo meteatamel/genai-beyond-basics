@@ -1,6 +1,6 @@
 # GenAI beyond basics
 
-A collection of GenAI samples and links beyond introduction.
+A collection of GenAI samples.
 
 ## Samples
 
@@ -8,8 +8,8 @@ A collection of GenAI samples and links beyond introduction.
 
 #### Semantic Kernel
 
-* [HelloWorld Semantic Kernel with Gemini on Google AI](./samples/semantic-kernel/hello-world/HelloWorldGeminiGoogleAi/)
-* [HelloWorld Semantic Kernel with Gemini on Vertex AI](./samples/semantic-kernel/hello-world/HelloWorldGeminiVertexAi/)
+* [Semantic Kernel - Chat with Gemini on Google AI](./samples/frameworks/semantic-kernel/chat/HelloWorldGeminiGoogleAi/)
+* [Semantic Kernel - Chat with Gemini on Vertex AI](./samples/frameworks/semantic-kernel/chat/HelloWorldGeminiVertexAi/)
 
 ### Grounding & RAG
 
