@@ -1,3 +1,6 @@
+# Python virtual environment
+.venv
+
 # DeepEval
 .deepeval-cache.json
 

@@ -6,10 +6,14 @@ A collection of GenAI samples.
 
 ### Frameworks
 
+#### LangChain
+
+* [Chat with Gemini on Vertex AI](./samples/frameworks/langchain/chat/)
+
 #### Semantic Kernel
 
-* [Semantic Kernel - Chat with Gemini on Google AI](./samples/frameworks/semantic-kernel/chat/HelloWorldGeminiGoogleAi/)
-* [Semantic Kernel - Chat with Gemini on Vertex AI](./samples/frameworks/semantic-kernel/chat/HelloWorldGeminiVertexAi/)
+* [Chat with Gemini on Google AI](./samples/frameworks/semantic-kernel/chat/HelloWorldGeminiGoogleAi/)
+* [Chat with Gemini on Vertex AI](./samples/frameworks/semantic-kernel/chat/HelloWorldGeminiVertexAi/)
 
 ### Grounding & RAG
 
