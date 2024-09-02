@@ -19,6 +19,7 @@ A collection of GenAI samples.
 
 * [Grounding with public data with Google Search](./samples/grounding/google-search/)
 * [Grounding with your own data with Vertex AI Search](./samples/grounding/vertexai-search/)
+* [RAG with a PDF backend for a Q&A system with LangChain](./samples/grounding/pdf-rag-langchain)
 * [LlamaIndex on Vertex AI with RAG API](./samples/grounding/llamaindex-vertexai/)
 
 ### Function calling

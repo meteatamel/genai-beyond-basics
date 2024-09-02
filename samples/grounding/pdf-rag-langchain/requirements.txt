@@ -1,0 +1,7 @@
+annoy==1.17.3
+langchain==0.2.15
+langchain-community==0.2.15
+langchain-core==0.2.37
+langchain-google-vertexai==1.0.10
+langchain-text-splitters==0.2.2
+pypdf==4.3.1
