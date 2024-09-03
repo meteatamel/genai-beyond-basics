@@ -1,5 +1,4 @@
 import argparse
-import os
 import uuid
 
 from google.cloud import firestore
@@ -9,9 +8,9 @@ from langchain_google_firestore import FirestoreChatMessageHistory
 from langchain_google_vertexai import ChatVertexAI
 
 
-def get_session_history(session_id):
+def get_session_history(session_id, project_id):
     client = firestore.Client(
-        project=os.environ["PROJECT_ID"],
+        project=project_id,
         database="chat-database")
 
     firestore_chat_history = FirestoreChatMessageHistory(
@@ -26,7 +25,7 @@ def main():
     args = get_args_parser()
 
     llm = ChatVertexAI(
-        project=os.environ["PROJECT_ID"],
+        project=args.project_id,
         location="us-central1",
         model="gemini-1.5-flash-001"
     )
@@ -43,7 +42,7 @@ def main():
 
     with_message_history = RunnableWithMessageHistory(
         chain,
-        get_session_history,
+        lambda session_id: get_session_history(session_id, args.project_id),
         input_messages_key="input",
         history_messages_key="history",
     )

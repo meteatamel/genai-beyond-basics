@@ -65,4 +65,4 @@ You can also see that the Firestore collection and documents have been populated
 ## References
 
 * [Build LLM-powered applications using LangChain](https://cloud.google.com/firestore/docs/langchain)
-* [Firestore + LangChain notebook](https://github.com/googleapis/langchain-google-firestore-python/blob/main/docs/chat_message_history.ipynb)
+* [Firestore Chat History + LangChain notebook](https://github.com/googleapis/langchain-google-firestore-python/blob/main/docs/chat_message_history.ipynb)~~
