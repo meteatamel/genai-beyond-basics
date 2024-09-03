@@ -1,7 +1,6 @@
-# RAG with a PDF backend for a Q&A system with LangChain 
+# RAG with a PDF using LangChain and Annoy Vector Store 
 
-In this sample, you'll learn how to use use a PDF as a RAG backed for 
-a Question & Answer system with LangChain.
+In this sample, you'll learn how to use a PDF as a RAG backend using LangChain and Annoy for Vector Store.
 
 You can see the full sample in [main.py](main.py).
 
