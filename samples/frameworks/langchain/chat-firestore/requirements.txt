@@ -1,0 +1,4 @@
+langchain-community==0.2.7
+langchain-core==0.2.33
+langchain-google-vertexai==1.0.6
+langchain-google-firestore==0.3.0

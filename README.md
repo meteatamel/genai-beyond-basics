@@ -9,6 +9,7 @@ A collection of GenAI samples.
 #### LangChain
 
 * [Chat with in-memory history](./samples/frameworks/langchain/chat/)
+* [Chat with history saved to Firestore](./samples/frameworks/langchain/chat-firestore)
 
 #### Semantic Kernel
 
