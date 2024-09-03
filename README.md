@@ -8,12 +8,11 @@ A collection of GenAI samples.
 
 #### LangChain
 
-* [Chat with Gemini on Vertex AI](./samples/frameworks/langchain/chat/)
+* [Chat with in-memory history](./samples/frameworks/langchain/chat/)
 
 #### Semantic Kernel
 
-* [Chat with Gemini on Google AI](./samples/frameworks/semantic-kernel/chat/HelloWorldGeminiGoogleAi/)
-* [Chat with Gemini on Vertex AI](./samples/frameworks/semantic-kernel/chat/HelloWorldGeminiVertexAi/)
+* [Chat with in-memory history](./samples/frameworks/semantic-kernel/chat/)
 
 ### Grounding & RAG
 

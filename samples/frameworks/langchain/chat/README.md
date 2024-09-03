@@ -1,10 +1,10 @@
-# LangChain - Chat with Gemini on Vertex AI
+# LangChain - Chat with in-memory history
 
 ## Introduction
 
 [LangChain](https://www.langchain.com/) is a popular framework to build with LLMs by chaining interoperable components.
 
-In this sample, you'll see how to chat to Gemini on Vertex AI using LangChain.
+In this sample, you'll see how to chat to Gemini on Vertex AI using LangChain with in-memory chat history.
 
 ## Build the app
 
@@ -21,7 +21,7 @@ export PROJECT_ID=your-google-cloud-project-id
 Run:
 
 ```sh
-python chat.py
+python main.py
 ```
 
 You can have a chat with Gemini now:
