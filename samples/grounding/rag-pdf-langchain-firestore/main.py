@@ -7,7 +7,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_firestore import FirestoreVectorStore
 from langchain_google_vertexai import VertexAIEmbeddings, ChatVertexAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain.globals import set_debug
 
+set_debug(True)
 
 # Reference: https://python.langchain.com/v0.2/docs/tutorials/pdf_qa/
 
