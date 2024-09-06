@@ -26,7 +26,7 @@ gcloud firestore databases create --database chat-database --location=europe-wes
 
 ## Take a look at the app
 
-You can take a look at the app in [chat.py](chat.py). 
+You can take a look at the app in [main.py](main.py). 
 
 ## Run the app
 

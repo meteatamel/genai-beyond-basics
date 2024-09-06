@@ -53,6 +53,7 @@ gcloud alpha firestore indexes composite create --project=your-project-id \
  --database="pdf-database" --collection-group=PdfCollection --query-scope=COLLECTION \
  --field-config=vector-config='{"dimension":"768","flat": "{}"}',field-path=embedding
 ```
+
 ## Setup RAG
 
 Now, you can setup a RAG chain with the [cymbal-starlight-2024.pdf](./cymbal-starlight-2024.pdf) file. 

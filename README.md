@@ -31,6 +31,7 @@ A collection of GenAI samples.
 #### Retrieval
 
 * [Multimodal image storage and retrieval with Chroma](./samples/multimodal/retrievers/chroma)
+* [Multimodal image storage and retrieval with Firestore and Cloud Storage](./samples/multimodal/retrievers/firestore)
 
 ### Function calling
 

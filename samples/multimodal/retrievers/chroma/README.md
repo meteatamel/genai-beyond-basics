@@ -1,15 +1,16 @@
 # Multimodal image storage and retrieval with Chroma 
 
-In this sample, you'll learn how to use Chroma vector database to store and retrieve images with multimodal embeddings.
+In this sample, you'll learn how to use Chroma to store images and their embeddings 
+and later retrieve images based on similarity search on a keyword.
 
 You can see the full sample in [main.py](main.py).
 
 ## Add images
 
-First, add the images in [images](./images) folder to ChromaDB:
+First, add the images in [images](../images) folder to ChromaDB:
 
 ```shell
-python main.py --folder_path=images
+python main.py --folder_path=../images
 ```
 
 ## Retrieve images
@@ -17,10 +18,12 @@ python main.py --folder_path=images
 Now, retrieve an image with a keyword:
 
 ```shell
-python main.py --input=stadium
+python main.py --keyword="stadium"
 ```
+
+You should now see the picture of Colosseum.
+
 
 ## References
 
-* [Build LLM-powered applications using LangChain](https://cloud.google.com/firestore/docs/langchain)
-* [Firestore VectorStore + LangChain notebook](https://github.com/googleapis/langchain-google-firestore-python/blob/main/docs/vectorstores.ipynb)
+* [Chroma Multimodal](https://docs.trychroma.com/guides/multimodal)
