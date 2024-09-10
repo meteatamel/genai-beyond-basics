@@ -1,6 +1,7 @@
 import argparse
 import io
 import os
+import textwrap
 
 import google
 import matplotlib.pyplot as plt
@@ -11,26 +12,40 @@ from google.cloud.firestore_v1.vector import Vector
 from langchain_google_firestore import FirestoreVectorStore
 from langchain_google_vertexai import VertexAIEmbeddings
 from vertexai.vision_models import Image, MultiModalEmbeddingModel
+from vertexai.generative_models import (
+    GenerationConfig,
+    GenerativeModel,
+    Part
+)
 
 FIRESTORE_DATABASE = "image-database"
 FIRESTORE_COLLECTION = "ImageCollection"
-EMBEDDINGS_MODEL_NAME = "multimodalembedding"
-VERTEX_AI_LOCATION = "us-central1"
 
 
-def display_gcs_image(gcs_url):
-    """Displays an image from Google Cloud Storage."""
+def display_gcs_image(image_doc):
+    """Displays an image from Google Cloud Storage with description below."""
+    gcs_url = image_doc.metadata['metadata']['source']
     bucket_name, blob_name = parse_gcs_url(gcs_url)
     img_bytes = download_as_bytes(bucket_name, blob_name)
     img = PILImage.open(io.BytesIO(img_bytes))
-    plt.imshow(img)
-    plt.axis('off')
+
+    fig, ax = plt.subplots()
+    ax.imshow(img)
+    ax.axis('off')
+
+    fig_width_inches = fig.get_figwidth()
+    chars_per_line = int(fig_width_inches * 10)
+    wrapped_text = textwrap.fill(image_doc.page_content, chars_per_line)
+    ax.text(0.5, -0.1, wrapped_text, transform=ax.transAxes,
+            ha='center', va='top')
+
+    plt.tight_layout()
     plt.show()
 
 
 def parse_gcs_url(gcs_url):
     """Parses a GCS URL into bucket name and blob name."""
-    path = gcs_url[5:] # remove gs://
+    path = gcs_url[5:]  # remove gs://
     bucket_name, blob_name = path.split('/')
     return bucket_name, blob_name
 
@@ -45,11 +60,42 @@ def download_as_bytes(bucket_name, source_blob_name):
     return img_bytes
 
 
+def get_image_description(image_file_uri):
+    model = GenerativeModel(
+        "gemini-1.5-flash-001",
+        system_instruction=[
+            "You are a helpful image descriptor.",
+        ],
+        generation_config=GenerationConfig(
+            temperature=0.9,
+            top_p=1.0,
+            top_k=32,
+            candidate_count=1,
+            max_output_tokens=8192,
+        )
+    )
+
+    prompt = """
+    Task: Look through the image carefully and provide a detailed description of the image in 3-4 sentences
+    """
+
+    image_file_uri = "gs://genai-atamel-firestore-images/landmark2.png"
+    image_file = Part.from_uri(image_file_uri, mime_type="image/png")
+
+    contents = [
+        image_file,
+        prompt,
+    ]
+
+    response = model.generate_content(contents)
+    return response.text
+
+
 def add_image_embeddings_to_firestore(args, bucket_name):
     """Adds image embeddings to Firestore, deleting any existing document with the same source first."""
     firestore_client = firestore.Client(project=args.project_id, database=FIRESTORE_DATABASE)
     collection = firestore_client.collection(FIRESTORE_COLLECTION)
-    embeddings_llm = MultiModalEmbeddingModel.from_pretrained(EMBEDDINGS_MODEL_NAME)
+    embeddings_llm = MultiModalEmbeddingModel.from_pretrained("multimodalembedding")
 
     image_files = [f for f in os.listdir(args.folder_path) if os.path.isfile(os.path.join(args.folder_path, f))]
 
@@ -71,8 +117,11 @@ def add_image_embeddings_to_firestore(args, bucket_name):
         image = Image.load_from_file(os.path.join(args.folder_path, image_file))
         embeddings = embeddings_llm.get_embeddings(image=image)
 
+        # Optional but get a description for the image from an LLM and add as content
+        description = get_image_description(source_url)
+
         doc = {
-            "content": "",
+            "content": description,
             "embedding": Vector(embeddings.image_embedding),
             "metadata": {
                 "source": source_url
@@ -112,14 +161,14 @@ def retrieve_and_display_image(args):
         collection=FIRESTORE_COLLECTION,
         embedding_service=VertexAIEmbeddings(
             project=args.project_id,
-            location=VERTEX_AI_LOCATION,
-            model_name=EMBEDDINGS_MODEL_NAME
+            location="us-central1",
+            model_name="multimodalembedding"
         )
     )
 
     retriever = vector_store.as_retriever()
     docs = retriever.invoke(args.keyword)
-    display_gcs_image(docs[0].metadata['metadata']['source'])
+    display_gcs_image(docs[0])
 
 
 def parse_args():
