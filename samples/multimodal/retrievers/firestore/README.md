@@ -38,7 +38,7 @@ gcloud alpha firestore indexes composite create --project=your-project-id \
 First, add the images in [images](../images) folder to Cloud Storage and image embeddings to Firestore:
 
 ```shell
-python main.py --project_id=your-project-id --folder_path=../images
+python main.py --project_id=your-project-id --folder_path=../images --bucket_name=your_bucket_to_save_images
 ```
 
 ## Retrieve images

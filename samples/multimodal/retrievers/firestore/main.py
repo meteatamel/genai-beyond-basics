@@ -3,23 +3,24 @@ import io
 import os
 import textwrap
 
-import google
 import matplotlib.pyplot as plt
 from PIL import Image as PILImage
 from google.cloud import firestore
 from google.cloud import storage
-from google.cloud.firestore_v1.vector import Vector
-from langchain_google_firestore import FirestoreVectorStore
 from langchain_google_vertexai import VertexAIEmbeddings
-from vertexai.vision_models import Image, MultiModalEmbeddingModel
-from vertexai.generative_models import (
-    GenerationConfig,
-    GenerativeModel,
-    Part
-)
+
+from image_enabled_firestore_vectorstore import ImageEnabledFirestoreVectorStore
 
 FIRESTORE_DATABASE = "image-database"
 FIRESTORE_COLLECTION = "ImageCollection"
+
+
+def retrieve_and_display_image(vector_store, keyword):
+    """Retrieves and displays an image based on a keyword."""
+    print(f"Retrieving image for input: {keyword}")
+    retriever = vector_store.as_retriever()
+    docs = retriever.invoke(keyword)
+    display_gcs_image(docs[0])
 
 
 def display_gcs_image(image_doc):
@@ -60,103 +61,12 @@ def download_as_bytes(bucket_name, source_blob_name):
     return img_bytes
 
 
-def get_image_description(image_file_uri):
-    model = GenerativeModel(
-        "gemini-1.5-flash-001",
-        system_instruction=[
-            "You are a helpful image descriptor.",
-        ],
-        generation_config=GenerationConfig(
-            temperature=0.9,
-            top_p=1.0,
-            top_k=32,
-            candidate_count=1,
-            max_output_tokens=8192,
-        )
-    )
+def main():
+    args = parse_args()
 
-    prompt = """
-    Task: Look through the image carefully and provide a detailed description of the image in 3-4 sentences
-    """
-
-    image_file_uri = "gs://genai-atamel-firestore-images/landmark2.png"
-    image_file = Part.from_uri(image_file_uri, mime_type="image/png")
-
-    contents = [
-        image_file,
-        prompt,
-    ]
-
-    response = model.generate_content(contents)
-    return response.text
-
-
-def add_image_embeddings_to_firestore(args, bucket_name):
-    """Adds image embeddings to Firestore, deleting any existing document with the same source first."""
-    firestore_client = firestore.Client(project=args.project_id, database=FIRESTORE_DATABASE)
-    collection = firestore_client.collection(FIRESTORE_COLLECTION)
-    embeddings_llm = MultiModalEmbeddingModel.from_pretrained("multimodalembedding")
-
-    image_files = [f for f in os.listdir(args.folder_path) if os.path.isfile(os.path.join(args.folder_path, f))]
-
-    for image_file in image_files:
-        source_url = f"gs://{bucket_name}/{image_file}"
-        print(f"Processing {image_file}...")
-
-        # Query for existing documents with the same source
-        query = collection.where("metadata.source", "==", source_url)
-        docs = query.stream()
-
-        # Delete existing documents if found
-        for doc in docs:
-            print(f"Deleting existing document with source: {source_url}")
-            doc.reference.delete()
-
-        # Now add the new document
-        print(f"Uploading embeddings to firestore collection {collection.id}")
-        image = Image.load_from_file(os.path.join(args.folder_path, image_file))
-        embeddings = embeddings_llm.get_embeddings(image=image)
-
-        # Optional but get a description for the image from an LLM and add as content
-        description = get_image_description(source_url)
-
-        doc = {
-            "content": description,
-            "embedding": Vector(embeddings.image_embedding),
-            "metadata": {
-                "source": source_url
-            }
-        }
-        collection.add(doc)
-
-    print("Images embeddings uploaded successfully!")
-
-
-def add_images_to_gcs_storage(args):
-    """Uploads images to Google Cloud Storage."""
-    storage_client = storage.Client(project=args.project_id)
-    bucket_name = f"{args.project_id}-firestore-images"
-    try:
-        bucket = storage_client.get_bucket(bucket_name)
-    except google.cloud.exceptions.NotFound:
-        bucket = storage_client.create_bucket(bucket_name)
-
-    image_files = [f for f in os.listdir(args.folder_path) if os.path.isfile(os.path.join(args.folder_path, f))]
-
-    for image_file in image_files:
-        blob = bucket.blob(image_file)
-        print(f"Uploading {image_file} to bucket {bucket_name}")
-        blob.upload_from_filename(os.path.join(args.folder_path, image_file))
-
-    print("Images uploaded successfully!")
-    return bucket_name
-
-
-def retrieve_and_display_image(args):
-    """Retrieves and displays an image based on a keyword."""
-    print(f"Retrieving image for input: {args.keyword}")
-
-    vector_store = FirestoreVectorStore(
+    vector_store = ImageEnabledFirestoreVectorStore(
+        project_id=args.project_id,
+        bucket_name=f"{args.project_id}-firestore-images" if not args.bucket_name else args.bucket_name,
         client=firestore.Client(project=args.project_id, database=FIRESTORE_DATABASE),
         collection=FIRESTORE_COLLECTION,
         embedding_service=VertexAIEmbeddings(
@@ -166,9 +76,11 @@ def retrieve_and_display_image(args):
         )
     )
 
-    retriever = vector_store.as_retriever()
-    docs = retriever.invoke(args.keyword)
-    display_gcs_image(docs[0])
+    if args.folder_path:
+        image_uris = [os.path.join(args.folder_path, file) for file in os.listdir(args.folder_path)]
+        vector_store.add_images(image_uris=image_uris)
+    if args.keyword:
+        retrieve_and_display_image(vector_store, args.keyword)
 
 
 def parse_args():
@@ -176,20 +88,9 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Firestore and Cloud Storage image embedding save and retrieval')
     parser.add_argument('--project_id', type=str, required=True, help='Google Cloud project id')
     parser.add_argument('--folder_path', type=str, help='Path for the images folder')
+    parser.add_argument('--bucket_name', type=str, help='Optional bucket name to store images to')
     parser.add_argument('--keyword', type=str, help='Keyword for the retrieval')
     return parser.parse_args()
-
-
-def main():
-    """Main execution flow."""
-    args = parse_args()
-
-    if args.folder_path:
-        bucket_name = add_images_to_gcs_storage(args)
-        add_image_embeddings_to_firestore(args, bucket_name)
-
-    if args.keyword:
-        retrieve_and_display_image(args)
 
 
 if __name__ == '__main__':
