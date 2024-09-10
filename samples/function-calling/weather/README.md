@@ -318,8 +318,8 @@ def handle_function_call(function_call):
 We're ready to run the sample:
 
 ```shell
-python main.py --project_id your-project-id \
-  --prompt "What's the temperature, wind, humidity like in London, Paris, Tokyo?"
+python main.py --project_id genai-atamel \
+  --prompt "What's the temperature, wind, humidity like in London, Paris, Tokyo?" \
   generate_content
 ```
 
@@ -492,7 +492,7 @@ def chat_with_function_calls(prompt: str):
 Run the sample:
 
 ```shell
-python main.py --project_id your-project-id \
+python main.py --project_id genai-atamel \
   --prompt "What's the temperature, wind, humidity like in London, Paris, Tokyo?" \
   chat
 ```
