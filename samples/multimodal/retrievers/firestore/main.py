@@ -77,8 +77,8 @@ def main():
     )
 
     if args.folder_path:
-        image_uris = [os.path.join(args.folder_path, file) for file in os.listdir(args.folder_path)]
-        vector_store.add_images(image_uris=image_uris)
+        image_paths = [os.path.join(args.folder_path, file) for file in os.listdir(args.folder_path)]
+        vector_store.add_images(image_paths)
     if args.keyword:
         retrieve_and_display_image(vector_store, args.keyword)
 
