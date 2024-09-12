@@ -1,6 +1,6 @@
 # Multimodal image storage and retrieval with Firestore and Cloud Storage 
 
-In this sample, you'll learn how to store images to Cloud Storage and image embeddings to Firestore
+In this sample, you'll learn how to store image embeddings to Firestore
 and later retrieve images based on similarity search on a keyword.
 
 You can see the full sample in [main.py](main.py).
@@ -54,4 +54,5 @@ You should now see the picture of Colosseum.
 
 ## References
 
-* [Chroma Multimodal](https://docs.trychroma.com/guides/multimodal)
+* [Build LLM-powered applications using LangChain](https://cloud.google.com/firestore/docs/langchain)
+* [Firestore VectorStore + LangChain notebook](https://github.com/googleapis/langchain-google-firestore-python/blob/main/docs/vectorstores.ipynb)
