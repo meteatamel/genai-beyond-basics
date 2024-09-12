@@ -1,6 +1,10 @@
 from typing import Optional, List, Iterable, Any
 from google.cloud.firestore_v1.vector import Vector
 
+
+# TODO: Can we add OpenClipEmbeddings support?
+# https://github.com/langchain-ai/langchain/blob/master/cookbook/multi_modal_RAG_chroma.ipynb
+
 def add_images(
         self,
         image_paths: Iterable[str],
@@ -55,4 +59,3 @@ def add_images(
 
     db_batch.commit()
     return _ids
-

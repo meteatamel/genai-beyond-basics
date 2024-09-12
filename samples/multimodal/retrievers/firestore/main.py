@@ -35,9 +35,6 @@ def display_image(image_path):
 def main():
     args = parse_args()
 
-    # TODO: Can we use OpenClipEmbeddings?
-    # https://github.com/langchain-ai/langchain/blob/master/cookbook/multi_modal_RAG_chroma.ipynb
-
     vector_store = FirestoreVectorStore(
         client=firestore.Client(project=args.project_id, database=FIRESTORE_DATABASE),
         collection=FIRESTORE_COLLECTION,
