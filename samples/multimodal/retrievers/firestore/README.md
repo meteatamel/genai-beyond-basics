@@ -35,22 +35,39 @@ gcloud alpha firestore indexes composite create --project=your-project-id \
 
 ## Add images
 
-First, add the images in [images](../images) folder to Cloud Storage and image embeddings to Firestore:
+Let's add some images. 
+
+Add an image from a Cloud Storage url:
 
 ```shell
-python main.py --project_id=your-project-id --folder_path=../images --bucket_name=your_bucket_to_save_images
+python main.py --project_id=genai-atamel --image_paths gs://genai-atamel-firestore-images/landmark1.png
 ```
+
+Add another image from an HTTP url:
+
+```shell
+python main.py --project_id=genai-atamel --image_paths https://storage.googleapis.com/cloud-samples-data/vertex-ai/llm/prompts/landmark2.png
+```
+
+Another another image from a local folder:
+
+```shell
+python main.py --project_id=genai-atamel --image_paths ../images/landmark3.png
+```
+
+At this point, you should see the tree images and their embeddings saved to Firestore:
+
+![Firestore with images](../images/firestore_with_images.png)
 
 ## Retrieve images
 
-Now, retrieve an image with a keyword:
+Now, retrieve and display images with a keyword:
 
 ```shell
-python main.py --project_id=your-project-id --keyword="stadium"
+python main.py --project_id=genai-atamel --keyword="stadium"
+python main.py --project_id=genai-atamel --keyword="temple"
+python main.py --project_id=genai-atamel --keyword="statue"
 ```
-
-You should now see the picture of Colosseum.
-
 
 ## References
 

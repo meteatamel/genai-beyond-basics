@@ -4,10 +4,12 @@ import os
 
 from PIL import Image
 from google.cloud import firestore
+from langchain_google_firestore import FirestoreVectorStore
 from langchain_google_vertexai import VertexAIEmbeddings
 from langchain_google_vertexai._image_utils import ImageBytesLoader
-
-from image_enabled_firestore_vectorstore import ImageEnabledFirestoreVectorStore
+# Monkey patch FirestoreVectorStore with add_images
+from firestore_vectorstore_add_images import add_images
+FirestoreVectorStore.add_images = add_images
 
 FIRESTORE_DATABASE = "image-database"
 FIRESTORE_COLLECTION = "ImageCollection"
@@ -36,7 +38,7 @@ def main():
     # TODO: Can we use OpenClipEmbeddings?
     # https://github.com/langchain-ai/langchain/blob/master/cookbook/multi_modal_RAG_chroma.ipynb
 
-    vector_store = ImageEnabledFirestoreVectorStore(
+    vector_store = FirestoreVectorStore(
         client=firestore.Client(project=args.project_id, database=FIRESTORE_DATABASE),
         collection=FIRESTORE_COLLECTION,
         embedding_service=VertexAIEmbeddings(
