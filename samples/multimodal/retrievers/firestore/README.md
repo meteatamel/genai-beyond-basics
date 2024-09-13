@@ -1,7 +1,7 @@
-# Multimodal image storage and retrieval with Firestore and Cloud Storage 
+# Multimodal image storage and retrieval with Firestore Vector Store
 
 In this sample, you'll learn how to store image embeddings to Firestore
-and later retrieve images based on similarity search on a keyword.
+Vector Store and later retrieve images based on similarity search on a keyword.
 
 You can see the full sample in [main.py](main.py).
 
