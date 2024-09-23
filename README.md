@@ -24,8 +24,8 @@ A collection of GenAI samples.
 
 #### RAG
 
-* [RAG with a PDF using LangChain and Annoy Vector Store](./samples/grounding/rag-pdf-langchain-annoy)
-* [RAG with a PDF using LangChain and Firestore Vector Store](./samples/grounding/rag-pdf-langchain-firestore)
+* [RAG with a PDF using LangChain and Annoy Vector Store](./samples/grounding/rag-pdf-annoy)
+* [RAG with a PDF using LangChain and Firestore Vector Store](./samples/grounding/rag-pdf-firestore)
 * [LlamaIndex on Vertex AI with RAG API](./samples/grounding/llamaindex-vertexai/)
 
 #### Retrieval
