@@ -1,3 +1,4 @@
+import base64
 import inspect
 from typing import Optional, List, Iterable, Any
 from google.cloud.firestore_v1.vector import Vector
@@ -41,10 +42,11 @@ def add_images(
     if metadatas is None:
         metadatas = [{"image_uri": uri} for uri in uris]
 
+    image_encodings = [self._encode_image(uri) for uri in uris]
+    image_embeddings = self._images_embedding_helper(uris)
+
     _ids: List[str] = []
     db_batch = self.client.batch()
-
-    images_embeddings = self._images_embedding_helper(uris)
 
     for i, uri in enumerate(uris):
         doc_id = ids[i] if ids else None
@@ -52,8 +54,8 @@ def add_images(
         _ids.append(doc.id)
 
         data = {
-            self.content_field: "",
-            self.embedding_field: Vector(images_embeddings[i]),
+            self.content_field: image_encodings[i],
+            self.embedding_field: Vector(image_embeddings[i]),
             self.metadata_field: metadatas[i] if metadatas else None,
         }
 
@@ -61,6 +63,18 @@ def add_images(
 
     db_batch.commit()
     return _ids
+
+
+def _encode_image(self, uri: str) -> str:
+    """Get base64 string from a image URI.
+    Only works for local images for now.
+    For the rest, it returns empty string.
+    """
+    try:
+        with open(uri, "rb") as image_file:
+            return base64.b64encode(image_file.read()).decode("utf-8")
+    except FileNotFoundError:
+        return ""
 
 
 def _images_embedding_helper(self, image_uris: List[str]) -> List[List[float]]:
