@@ -9,6 +9,7 @@ from langchain_google_vertexai import VertexAIEmbeddings
 from langchain_google_vertexai._image_utils import ImageBytesLoader
 # Monkey patch FirestoreVectorStore with add_images
 from firestore_vectorstore_add_images import add_images
+
 FirestoreVectorStore.add_images = add_images
 
 FIRESTORE_DATABASE = "image-database"
@@ -47,7 +48,7 @@ def main():
 
     if args.image_paths:
         ids = [os.path.basename(image_path) for image_path in args.image_paths]
-        metadatas = [{"source": image_path} for image_path in args.image_paths]
+        metadatas = None  # [{"image_uri": image_path} for image_path in args.image_paths]
         vector_store.add_images(args.image_paths, ids=ids, metadatas=metadatas)
     if args.keyword:
         retrieve_and_display_image(vector_store, args.keyword)

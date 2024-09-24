@@ -2,12 +2,9 @@ from typing import Optional, List, Iterable, Any
 from google.cloud.firestore_v1.vector import Vector
 
 
-# TODO: Can we add OpenClipEmbeddings support?
-# https://github.com/langchain-ai/langchain/blob/master/cookbook/multi_modal_RAG_chroma.ipynb
-
 def add_images(
         self,
-        image_paths: Iterable[str],
+        uris: Iterable[str],
         metadatas: Optional[List[dict]] = None,
         ids: Optional[List[str]] = None,
         **kwargs: Any,
@@ -15,7 +12,7 @@ def add_images(
     """Adds image embeddings to Firestore vector store.
 
     Args:
-        image_paths: A list of image paths (local, Google Cloud Storage or web)
+        uris: A list of image uris (local, Google Cloud Storage or web)
         metadatas: The metadata to add to the vector store. Defaults to None.
         ids: The document ids to use for the new documents. If not provided, new
         document ids will be generated.
@@ -23,7 +20,7 @@ def add_images(
     Returns:
         List[str]: The list of document ids added to the vector store.
     """
-    images_len = len(list(image_paths))
+    images_len = len(list(uris))
     ids_len_match = not ids or len(ids) == images_len
     metadatas_len_match = not metadatas or len(metadatas) == images_len
 
@@ -40,11 +37,14 @@ def add_images(
             "The length of ids must be the same as the length of images or zero."
         )
 
+    if metadatas is None:
+        metadatas = [{"image_uri": uri} for uri in uris]
+
     _ids: List[str] = []
     db_batch = self.client.batch()
 
-    for i, image_path in enumerate(image_paths):
-        image_embs = self.embedding_service.embed_image(image_path)  # TODO: Set contextual_text too?
+    for i, uri in enumerate(uris):
+        image_embs = self.embedding_service.embed_image(uri)
         doc_id = ids[i] if ids else None
         doc = self.collection.document(doc_id)
         _ids.append(doc.id)
