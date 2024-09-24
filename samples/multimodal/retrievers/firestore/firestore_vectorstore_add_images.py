@@ -1,6 +1,9 @@
 import base64
 import inspect
+import re
+import requests
 from typing import Optional, List, Iterable, Any
+from google.cloud import storage
 from google.cloud.firestore_v1.vector import Vector
 from google.cloud.firestore_v1.base_query import BaseFilter
 from langchain_core.documents import Document
@@ -102,15 +105,23 @@ def similarity_search_image(
 
 
 def _encode_image(self, uri: str) -> str:
-    """Get base64 string from a image URI.
-    Only works for local images for now.
-    For the rest, it returns empty string.
-    """
-    try:
-        with open(uri, "rb") as image_file:
-            return base64.b64encode(image_file.read()).decode("utf-8")
-    except FileNotFoundError:
-        return ""
+    """Get base64 string from a image URI."""
+    gcs_uri = re.match("gs://(.*?)/(.*)", uri)
+    if gcs_uri:
+        bucket_name, object_name = gcs_uri.groups()
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bucket_name)
+        blob = bucket.blob(object_name)
+        return base64.b64encode(blob.download_as_bytes()).decode('utf-8')
+
+    web_uri = re.match(r"^(https?://).*", uri)
+    if web_uri:
+        response = requests.get(uri, stream=True)
+        response.raise_for_status()
+        return base64.b64encode(response.content).decode("utf-8")
+
+    with open(uri, "rb") as image_file:
+        return base64.b64encode(image_file.read()).decode("utf-8")
 
 
 def _images_embedding_helper(self, image_uris: List[str]) -> List[List[float]]:
