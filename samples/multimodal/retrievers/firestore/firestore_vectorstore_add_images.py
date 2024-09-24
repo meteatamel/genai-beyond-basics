@@ -2,6 +2,11 @@ import base64
 import inspect
 from typing import Optional, List, Iterable, Any
 from google.cloud.firestore_v1.vector import Vector
+from google.cloud.firestore_v1.base_query import BaseFilter
+from langchain_core.documents import Document
+from langchain_google_firestore.document_converter import convert_firestore_document
+
+DEFAULT_TOP_K = 4
 
 
 def add_images(
@@ -63,6 +68,37 @@ def add_images(
 
     db_batch.commit()
     return _ids
+
+
+def similarity_search_image(
+    self,
+    image_uri: str,
+    k: int = DEFAULT_TOP_K,
+    filters: Optional[BaseFilter] = None,
+    **kwargs: Any,
+) -> List[Document]:
+    """Run image similarity search with Firestore.
+
+    Raises:
+        FailedPrecondition: If the index is not created.
+
+    Args:
+        image_uri: The image uri.
+        k: The number of documents to return. Defaults to 4.
+        filters: The pre-filter to apply to the query. Defaults to None.
+
+    Returns:
+        List[Document]: List of documents most similar to the image.
+    """
+
+    embedding = self._images_embedding_helper([image_uri])[0]
+    docs = self._similarity_search(
+        embedding, k, filters=filters
+    )
+    return [
+        convert_firestore_document(doc, page_content_fields=[self.content_field])
+        for doc in docs
+    ]
 
 
 def _encode_image(self, uri: str) -> str:

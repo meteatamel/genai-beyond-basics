@@ -64,9 +64,15 @@ At this point, you should see the tree images and their embeddings saved to Fire
 Now, retrieve and display images with a keyword:
 
 ```shell
-python main.py --project_id=genai-atamel --keyword="stadium"
-python main.py --project_id=genai-atamel --keyword="temple"
-python main.py --project_id=genai-atamel --keyword="statue"
+python main.py --project_id=genai-atamel --search_by_keyword="stadium"
+python main.py --project_id=genai-atamel --search_by_keyword="temple"
+python main.py --project_id=genai-atamel --search_by_keyword="statue"
+```
+
+You can also retrieve by searching similar images:
+
+```shell
+python main.py --project_id=genai-atamel --search_by_image="../images/landmark4.png"
 ```
 
 ## References
