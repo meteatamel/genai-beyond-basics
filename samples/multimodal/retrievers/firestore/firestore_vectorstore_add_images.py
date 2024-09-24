@@ -1,3 +1,4 @@
+import inspect
 from typing import Optional, List, Iterable, Any
 from google.cloud.firestore_v1.vector import Vector
 
@@ -43,15 +44,16 @@ def add_images(
     _ids: List[str] = []
     db_batch = self.client.batch()
 
+    images_embeddings = self._images_embedding_helper(uris)
+
     for i, uri in enumerate(uris):
-        image_embs = self.embedding_service.embed_image(uri)
         doc_id = ids[i] if ids else None
         doc = self.collection.document(doc_id)
         _ids.append(doc.id)
 
         data = {
             self.content_field: "",
-            self.embedding_field: Vector(image_embs),
+            self.embedding_field: Vector(images_embeddings[i]),
             self.metadata_field: metadatas[i] if metadatas else None,
         }
 
@@ -59,3 +61,27 @@ def add_images(
 
     db_batch.commit()
     return _ids
+
+
+def _images_embedding_helper(self, image_uris: List[str]) -> List[List[float]]:
+
+    if not hasattr(self.embedding_service, "embed_image"):
+        raise ValueError(
+            "Please use an embedding model that supports embed_image method."
+        )
+
+    method = getattr(self.embedding_service, 'embed_image')
+    signature = inspect.signature(method)
+    parameters = list(signature.parameters.values())
+    first_param = parameters[0]
+
+    if first_param.annotation == List[str] or first_param.annotation == list:
+        embeddings = self.embedding_service.embed_image(image_uris)
+    elif first_param.annotation == str:
+        embeddings = [self.embedding_service.embed_image(uri) for uri in image_uris]
+    else:
+        raise Exception(
+            f"Please use an embedding model that supports embed_image method."
+        )
+
+    return embeddings
