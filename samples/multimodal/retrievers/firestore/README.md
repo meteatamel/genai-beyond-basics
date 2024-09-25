@@ -1,7 +1,7 @@
 # Multimodal image storage and retrieval with Firestore Vector Store
 
 In this sample, you'll learn how to store image embeddings to Firestore
-Vector Store and later retrieve images based on similarity search on a keyword.
+Vector Store and later retrieve images based on similarity search on a keyword or image.
 
 You can see the full sample in [main.py](main.py).
 
@@ -43,19 +43,19 @@ Add an image from a Cloud Storage url:
 python main.py --project_id=genai-atamel --image_paths gs://genai-atamel-firestore-images/landmark1.png
 ```
 
+Add other images from a local folder:
+
+```shell
+python main.py --project_id=genai-atamel --image_paths ../images/landmark2.png ../images/landmark3.png
+```
+
 Add another image from an HTTP url:
 
 ```shell
-python main.py --project_id=genai-atamel --image_paths https://storage.googleapis.com/cloud-samples-data/vertex-ai/llm/prompts/landmark2.png
+python main.py --project_id=genai-atamel --image_paths https://atamel.dev/img/mete-512.jpg
 ```
 
-Another another image from a local folder:
-
-```shell
-python main.py --project_id=genai-atamel --image_paths ../images/landmark3.png
-```
-
-At this point, you should see the tree images and their embeddings saved to Firestore:
+At this point, you should see images and their embeddings saved to Firestore:
 
 ![Firestore with images](../images/firestore_with_images.png)
 
@@ -67,6 +67,7 @@ Now, retrieve and display images with a keyword:
 python main.py --project_id=genai-atamel --search_by_keyword="stadium"
 python main.py --project_id=genai-atamel --search_by_keyword="temple"
 python main.py --project_id=genai-atamel --search_by_keyword="statue"
+python main.py --project_id=genai-atamel --search_by_keyword="man"
 ```
 
 You can also retrieve by searching similar images:
