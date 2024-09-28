@@ -7,14 +7,6 @@ from google.cloud import firestore
 from langchain_google_firestore import FirestoreVectorStore
 from langchain_google_vertexai import VertexAIEmbeddings
 from langchain_google_vertexai._image_utils import ImageBytesLoader
-# Monkey patch FirestoreVectorStore with add_images
-from firestore_vectorstore_add_images import add_images, similarity_search_image, _images_embedding_helper, \
-    _encode_image
-
-FirestoreVectorStore.add_images = add_images
-FirestoreVectorStore.similarity_search_image = similarity_search_image
-FirestoreVectorStore._encode_image = _encode_image
-FirestoreVectorStore._images_embedding_helper = _images_embedding_helper
 
 FIRESTORE_DATABASE = "image-database"
 FIRESTORE_COLLECTION = "ImageCollection"
