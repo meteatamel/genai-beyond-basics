@@ -31,10 +31,19 @@ gcloud auth application-default login
 
 ## LLM evaluations
 
-TODO: Talk about how to generate your own config
+You can run evaluations directly against LLMs.
 
-Run some evaluations against a couple of Vertex AI models. See
-[promptfooconfig1.yaml](./promptfooconfig1.yaml) for details.
+You can initialize an evaluation configuration with this command:
+
+```shell
+promptfoo init
+```
+
+Then, you can select what scenarios you want to evaluate (eg. Improve prompt and
+model performance, against Google Gemini Pro, )
+
+[promptfooconfig1.yaml](./promptfooconfig1.yaml) is a sample configuration for
+evaluating against a couple of Vertex AI models:
 
 Run:
 
@@ -42,7 +51,7 @@ Run:
 promptfoo eval -c promptfooconfig1.yaml
 ```
 
-You can view the results in the console:
+View the results in the console:
 
 ```shell
 ┌──────────────────────────────────────────────────────────────┬──────────────────────────────────────────────────────────────┬──────────────────────────────────────────────────────────────┐
@@ -63,23 +72,26 @@ You can view the results in the console:
 ==========================================================================================================================================================================================
 ```
 
-You can also see it in the browser:
+Also view it in the browser:
 
 ```shell
 promptfoo view
 ```
 
-![PromptFoo LLM evaluation](images/promptfoo_llm_evaluation.png)
+![Promptfoo LLM evaluation](images/promptfoo_llm_evaluation.png)
 
 ## LLM red teaming
 
-TODO: Talk about how to generate your own config
+You can also use read team testing to find vulnerabilities in AI systems by simulating
+malicious inputs against LLMs or your endpoints using LLMs.
 
-You can also use read team to find vulnerabilities in AI systems by simulating
-malicious inputs.
+Similar to evaluations, you can run `promptfoo init` to generate a
+configuration.
 
-Generate test cases from the configuration in
-[promptfooconfig2.yaml](./promptfooconfig2.yaml):
+[promptfooconfig2.yaml](./promptfooconfig2.yaml) is a sample configuration for
+read team testing against a Vertex AI model:
+
+Generate test cases from this configuration:
 
 ```shell
 promptfoo redteam generate -c promptfooconfig2.yaml
@@ -127,7 +139,9 @@ Run the test cases:
 promptfoo redteam eval
 ```
 
+View your results:
 
+![Promptfoo LLM redteam](images/promptfoo_llm_redteam.png)
 
 ## References
 
