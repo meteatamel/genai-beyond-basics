@@ -31,6 +31,8 @@ gcloud auth application-default login
 
 ## LLM evaluations
 
+TODO: Talk about how to generate your own config
+
 Run some evaluations against a couple of Vertex AI models. See
 [promptfooconfig1.yaml](./promptfooconfig1.yaml) for details.
 
@@ -71,8 +73,65 @@ promptfoo view
 
 ## LLM red teaming
 
-TODO
+TODO: Talk about how to generate your own config
+
+You can also use read team to find vulnerabilities in AI systems by simulating
+malicious inputs.
+
+Generate test cases from the configuration in
+[promptfooconfig2.yaml](./promptfooconfig2.yaml):
+
+```shell
+promptfoo redteam generate -c promptfooconfig2.yaml
+```
+
+This generates a [readteam.yaml](./redteam.yaml) file with test cases:
+
+```shell
+Test Generation Summary:
+• Total tests: 18
+• Plugin tests: 6
+• Plugins: 6
+• Strategies: 2
+• Max concurrency: 1
+
+Generating | ████████████████████████████████████████ | 100% | 8/8 | politics
+Generating additional tests using 2 strategies:
+Test Generation Report:
+┌─────┬──────────┬────────────────────────────────────────┬────────────┬────────────┬──────────────┐
+│ #   │ Type     │ ID                                     │ Requested  │ Generated  │ Status       │
+├─────┼──────────┼────────────────────────────────────────┼────────────┼────────────┼──────────────┤
+│ 1   │ Plugin   │ contracts                              │ 1          │ 1          │ Success      │
+├─────┼──────────┼────────────────────────────────────────┼────────────┼────────────┼──────────────┤
+│ 2   │ Plugin   │ hallucination                          │ 1          │ 1          │ Success      │
+├─────┼──────────┼────────────────────────────────────────┼────────────┼────────────┼──────────────┤
+│ 3   │ Plugin   │ harmful:violent-crime                  │ 1          │ 1          │ Success      │
+├─────┼──────────┼────────────────────────────────────────┼────────────┼────────────┼──────────────┤
+│ 4   │ Plugin   │ hijacking                              │ 1          │ 1          │ Success      │
+├─────┼──────────┼────────────────────────────────────────┼────────────┼────────────┼──────────────┤
+│ 5   │ Plugin   │ pii:direct                             │ 1          │ 1          │ Success      │
+├─────┼──────────┼────────────────────────────────────────┼────────────┼────────────┼──────────────┤
+│ 6   │ Plugin   │ politics                               │ 1          │ 1          │ Success      │
+├─────┼──────────┼────────────────────────────────────────┼────────────┼────────────┼──────────────┤
+│ 7   │ Strategy │ jailbreak                              │ 6          │ 6          │ Success      │
+├─────┼──────────┼────────────────────────────────────────┼────────────┼────────────┼──────────────┤
+│ 8   │ Strategy │ prompt-injection                       │ 6          │ 6          │ Success      │
+└─────┴──────────┴────────────────────────────────────────┴────────────┴────────────┴──────────────┘
+==========================================================================================================================================================================================
+Wrote 18 new test cases to redteam.yaml
+```
+
+Run the test cases:
+
+```shell
+promptfoo redteam eval
+```
+
+
 
 ## References
 
 * [Google Vertex provider on PromptFoo](https://www.promptfoo.dev/docs/providers/vertex/)
+* [Getting started](https://www.promptfoo.dev/docs/getting-started)
+* [LLM red teaming](https://www.promptfoo.dev/docs/red-team)
+* [Promptfoo examples](https://github.com/promptfoo/promptfoo/tree/main/examples)
