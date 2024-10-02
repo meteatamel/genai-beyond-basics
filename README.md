@@ -45,3 +45,4 @@ A collection of GenAI samples.
 ### Evaluation
 
 * [DeepEval and Vertex AI](./samples/evaluation/deepeval)
+* [Promptfoo and Vertex AI](./samples/evaluation/promptfoo)
