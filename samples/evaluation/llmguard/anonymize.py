@@ -4,6 +4,7 @@ from llm_guard.input_scanners import Anonymize
 from llm_guard.output_scanners import Deanonymize
 from vertexai.generative_models import GenerativeModel
 
+
 # References:
 # https://llm-guard.com/input_scanners/anonymize/
 # https://llm-guard.com/output_scanners/deanonymize/
