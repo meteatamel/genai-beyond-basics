@@ -26,8 +26,12 @@ def ban_code_input_output():
     prompt = "System.out.println('Hello World')"
     scanner = input_scanners.BanCode()
     prompt, is_valid, risk_score = scanner.scan(prompt)
-
     print_results(is_valid, prompt, risk_score)
+
+    model_output = "System.out.println('Hello World')"
+    scanner = output_scanners.BanCode()
+    model_output, is_valid, risk_score = scanner.scan("", model_output)
+    print_results(is_valid, model_output, risk_score)
 
 
 def ban_competitors_input_output():

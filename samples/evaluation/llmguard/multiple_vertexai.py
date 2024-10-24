@@ -1,18 +1,14 @@
 from llm_guard import scan_output, scan_prompt
 from llm_guard.vault import Vault
-from llm_guard.input_scanners import Anonymize
-from llm_guard.output_scanners import Deanonymize
+from llm_guard.input_scanners import Anonymize, PromptInjection, TokenLimit, Toxicity
+from llm_guard.output_scanners import Deanonymize, NoRefusal, Relevance, Sensitive
 from vertexai.generative_models import GenerativeModel
 
 
-# References:
-# https://llm-guard.com/input_scanners/anonymize/
-# https://llm-guard.com/output_scanners/deanonymize/
-
 def main():
     vault = Vault()
-    input_scanners = [Anonymize(vault)]
-    output_scanners = [Deanonymize(vault)]
+    input_scanners = [Anonymize(vault), Toxicity(), TokenLimit(), PromptInjection()]
+    output_scanners = [Deanonymize(vault), NoRefusal(), Relevance(), Sensitive()]
 
     prompt = ("Make an SQL insert statement to add a new user to our database. Name is John Doe. Email is "
               "test@test.com but also possible to contact him with hello@test.com email. Phone number is 555-123-4567 "
