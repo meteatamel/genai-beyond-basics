@@ -1,7 +1,5 @@
 # LLM Guard and Vertex AI
 
-![LLM Guard and Vertex AI](images/llmguard_vertexai.png)
-
 [LLM Guard](https://llm-guard.com/) is a security toolkit for LLMs. 
 
 ![LLM Guard](images/llm_guard.png)
