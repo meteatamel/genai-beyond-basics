@@ -4,7 +4,7 @@
 
 [LLM Guard](https://llm-guard.com/) is a security toolkit for LLMs. 
 
-![LLM Guard](images/llmguard.png)
+![LLM Guard](images/llm_guard.png)
 
 It has input and output controls offering sanitization, harmful language detection, data leakage preventaion, guard 
 againt prompt injections and more to make LLMs interactions safe and secure.
