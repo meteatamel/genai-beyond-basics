@@ -1,11 +1,10 @@
-# Reference: https://llm-guard.com/input_scanners/anonymize/
+import sys
 
 from llm_guard import input_scanners, output_scanners
+from llm_guard.vault import Vault
 
 
 def anonymize_input_deanonymize_output():
-    from llm_guard.vault import Vault
-
     prompt = ("Make an SQL insert statement to add a new user to our database. Name is John Doe. Email is "
               "test@test.com but also possible to contact him with hello@test.com email. Phone number is 555-123-4567 "
               "and the IP address is 192.168.1.100. And credit card number is 4567-8901-2345-6789.")
@@ -22,32 +21,36 @@ def anonymize_input_deanonymize_output():
     print_results(is_valid, model_output, risk_score, sanitized_model_output)
 
 
-def ban_code_input_output():
+def ban_code_input():
     prompt = "System.out.println('Hello World')"
     scanner = input_scanners.BanCode()
     prompt, is_valid, risk_score = scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score)
 
+
+def ban_code_output():
     model_output = "System.out.println('Hello World')"
     scanner = output_scanners.BanCode()
     model_output, is_valid, risk_score = scanner.scan("", model_output)
     print_results(is_valid, model_output, risk_score)
 
 
-def ban_competitors_input_output():
+def ban_competitors_input():
     prompt = "What are some serverless products in AWS?"
     competitor_list = ["AWS", "Azure"]
     input_scanner = input_scanners.BanCompetitors(competitors=competitor_list, redact=False, threshold=0.5)
     prompt, is_valid, risk_score = input_scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score)
 
+
+def ban_competitors_output():
     model_output = "Some serverless products in AWS are..."
     scanner = output_scanners.BanCompetitors(competitors=competitor_list, redact=False, threshold=0.5)
     model_output, is_valid, risk_score = scanner.scan(prompt, model_output)
     print_results(is_valid, model_output, risk_score)
 
 
-def ban_substrings_input_output():
+def ban_substrings_input():
     from llm_guard.input_scanners.ban_substrings import MatchType
 
     prompt = "JP Morgan has an office in London"
@@ -62,7 +65,12 @@ def ban_substrings_input_output():
     sanitized_prompt, is_valid, risk_score = scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score, sanitized_prompt)
 
+
+def ban_substrings_output():
+    from llm_guard.input_scanners.ban_substrings import MatchType
+
     model_output = "JP Morgan has an office in London"
+    banned_strings = ["JP Morgan", "JP Morgan Chase", "JPMorgan Chase"]
     scanner = output_scanners.BanSubstrings(
         substrings=banned_strings,
         match_type=MatchType.WORD,
@@ -70,19 +78,21 @@ def ban_substrings_input_output():
         redact=True,
         contains_all=False,
     )
-    sanitized_output, is_valid, risk_score = scanner.scan(prompt, model_output)
-    print_results(is_valid, model_output, risk_score, sanitized_prompt)
+    sanitized_output, is_valid, risk_score = scanner.scan("", model_output)
+    print_results(is_valid, model_output, risk_score, sanitized_output)
 
 
-def ban_topics_input_output():
+def ban_topics_input():
     prompt = "Keir Starmer is the prime minister of the UK"
     scanner = input_scanners.BanTopics(topics=["politics"], threshold=0.5)
     prompt, is_valid, risk_score = scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score)
 
+
+def ban_topics_output():
     model_output = "Keir Starmer is the prime minister of the UK"
     scanner = output_scanners.BanTopics(topics=["politics"], threshold=0.5)
-    model_output, is_valid, risk_score = scanner.scan(prompt, model_output)
+    model_output, is_valid, risk_score = scanner.scan("", model_output)
     print_results(is_valid, model_output, risk_score)
 
 
@@ -95,12 +105,14 @@ def bias_output():
     print_results(is_valid, model_output, risk_score)
 
 
-def code_input_output():
+def code_input():
     prompt = "print('Hello World')"
     scanner = input_scanners.Code(languages=["Python"], is_blocked=True)
     prompt, is_valid, risk_score = scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score)
 
+
+def code_output():
     model_output = "print('Hello World')"
     scanner = output_scanners.Code(languages=["Python"], is_blocked=True)
     model_output, is_valid, risk_score = scanner.scan("", model_output)
@@ -114,13 +126,17 @@ def json_output():
     print_results(is_valid, model_output, risk_score, sanitized_output)
 
 
-def gibberish_input_output():
+def gibberish_input():
     from llm_guard.input_scanners.gibberish import MatchType
 
     prompt = "abcasd asdkhasd asdasd"
     scanner = input_scanners.Gibberish(match_type=MatchType.FULL)
     prompt, is_valid, risk_score = scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score)
+
+
+def gibberish_output():
+    from llm_guard.input_scanners.gibberish import MatchType
 
     model_output = "abcasd asdkhasd asdasd"
     scanner = output_scanners.Gibberish(match_type=MatchType.FULL)
@@ -135,13 +151,17 @@ def invisible_text_input():
     print_results(is_valid, prompt, risk_score)
 
 
-def language_input_output():
+def language_input():
     from llm_guard.input_scanners.gibberish import MatchType
 
     prompt = "This is some text in English"
     scanner = input_scanners.Language(valid_languages=["fr"], match_type=MatchType.FULL)
     prompt, is_valid, risk_score = scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score)
+
+
+def language_output():
+    from llm_guard.input_scanners.gibberish import MatchType
 
     model_output = "This is some text in English"
     scanner = output_scanners.Language(valid_languages=["fr"], match_type=MatchType.FULL)
@@ -173,7 +193,7 @@ def prompt_injection_input():
     print_results(is_valid, prompt, risk_score)
 
 
-def regex_input_output():
+def regex_input():
     from llm_guard.input_scanners.regex import MatchType
 
     prompt = "Bearer blah blah"
@@ -186,6 +206,10 @@ def regex_input_output():
     sanitized_prompt, is_valid, risk_score = scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score, sanitized_prompt)
 
+
+def regex_output():
+    from llm_guard.input_scanners.regex import MatchType
+
     model_output = "Bearer blah blah"
     scanner = input_scanners.Regex(
         patterns=[r"Bearer [A-Za-z0-9-._~+/]+"],  # List of regex patterns
@@ -196,6 +220,7 @@ def regex_input_output():
     sanitized_output, is_valid, risk_score = scanner.scan(model_output)
     print_results(is_valid, model_output, risk_score, sanitized_output)
 
+
 # TODO: Relevance
 
 
@@ -205,15 +230,18 @@ def secrets_input():
     sanitized_prompt, is_valid, risk_score = scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score, sanitized_prompt)
 
+
 # TODO: Sensitive
 
 
-def sentiment_input_output():
+def sentiment_input():
     prompt = "Life sucks!"
     scanner = input_scanners.Sentiment(threshold=0)
     prompt, is_valid, risk_score = scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score)
 
+
+def sentiment_output():
     model_output = "Life sucks!"
     scanner = output_scanners.Sentiment(threshold=0)
     model_output, is_valid, risk_score = scanner.scan("", model_output)
@@ -227,7 +255,7 @@ def token_limit_input():
     print_results(is_valid, prompt, risk_score)
 
 
-def toxicity_input_output():
+def toxicity_input():
     from llm_guard.input_scanners.toxicity import MatchType
 
     prompt = "such a stupid person!"
@@ -235,10 +263,15 @@ def toxicity_input_output():
     prompt, is_valid, risk_score = scanner.scan(prompt)
     print_results(is_valid, prompt, risk_score)
 
+
+def toxicity_output():
+    from llm_guard.input_scanners.toxicity import MatchType
+
     model_output = "such a stupid person!"
     scanner = output_scanners.Toxicity(threshold=0.5, match_type=MatchType.SENTENCE)
     model_output, is_valid, risk_score = scanner.scan("", model_output)
     print_results(is_valid, model_output, risk_score)
+
 
 # TODO: URL Reachability
 
@@ -252,21 +285,4 @@ def print_results(is_valid, input_output, risk_score, sanitized_input_output=Non
 
 
 if __name__ == '__main__':
-    anonymize_input_deanonymize_output()
-    # ban_code_input_output()
-    # ban_competitors_input_output()
-    # ban_substrings_input_output()
-    # ban_topics_input_output()
-    # bias_output()
-    # code_input_output()
-    # json_output()
-    # gibberish_input_output()
-    # invisible_text_input()
-    # language_input_output()
-    # language_same_input_output()
-    # prompt_injection_input()
-    # regex_input_output()
-    # secrets_input()
-    # sentiment_input_output()
-    # token_limit_input()
-    # toxicity_input_output()
+    globals()[sys.argv[1]]()

@@ -46,3 +46,4 @@ A collection of GenAI samples.
 
 * [DeepEval and Vertex AI](./samples/evaluation/deepeval)
 * [Promptfoo and Vertex AI](./samples/evaluation/promptfoo)
+* [LLM Guard and Vertex AI](./samples/evaluation/llmguard)

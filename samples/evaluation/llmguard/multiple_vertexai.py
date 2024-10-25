@@ -28,13 +28,13 @@ def main():
     response = model.generate_content(sanitized_prompt)
     print(f"Response text: {response.text}")
 
-    sanitized_response_text, results_valid, results_score = scan_output(
+    sanitized_output, results_valid, results_score = scan_output(
         output_scanners, sanitized_prompt, response.text
     )
     # if any(results_valid.values()) is False:
     #     print(f"Output {response.text} is not valid, scores: {results_score}")
     #     exit(1)
-    print(f"Processed response text: {sanitized_response_text}")
+    print(f"Sanitized output: {sanitized_output}")
 
 
 if __name__ == '__main__':
