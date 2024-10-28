@@ -1,6 +1,6 @@
 # GenAI beyond basics
 
-A collection of GenAI samples.
+A collection of Generate AI related samples.
 
 ## Samples
 
