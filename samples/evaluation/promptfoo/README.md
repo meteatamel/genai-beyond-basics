@@ -2,48 +2,58 @@
 
 ![Promptfoo and Vertex AI](images/promptfoo_vertexai.png)
 
-[Promptfoo](https://www.promptfoo.dev/) is an open-source LLM testing evaluation
-framework. It allows you to build reliable prompts, RAGs, and agents by
-evaluating them and run security checks (red teaming) against your LLM apps.
+[Promptfoo](https://www.promptfoo.dev/) is an open-source tool for evaluating and red-teaming (security) LLM apps. It's 
+similar to DeepEval but with added focus on security.
 
 In this tutorial, you'll learn how to use PromptFoo with Vertex AI.
 
-## Set up Promptfoo and Vertex AI
+## Setup
 
-[Install PromptFoo](https://www.promptfoo.dev/docs/installation/) in your
-environment and verify that it's installed:
+[Install PromptFoo](https://www.promptfoo.dev/docs/installation/) in your environment. For example, on Mac OS, you can
+use brew:
+
+```shell
+brew install promptfoo
+````
+
+Verify that it's installed:
 
 ```shell
 promptfoo --version
 ```
 
-Set the Google project id in `gcloud`:
+Make sure your `gcloud` is setup with your project:
 
 ```shell
 gcloud config set core/project your-project-id
 ```
 
-Log in:
+And you're logged in:
 
 ```shell
 gcloud auth application-default login
 ```
 
-## LLM evaluations
-
-You can run evaluations directly against LLMs.
-
-You can initialize an evaluation configuration with this command:
+You can start using Promptfoo in different scenarios with its interactive guide:
 
 ```shell
 promptfoo init
+
+? What would you like to do?
+  Not sure yet
+❯ Improve prompt and model performance
+  Improve RAG performance
+  Improve agent/chain of thought performance
+  Run a red team evaluation
 ```
 
-Then, you can select what scenarios you want to evaluate (eg. Improve prompt and
-model performance, against Google Gemini Pro, )
+## Evaluation
+
+In `Improve prompt and model performance`, you can use Promptfoo to evaluate against different LLMs from OpenAI, 
+Anthropic, Gemini, or simply an HTTP endpoint.
 
 [promptfooconfig1.yaml](./promptfooconfig1.yaml) is a sample configuration for
-evaluating against a couple of Vertex AI models:
+evaluating against a couple of Vertex AI models.
 
 Run:
 
@@ -80,16 +90,12 @@ promptfoo view
 
 ![Promptfoo LLM evaluation](images/promptfoo_llm_evaluation.png)
 
-## LLM red teaming
+## Red-teaming (security)
 
-You can also use read team testing to find vulnerabilities in AI systems by simulating
-malicious inputs against LLMs or your endpoints using LLMs.
+In `Run a read team evaluation`, you can use Promptfoo to do read-team security testing to find vulnerabilities 
+by simulating malicious inputs against LLMs or your endpoints using LLMs.
 
-Similar to evaluations, you can run `promptfoo init` to generate a
-configuration.
-
-[promptfooconfig2.yaml](./promptfooconfig2.yaml) is a sample configuration for
-read team testing against a Vertex AI model:
+[promptfooconfig2.yaml](./promptfooconfig2.yaml) is a sample configuration for read team testing against a Vertex AI model.
 
 Generate test cases from this configuration:
 
@@ -97,7 +103,7 @@ Generate test cases from this configuration:
 promptfoo redteam generate -c promptfooconfig2.yaml
 ```
 
-This generates a [readteam.yaml](./redteam.yaml) file with test cases:
+This generates a [readteam.yaml](./redteam.yaml) file with the actual test cases:
 
 ```shell
 Test Generation Summary:
