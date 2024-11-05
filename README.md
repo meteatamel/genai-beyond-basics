@@ -41,6 +41,7 @@ A collection of Generate AI related samples.
 
 * [Control generated output](./samples/controlled-generation)
 * [Context caching](./samples/context-caching)
+* [Batch generation of content](./samples/batch-generation)
 
 ### Evaluation
 
