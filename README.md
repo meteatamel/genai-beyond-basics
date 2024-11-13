@@ -48,3 +48,7 @@ A collection of Generate AI related samples.
 * [DeepEval and Vertex AI](./samples/evaluation/deepeval)
 * [Promptfoo and Vertex AI](./samples/evaluation/promptfoo)
 * [LLM Guard and Vertex AI](./samples/evaluation/llmguard)
+
+### Tracing
+
+* [Tracing with Langtrace and Gemini](./samples/tracing/langtrace)
