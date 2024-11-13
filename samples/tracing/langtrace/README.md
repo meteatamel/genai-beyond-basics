@@ -47,7 +47,7 @@ Let's look at how to trace LLM calls with Langtrace and Gemini running on Google
 First, get an [API key for Gemini](https://aistudio.google.com/app/apikey) and set it to an environment variable:
 
 ```shell
-export GEMINI_API_KEY=AIzaSyBgHpyojMr_AWN7w7zt3BcYjmZvn2i5CBQ
+export GEMINI_API_KEY=your-gemini-api-key
 ```
 
 Install Google AI Python SDK for the Gemini:
