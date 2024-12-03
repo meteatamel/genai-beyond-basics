@@ -27,6 +27,7 @@ A collection of Generate AI related samples.
 * [RAG with a PDF using LangChain and Annoy Vector Store](./samples/grounding/rag-pdf-annoy)
 * [RAG with a PDF using LangChain and Firestore Vector Store](./samples/grounding/rag-pdf-firestore)
 * [LlamaIndex on Vertex AI with RAG API](./samples/grounding/llamaindex-vertexai-ragapi)
+* [Building a RAG pipeline with LlamaIndex and Vertex AI models](./samples/grounding/llamaindex-vertexai)
 
 #### Retrieval
 

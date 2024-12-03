@@ -1,0 +1,4 @@
+google-cloud-aiplatform==1.73.0
+llama-index==0.12.2
+llama-index-llms-vertex==0.4.1
+llama-index-embeddings-vertex==0.3.1
