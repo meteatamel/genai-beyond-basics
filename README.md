@@ -40,7 +40,8 @@ A collection of Generate AI related samples.
 
 ### Input and output
 
-* [Control generated output](./samples/controlled-generation)
+* [Response type and schema (Vertex AI)](./samples/controlled-generation/vertexai)
+* [Response schema and pydantic (LangChain)](./samples/controlled-generation/langchain)
 * [Context caching](./samples/context-caching)
 * [Batch generation of content](./samples/batch-generation)
 
