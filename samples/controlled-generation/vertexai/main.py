@@ -1,11 +1,5 @@
-import argparse
-import logging
-
-import vertexai
+import sys
 from vertexai.generative_models import GenerativeModel, GenerationConfig
-
-logger = logging.getLogger(__name__)
-logging.basicConfig(level=logging.INFO, format='%(message)s')
 
 
 def without_controlled_generation1():
@@ -13,7 +7,7 @@ def without_controlled_generation1():
 
     prompt = "List a few popular cookie recipes"
     response = model.generate_content(prompt)
-    log_prompt_response(prompt, response)
+    print_prompt_response(prompt, response)
 
 
 def without_controlled_generation2():
@@ -25,7 +19,7 @@ def without_controlled_generation2():
         Return: list[Recipe]
       """
     response = model.generate_content(prompt)
-    log_prompt_response(prompt, response)
+    print_prompt_response(prompt, response)
 
 
 def with_response_mime_type():
@@ -40,7 +34,7 @@ def with_response_mime_type():
         Return: list[Recipe]
       """
     response = model.generate_content(prompt)
-    log_prompt_response(prompt, response)
+    print_prompt_response(prompt, response)
 
 
 def with_response_schema1():
@@ -63,7 +57,7 @@ def with_response_schema1():
 
     prompt = "List a few popular cookie recipes"
     response = model.generate_content(prompt)
-    log_prompt_response(prompt, response)
+    print_prompt_response(prompt, response)
 
 
 def with_response_schema2():
@@ -93,44 +87,13 @@ def with_response_schema2():
       - "Did not like the tiramisu." Rating: 0
     """
     response = model.generate_content(prompt)
-    log_prompt_response(prompt, response)
+    print_prompt_response(prompt, response)
 
 
-def log_prompt_response(prompt, response):
-    logger.info(f"Prompt: {prompt}")
-    logger.debug(f"Response: {response}")
-    logger.info(f"Response: {response.candidates[0].content.parts[0].text}")
+def print_prompt_response(prompt, response):
+    print(f"Prompt: {prompt}")
+    print(f"Response: {response.candidates[0].content.parts[0].text}")
 
 
-def get_args_parser():
-    parser = argparse.ArgumentParser(description="Controlled generation")
-
-    parser.add_argument('--project_id', type=str, required=True, help='Google Cloud project id (required)')
-
-    subparsers = parser.add_subparsers(dest="command", required=True)
-    subparsers.add_parser("without_controlled_generation1", help="Generate without controlled generation")
-    subparsers.add_parser("without_controlled_generation2", help="Generate without controlled generation")
-    subparsers.add_parser("with_response_mime_type", help="Generate with JSON response mime type")
-    subparsers.add_parser("with_response_schema1", help="Generate with JSON response schema")
-    subparsers.add_parser("with_response_schema2", help="Generate with JSON response schema")
-
-    return parser.parse_args()
-
-
-def run_command(args):
-    try:
-        func = globals()[f"{args.command}"]
-        func()
-    except KeyError:
-        print(f"Error: Unknown command '{args.command}'")
-        exit(1)
-
-
-def main():
-    args = get_args_parser()
-    vertexai.init(project=args.project_id, location="us-central1")
-    run_command(args)
-
-
-if __name__ == '__main__':
-    main()
+if __name__ == "__main__":
+    globals()[sys.argv[1]]()

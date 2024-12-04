@@ -1,4 +1,4 @@
-# Control generated output
+# Response type and schema (Vertex AI)
 
 In this sample, you'll learn how to use controlled generation of Vertex AI
 to control the response format of the LLM.
@@ -18,7 +18,7 @@ response = model.generate_content(prompt)
 Run it:
 
 ```shell
-python main.py --project_id your-project-id without_controlled_generation1
+python main.py without_controlled_generation1
 ```
 
 You get a response in free text:
@@ -44,6 +44,12 @@ prompt = """
     Return: list[Recipe]
   """
 response = model.generate_content(prompt)
+```
+
+Run it:
+
+```shell
+python main.py without_controlled_generation2
 ```
 
 You get the following response:
@@ -88,7 +94,7 @@ response = model.generate_content(prompt)
 Run it:
 
 ```shell
-python main.py --project_id your-project-id with_response_mime_type
+python main.py with_response_mime_type
 ```
 
 Now you should get proper JSON back:
@@ -147,7 +153,7 @@ Note that the prompt does not talk about a format at all.
 Run it:
 
 ```shell
-python main.py --project_id your-project-id with_response_schema1
+python main.py with_response_schema1
 ```
 
 The response respects the schema:
@@ -212,7 +218,7 @@ response = model.generate_content(prompt)
 Run it:
 
 ```shell
-python main.py --project_id your-project-id with_response_schema2
+python main.py with_response_schema2
 ```
 
 You'll get back the extracted information in JSON:
