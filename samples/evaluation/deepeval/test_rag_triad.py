@@ -19,10 +19,6 @@ def get_project_id():
 
 
 def test_rag_triad():
-    eval_model = GoogleVertexAI(model_name="gemini-1.5-pro-002",
-                           project=get_project_id(),
-                           location="us-central1")
-
     test_case = LLMTestCase(
         input="I'm on an F-1 visa, how long can I stay in the US after graduation?",
         actual_output="You can stay up to 30 days after completing your degree.",
@@ -32,6 +28,10 @@ def test_rag_triad():
         ]
     )
 
+
+    eval_model = GoogleVertexAI(model_name="gemini-1.5-pro-002",
+                           project=get_project_id(),
+                           location="us-central1")
 
     answer_relevancy = AnswerRelevancyMetric(model=eval_model, threshold=0.8)
     faithfulness = FaithfulnessMetric(model=eval_model, threshold=1.0)
