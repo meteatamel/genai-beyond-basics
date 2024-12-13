@@ -18,7 +18,7 @@ answer concise.
 PDF_PATH = "cymbal-starlight-2024.pdf"
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 100
-EMBEDDING_MODEL_NAME = "textembedding-gecko@003"
+EMBEDDING_MODEL_NAME = "text-embedding-005" # "textembedding-gecko@003"
 
 def setup_rag_chain(chat_model_name):
     print(f"Setting up RAG chain")
