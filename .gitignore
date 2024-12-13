@@ -5,6 +5,7 @@ chroma_db
 .venv
 
 # DeepEval
+.deepeval*
 .deepeval-cache.json
 
 # IntelliJ

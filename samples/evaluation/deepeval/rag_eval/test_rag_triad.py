@@ -1,21 +1,15 @@
-import os
+import sys
 
+from deepeval import assert_test, evaluate
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import AnswerRelevancyMetric, FaithfulnessMetric, ContextualRelevancyMetric
-from deepeval import assert_test, evaluate
 
-from vertex_ai.google_vertex_ai import GoogleVertexAI
-
+sys.path.append("../../../../")
+from samples.evaluation.deepeval.vertex_ai.google_vertex_ai import GoogleVertexAI
+from utils import get_project_id
 
 # Using the RAG Triad for RAG evaluation:
 # https://docs.confident-ai.com/docs/guides-rag-triad
-
-
-def get_project_id():
-    project_id = os.environ.get("GOOGLE_PROJECT_ID")
-    if not project_id:
-        raise ValueError("GOOGLE_PROJECT_ID environment variable not set")
-    return project_id
 
 
 def test_rag_triad():
@@ -37,15 +31,21 @@ def test_rag_triad():
     faithfulness = FaithfulnessMetric(model=eval_model, threshold=1.0)
     contextual_relevancy = ContextualRelevancyMetric(model=eval_model, threshold=0.8)
 
+    metrics = [
+        answer_relevancy,
+        faithfulness,
+        contextual_relevancy
+    ]
+
     # Measure and print each metric individually
     # answer_relevancy.measure(test_case)
     # print(answer_relevancy.score)
     # print(answer_relevancy.reason)
 
     # Or, measure all metrics in parallel and print them
-    # evaluate([test_case], [answer_relevancy, faithfulness, contextual_relevancy])
+    # evaluate([test_case], metrics)
 
     # Or, measure all metrics in parallel as part of a test case that can pass/fail depending on each threshold
-    assert_test(test_case, [answer_relevancy, faithfulness, contextual_relevancy])
+    assert_test(test_case, metrics)
 
 
