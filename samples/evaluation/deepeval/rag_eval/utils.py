@@ -18,7 +18,7 @@ answer concise.
 PDF_PATH = "cymbal-starlight-2024.pdf"
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 100
-EMBEDDING_MODEL_NAME = "text-embedding-005" # "textembedding-gecko@003"
+EMBEDDING_MODEL_NAME = "text-embedding-005"
 
 def setup_rag_chain(chat_model_name):
     print(f"Setting up RAG chain")
@@ -69,6 +69,6 @@ def setup_rag_chain(chat_model_name):
 def get_project_id():
     project_id = os.environ.get("GOOGLE_CLOUD_PROJECT_ID")
     if not project_id:
-        raise ValueError("GOOGLE_PROJECT_ID environment variable not set")
+        raise ValueError("GOOGLE_CLOUD_PROJECT_ID environment variable not set")
     return project_id
 
