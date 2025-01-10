@@ -8,6 +8,9 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_vertexai import VertexAIEmbeddings, ChatVertexAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+EMBEDDING_MODEL_NAME = "text-embedding-005"
+CHUNK_SIZE = 500
+CHUNK_OVERLAP = 100
 PDF_PATH = "cymbal-starlight-2024.pdf"
 SYSTEM_PROMPT = """You are an assistant for question-answering tasks. 
 Use the following pieces of retrieved context to answer 
@@ -16,11 +19,11 @@ don't know. Use three sentences maximum and keep the
 answer concise.
 
 {context}"""
-CHUNK_SIZE = 500
-CHUNK_OVERLAP = 100
-EMBEDDING_MODEL_NAME = "text-embedding-005"
 
-def setup_rag_chain(chat_model_name):
+MODEL_NAME="gemini-1.5-flash-002"
+TEMPERATURE=1
+
+def setup_rag_chain():
     print(f"Setting up RAG chain")
 
     print(f"Load and parse the PDF: {PDF_PATH}")
@@ -45,11 +48,12 @@ def setup_rag_chain(chat_model_name):
 
     retriever = vector_store.as_retriever()
 
-    print(f"Initialize the chat model: {chat_model_name}")
+    print(f"Initialize the model: {MODEL_NAME}")
     model = ChatVertexAI(
         project=get_project_id(),
         location="us-central1",
-        model=chat_model_name
+        model=MODEL_NAME,
+        temperature=TEMPERATURE
     )
 
     prompt = ChatPromptTemplate.from_messages(

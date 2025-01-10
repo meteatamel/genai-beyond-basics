@@ -15,7 +15,7 @@ CHAT_MODEL_STR = "gemini-1.5-flash-002"
 EVAL_MODEL_NAME = "gemini-1.5-pro-002"
 
 def test_rag_triad_cymbal_multiple():
-    rag_chain = setup_rag_chain(CHAT_MODEL_STR)
+    rag_chain = setup_rag_chain()
 
     inputs = [
         "What is the cargo capacity of Cymbal Starlight?",

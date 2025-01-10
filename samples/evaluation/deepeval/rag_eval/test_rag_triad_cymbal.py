@@ -11,11 +11,10 @@ from utils import get_project_id, setup_rag_chain
 # Using the RAG Triad for RAG evaluation:
 # https://docs.confident-ai.com/docs/guides-rag-triad
 
-CHAT_MODEL_NAME = "gemini-1.5-flash-002"
 EVAL_MODEL_NAME = "gemini-1.5-pro-002"
 
 def test_rag_triad_cymbal():
-    rag_chain = setup_rag_chain(CHAT_MODEL_NAME)
+    rag_chain = setup_rag_chain()
 
     input = "What is the cargo capacity of Cymbal Starlight?"
     print(f"Input: {input}")
