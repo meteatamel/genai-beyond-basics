@@ -12,8 +12,9 @@ from utils import get_project_id
 # RAG evaluation
 # https://docs.confident-ai.com/docs/guides-rag-evaluation
 
+EVAL_MODEL_NAME = "gemini-1.5-pro-002"
 
-def test_rag_retrieval():
+def test_retrieval():
     test_case = LLMTestCase(
         input="I'm on an F-1 visa, how long can I stay in the US after graduation?",
         actual_output="You can stay up to 30 days after completing your degree.",
@@ -24,7 +25,7 @@ def test_rag_retrieval():
         ]
     )
 
-    eval_model = GoogleVertexAI(model_name="gemini-1.5-pro-002",
+    eval_model = GoogleVertexAI(model_name=EVAL_MODEL_NAME,
                            project=get_project_id(),
                            location="us-central1")
 
@@ -37,7 +38,7 @@ def test_rag_retrieval():
     assert_test(test_case, metrics)
 
 
-def test_rag_generation():
+def test_generation():
     test_case = LLMTestCase(
         input="I'm on an F-1 visa, how long can I stay in the US after graduation?",
         actual_output="You can stay up to 30 days after completing your degree.",
@@ -47,7 +48,7 @@ def test_rag_generation():
         ]
     )
 
-    eval_model = GoogleVertexAI(model_name="gemini-1.5-pro-002",
+    eval_model = GoogleVertexAI(model_name=EVAL_MODEL_NAME,
                            project=get_project_id(),
                            location="us-central1")
 

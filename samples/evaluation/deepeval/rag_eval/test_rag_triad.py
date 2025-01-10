@@ -11,6 +11,7 @@ from utils import get_project_id
 # Using the RAG Triad for RAG evaluation:
 # https://docs.confident-ai.com/docs/guides-rag-triad
 
+EVAL_MODEL_NAME = "gemini-1.5-pro-002"
 
 def test_rag_triad():
     test_case = LLMTestCase(
@@ -23,7 +24,7 @@ def test_rag_triad():
     )
 
 
-    eval_model = GoogleVertexAI(model_name="gemini-1.5-pro-002",
+    eval_model = GoogleVertexAI(model_name=EVAL_MODEL_NAME,
                            project=get_project_id(),
                            location="us-central1")
 
