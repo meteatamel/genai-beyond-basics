@@ -6,7 +6,7 @@ from deepeval.metrics import AnswerRelevancyMetric, FaithfulnessMetric, Contextu
 
 sys.path.append("../../../../")
 from samples.evaluation.deepeval.vertex_ai.google_vertex_ai import GoogleVertexAI
-from utils import get_project_id
+from samples.evaluation.deepeval.utils import get_project_id
 
 # Using the RAG Triad for RAG evaluation:
 # https://docs.confident-ai.com/docs/guides-rag-triad

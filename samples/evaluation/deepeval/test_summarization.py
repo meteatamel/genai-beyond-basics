@@ -6,17 +6,11 @@ from deepeval.metrics import SummarizationMetric
 
 from vertex_ai.google_vertex_ai import GoogleVertexAI
 
+from utils import get_project_id
+
 # The summarization metric uses LLMs to determine whether your LLM (application) is generating factually correct
 # summaries while including the necessary details from the original text
 # https://docs.confident-ai.com/docs/metrics-summarization
-
-
-def get_project_id():
-    project_id = os.environ.get("GOOGLE_PROJECT_ID")
-    if not project_id:
-        raise ValueError("GOOGLE_PROJECT_ID environment variable not set")
-    return project_id
-
 
 def test_summarization():
     model = GoogleVertexAI(model_name="gemini-1.5-flash-001",

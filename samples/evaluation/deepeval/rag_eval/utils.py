@@ -1,5 +1,3 @@
-import os
-
 from langchain.chains.combine_documents import create_stuff_documents_chain
 from langchain.chains.retrieval import create_retrieval_chain
 from langchain_community.document_loaders import PyPDFLoader
@@ -8,11 +6,14 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_vertexai import VertexAIEmbeddings, ChatVertexAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
+#sys.path.append("../../../../")
+from samples.evaluation.deepeval.utils import get_project_id
+
 PDF_PATH = "cymbal-starlight-2024.pdf"
 
 EMBEDDING_MODEL_NAME_1 = "textembedding-gecko@003"
 EMBEDDING_MODEL_NAME_2 = "text-embedding-005"
-EMBEDDING_MODEL_NAME = EMBEDDING_MODEL_NAME_2
+EMBEDDING_MODEL_NAME = EMBEDDING_MODEL_NAME_1
 
 CHUNK_SIZE_1 = 500
 CHUNK_SIZE_2 = 200
@@ -35,7 +36,7 @@ the question. Only answer the question and if you don't know the answer,
 just say I don't know.
 
 {context}"""
-SYSTEM_PROMPT = SYSTEM_PROMPT_2
+SYSTEM_PROMPT = SYSTEM_PROMPT_1
 
 MODEL_NAME="gemini-1.5-flash-002"
 TEMPERATURE=1
@@ -86,11 +87,4 @@ def setup_rag_chain():
     rag_chain = create_retrieval_chain(retriever, question_answer_chain)
     print("RAG is ready!")
     return rag_chain
-
-
-def get_project_id():
-    project_id = os.environ.get("GOOGLE_CLOUD_PROJECT_ID")
-    if not project_id:
-        raise ValueError("GOOGLE_CLOUD_PROJECT_ID environment variable not set")
-    return project_id
 
