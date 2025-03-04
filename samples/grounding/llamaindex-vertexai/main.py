@@ -17,15 +17,18 @@ def main():
 
     print("Initialize embedding model")
     credentials, project_id = google.auth.default()
-    embed_model = VertexTextEmbedding(credentials=credentials)
+    embed_model = VertexTextEmbedding(
+        credentials=credentials,
+        model_name= "text-embedding-005",
+    )
 
     print("Index document")
     index = VectorStoreIndex.from_documents(
         [document], embed_model=embed_model
     )
 
-    print("Initialize query engine with the model")
-    llm = Vertex(model="gemini-1.5-flash-002", temperature=0.1)
+    print("Initialize the query engine with the model")
+    llm = Vertex(model="gemini-2.0-flash-001")
     query_engine = index.as_query_engine(llm=llm)
 
     question = "What is the cargo capacity of Cymbal Starlight?"
