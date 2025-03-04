@@ -1,4 +1,4 @@
-* RAG with a PDF using LlamaIndex and SimpleVectorStore
+# RAG with a PDF using LlamaIndex and SimpleVectorStore
 
 ![LlamaIndex on Vertex AI](images/llamaindex_vertexai.png)
 
