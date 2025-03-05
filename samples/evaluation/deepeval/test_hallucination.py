@@ -12,10 +12,14 @@ from utils import get_project_id
 # actual_output to the provided context.
 # https://docs.confident-ai.com/docs/metrics-hallucination
 
+TEST_MODEL = "gemini-2.0-flash-001"
+EVAL_MODEL = "gemini-2.0-pro-exp-02-05"
+LOCATION = "us-central1"
+
 def test_hallucination():
-    model = GoogleVertexAI(model_name="gemini-1.5-flash-001",
+    test_model = GoogleVertexAI(model_name=TEST_MODEL,
                            project=get_project_id(),
-                           location="us-central1")
+                           location=LOCATION)
 
     context = [
         "Paris is the capital of France."
@@ -25,12 +29,16 @@ def test_hallucination():
 
     test_case = LLMTestCase(
         input=input,
-        actual_output=model.generate(input),
+        actual_output=test_model.generate(input),
         context=context
     )
 
+    eval_model = GoogleVertexAI(model_name=EVAL_MODEL,
+                           project=get_project_id(),
+                           location=LOCATION)
+
     metric = HallucinationMetric(
-        model=model,
+        model=eval_model,
         threshold=0.5)
 
     metric.measure(test_case)
@@ -41,9 +49,9 @@ def test_hallucination():
 
 
 def test_hallucination_fails():
-    model = GoogleVertexAI(model_name="gemini-1.5-flash-001",
+    test_model = GoogleVertexAI(model_name=TEST_MODEL,
                            project=get_project_id(),
-                           location="us-central1")
+                           location=LOCATION)
 
     context = [
         "London is the capital of France."
@@ -53,12 +61,16 @@ def test_hallucination_fails():
 
     test_case = LLMTestCase(
         input=input,
-        actual_output=model.generate(input),
+        actual_output=test_model.generate(input),
         context=context
     )
 
+    eval_model = GoogleVertexAI(model_name=EVAL_MODEL,
+                           project=get_project_id(),
+                           location=LOCATION)
+
     metric = HallucinationMetric(
-        model=model,
+        model=eval_model,
         threshold=0.5)
 
     metric.measure(test_case)

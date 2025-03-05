@@ -12,10 +12,14 @@ from utils import get_project_id
 # summaries while including the necessary details from the original text
 # https://docs.confident-ai.com/docs/metrics-summarization
 
+TEST_MODEL = "gemini-2.0-flash-001"
+EVAL_MODEL = "gemini-2.0-pro-exp-02-05"
+LOCATION = "us-central1"
+
 def test_summarization():
-    model = GoogleVertexAI(model_name="gemini-1.5-flash-001",
+    test_model = GoogleVertexAI(model_name=TEST_MODEL,
                            project=get_project_id(),
-                           location="us-central1")
+                           location=LOCATION)
 
     input = """
     Please summarize the following:
@@ -29,11 +33,15 @@ def test_summarization():
 
     test_case = LLMTestCase(
         input=input,
-        actual_output=model.generate(input))
+        actual_output=test_model.generate(input))
+
+    eval_model = GoogleVertexAI(model_name=EVAL_MODEL,
+                           project=get_project_id(),
+                           location=LOCATION)
 
     metric = SummarizationMetric(
         threshold=0.5,
-        model=model,
+        model=eval_model,
         assessment_questions=[
             "Is the coverage score based on a percentage of 'yes' answers?",
             "Does the score ensure the summary's accuracy with the source?",

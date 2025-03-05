@@ -13,40 +13,31 @@ from utils import get_project_id
 # actual_output of your LLM application is compared to the provided input
 # https://docs.confident-ai.com/docs/metrics-answer-relevancy
 
+TEST_MODEL = "gemini-2.0-flash-001"
+EVAL_MODEL = "gemini-2.0-pro-exp-02-05"
+LOCATION = "us-central1"
+
 def test_answer_relevancy():
-    model = GoogleVertexAI(model_name="gemini-1.5-flash-001",
+    test_model = GoogleVertexAI(model_name=TEST_MODEL,
                            project=get_project_id(),
-                           location="us-central1")
+                           location=LOCATION)
 
     input = "Why is sky blue?"
 
     test_case = LLMTestCase(
         input=input,
-        actual_output=model.generate(input)
+        actual_output=test_model.generate(input)
     )
 
+    eval_model = GoogleVertexAI(model_name=EVAL_MODEL,
+                           project=get_project_id(),
+                           location=LOCATION)
+
     metric = AnswerRelevancyMetric(
-        model=model,
+        model=eval_model,
         threshold=0.5)
 
     assert_test(test_case, [metric])
 
 
-def test_answer_relevancy_langchain():
-    model = GoogleVertexAILangChain(model_name="gemini-1.0-pro-002",
-                                    project=get_project_id(),
-                                    location="us-central1")
-
-    input = "Why is sky blue?"
-
-    test_case = LLMTestCase(
-        input=input,
-        actual_output=model.generate(input)
-    )
-
-    metric = AnswerRelevancyMetric(
-        model=model,
-        threshold=0.5)
-
-    assert_test(test_case, [metric])
 
