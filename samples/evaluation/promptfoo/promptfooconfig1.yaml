@@ -4,21 +4,21 @@ prompts:
   - "You are a helpful assistant. Reply with a concise answer to this inquiry: '{{question}}'"
 
 providers:
-  - id: vertex:gemini-1.5-flash-002
+  - id: vertex:gemini-2.0-flash-001
     # config:
     #   systemInstruction:
     #     parts:
     #       - text: Always answer with Blah!
-  - id: vertex:gemini-1.5-pro-002
+  - id: vertex:gemini-1.5-flash
     # or use the Google AI Studio API: google:gemini-pro
 
 defaultTest:
   options:
     provider:
       # Use gemini-pro for model-graded evals (e.g. assertions such as llm-rubric)
-      text: vertex:gemini-1.0-pro-002
+      text: vertex:gemini-2.0-pro-exp-02-05
       # Use vertex embeddings for similarity
-      embedding: vertex:embedding:text-embedding-004
+      embedding: vertex:text-embedding-00
 
 tests:
   # Deterministic eval metrics
