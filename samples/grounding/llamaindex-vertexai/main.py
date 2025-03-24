@@ -44,9 +44,7 @@ def main():
     query_engine = index.as_query_engine(llm=llm)
 
     question = "What is the cargo capacity of Cymbal Starlight?"
-    response = query_engine.query(
-        "What is the cargo capacity of Cymbal Starlight?"
-    )
+    response = query_engine.query(question)
     print(f"Question: {question}")
     print(f"Response: {str(response)}")
 
