@@ -18,7 +18,7 @@ defaultTest:
       # Use gemini-pro for model-graded evals (e.g. assertions such as llm-rubric)
       text: vertex:gemini-2.0-pro-exp-02-05
       # Use vertex embeddings for similarity
-      embedding: vertex:text-embedding-00
+      embedding: vertex:text-embedding-001
 
 tests:
   # Deterministic eval metrics
