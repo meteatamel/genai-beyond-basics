@@ -36,7 +36,7 @@ def main():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=metrics,
-        experiment="exact-match-experiment"
+        experiment="exact-match"
     )
 
     eval_result = eval_task.evaluate()

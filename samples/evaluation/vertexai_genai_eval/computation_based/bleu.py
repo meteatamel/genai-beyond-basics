@@ -37,7 +37,7 @@ def main():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=metrics,
-        experiment="blue-experiment"
+        experiment="bleu"
     )
 
     eval_result = eval_task.evaluate()

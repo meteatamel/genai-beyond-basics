@@ -36,4 +36,6 @@ TODO
 
 ## References
 
-* TODO
+* [Gen AI evaluation service overview](https://cloud.google.com/vertex-ai/generative-ai/docs/models/evaluation-overview)
+* [Define your evaluation metrics](https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval)
+* [Metric prompt templates for model-based evaluation](https://cloud.google.com/vertex-ai/generative-ai/docs/models/metrics-templates)

@@ -1,3 +1,5 @@
+import pandas
+
 def print_eval_result(eval_result):
     print("==Metadata==")
     for key, value in eval_result.metadata.items():
@@ -8,5 +10,5 @@ def print_eval_result(eval_result):
         print(f"{key}: {value}")
 
     print("==Metrics table==")
-    #print(eval_result.metrics_table)
-    print(eval_result.metrics_table.to_markdown())
+    print(eval_result.metrics_table)
+    #print(eval_result.metrics_table.to_markdown())

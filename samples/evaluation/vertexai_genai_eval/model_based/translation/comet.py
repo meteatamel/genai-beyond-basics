@@ -42,7 +42,7 @@ def main():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=metrics,
-        experiment="comet-experiment"
+        experiment="comet"
     )
 
     eval_result = eval_task.evaluate()
