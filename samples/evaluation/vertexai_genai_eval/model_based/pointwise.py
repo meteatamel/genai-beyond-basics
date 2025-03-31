@@ -64,7 +64,7 @@ def byor():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=metrics,
-        experiment="pointwise"
+        experiment="pointwise-byor"
     )
 
     eval_result = eval_task.evaluate()
@@ -81,7 +81,7 @@ def model():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=metrics,
-        experiment="pointwise"
+        experiment="pointwise-model"
     )
 
     eval_result = eval_task.evaluate(
