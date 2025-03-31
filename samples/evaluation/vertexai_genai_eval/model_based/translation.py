@@ -1,13 +1,13 @@
 import pandas
 import sys
 from vertexai.evaluation import EvalTask
-from vertexai.evaluation.metrics.pointwise_metric import MetricX
+from vertexai.evaluation.metrics.pointwise_metric import Comet, MetricX
 
 sys.path.append("../../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
 
-# MetricX is an open-source evaluation model for machine translation
-# https://github.com/google-research/metricx
+# COMET is an open-source evaluation model for machine translation
+# https://huggingface.co/Unbabel/wmt22-comet-da
 def main():
     # Source to translate
     sources = [
@@ -36,13 +36,19 @@ def main():
     )
 
     metrics = [
+        # COMET is an open-source evaluation model for machine translation
+        # https://huggingface.co/Unbabel/wmt22-comet-da
+        Comet(),
+
+        # MetricX is an open-source evaluation model for machine translation
+        # https://github.com/google-research/metricx
         MetricX()
     ]
 
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=metrics,
-        experiment="metricx"
+        experiment="translation"
     )
 
     eval_result = eval_task.evaluate()
