@@ -3,7 +3,7 @@ import sys
 from vertexai.evaluation import EvalTask
 from vertexai.evaluation.constants import Metric
 
-sys.path.append("../../../../")
+sys.path.append("../../../")
 from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
 
 def main():
