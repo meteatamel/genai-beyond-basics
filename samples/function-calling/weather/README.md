@@ -1,5 +1,9 @@
 # Function calling - Weather
 
+> [!NOTE]
+> Function calling got much simpler with the Google Gen AI SDK for Python and Gemini 2.0
+> See [main_genaisdk.py](main_genaisdk.py) for details.
+
 ## Introduction
 
 In this sample, you'll deep dive into function calling in Gemini. More specifically, you'll see how to handle multiple and
