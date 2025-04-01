@@ -105,10 +105,8 @@ def unpack_response_for_genai_eval(response):
 
 
 def evaluate(response):
-    function_calls = unpack_response_for_genai_eval(response)
-
-    print(f"Function calls: {function_calls}")
-    responses_str = [json.dumps(function_call) for function_call in function_calls]
+    responses = unpack_response_for_genai_eval(response)
+    print(f"Responses: {responses}")
 
     references = [
         {
@@ -159,13 +157,11 @@ def evaluate(response):
         },
     ]
     print(f"References: {references}")
-    references_str = [json.dumps(reference) for reference in references]
-
 
     eval_dataset = pandas.DataFrame(
         {
-            "response": responses_str,
-            "reference": references_str,
+            "response": [json.dumps(response) for response in responses],
+            "reference": [json.dumps(reference) for reference in references],
         }
     )
 
@@ -177,7 +173,7 @@ def evaluate(response):
             Metric.TOOL_PARAMETER_KEY_MATCH,
             Metric.TOOL_PARAMETER_KV_MATCH
         ],
-        experiment="tool-use"
+        experiment="tool-use-gemini"
     )
 
     eval_result = eval_task.evaluate()
