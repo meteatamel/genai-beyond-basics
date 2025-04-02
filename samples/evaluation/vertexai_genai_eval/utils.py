@@ -10,7 +10,6 @@ def print_eval_result(eval_result):
         print(f"{key}: {value}")
 
     print("==Metrics table==")
-    pd.set_option('display.max_colwidth', 150)
+    #pd.set_option('display.max_colwidth', 150)
     pd.set_option('display.max_columns', None)
     print(eval_result.metrics_table)
-    #print(eval_result.metrics_table.to_markdown())
