@@ -58,7 +58,7 @@ def main():
                 "2": "The response is somewhat irrelevant to the prompt",
                 "1": "The response is totally irrelevant to the prompt",
             },
-            input_variables=["prompt", "context"]
+            input_variables=["prompt"]
         )
     )
     #print(f"Metric prompt template: {answer_relevance_metric.metric_prompt_template}")
