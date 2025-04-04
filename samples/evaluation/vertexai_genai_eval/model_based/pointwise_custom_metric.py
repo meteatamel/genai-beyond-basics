@@ -8,7 +8,7 @@ from vertexai.evaluation import (
     MetricPromptTemplateExamples
 )
 
-sys.path.append("../../../../../")
+sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
 
 # Pointwise with a custom metric
@@ -26,7 +26,7 @@ eval_dataset = pandas.DataFrame(
     }
 )
 
-def templated():
+def template():
 
     # Define a pointwise metric with two criteria
     custom_metric_prompt_template = PointwiseMetricPromptTemplate(
@@ -55,11 +55,11 @@ def templated():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=[custom_metric],
-        experiment="pointwise-custom-metric-templated"
+        experiment="pointwise-custom-metric-template"
     )
 
     eval_result = eval_task.evaluate()
-    print_eval_result(eval_result)
+    print_eval_result(eval_result, colwidth=100)
 
 
 def free_form():
@@ -109,7 +109,7 @@ def free_form():
     )
 
     eval_result = eval_task.evaluate()
-    print_eval_result(eval_result)
+    print_eval_result(eval_result, colwidth=100)
 
 
 if __name__ == "__main__":

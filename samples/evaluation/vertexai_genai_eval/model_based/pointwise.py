@@ -6,8 +6,13 @@ from vertexai.evaluation import (
 )
 from vertexai.generative_models import GenerativeModel
 
-sys.path.append("../../../../../")
+sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+
+# Pointwise (single model) metrics can be used in 2 ways:
+# 1- Bring-your-own-response (BYOR) mode where the model responses are provided rather than calling the model.
+# 2- Bring a model and use that model to get responses from.
+# See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/metrics-templates#overview
 
 # Using Extreme Summarization (XSum) Dataset:
 # https://huggingface.co/datasets/EdinburghNLP/xsum/viewer?row=3&views%5B%5D=train
@@ -68,7 +73,7 @@ def byor():
     )
 
     eval_result = eval_task.evaluate()
-    print_eval_result(eval_result)
+    print_eval_result(eval_result, colwidth=50)
 
 
 # Pointwise metrics with a provided model to get responses from.
@@ -87,7 +92,7 @@ def model():
     eval_result = eval_task.evaluate(
         model=model
     )
-    print_eval_result(eval_result)
+    print_eval_result(eval_result, colwidth=50)
 
 
 if __name__ == "__main__":

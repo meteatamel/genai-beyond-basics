@@ -5,14 +5,14 @@ from vertexai.evaluation import (
     MetricPromptTemplateExamples,
 )
 from vertexai.evaluation.constants import Metric
-from vertexai.evaluation.metrics import PairwiseMetric, _default_templates
+from vertexai.evaluation.metrics import PairwiseMetric
 from vertexai.generative_models import GenerativeModel
 
 sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
 
 # Pairwise metrics to compare 2 models against each other
-# https://cloud.google.com/vertex-ai/generative-ai/docs/models/metrics-templates#overview
+# See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/metrics-templates#overview
 def main():
     # Using Extreme Summarization (XSum) Dataset:
     # https://huggingface.co/datasets/EdinburghNLP/xsum/viewer?row=3&views%5B%5D=train
@@ -38,15 +38,9 @@ def main():
     # Model 1
     baseline_model = GenerativeModel("gemini-1.5-pro")
 
-    fluency = PairwiseMetric(
+    metric = PairwiseMetric(
         metric=Metric.PAIRWISE_FLUENCY,
         metric_prompt_template=MetricPromptTemplateExamples.get_prompt_template(Metric.PAIRWISE_FLUENCY),
-        baseline_model=baseline_model
-    )
-
-    groundedness = PairwiseMetric(
-        metric=Metric.PAIRWISE_GROUNDEDNESS,
-        metric_prompt_template=MetricPromptTemplateExamples.get_prompt_template(Metric.PAIRWISE_GROUNDEDNESS),
         baseline_model=baseline_model
     )
 
@@ -55,14 +49,14 @@ def main():
 
     eval_task = EvalTask(
         dataset=eval_dataset,
-        metrics=[fluency, groundedness],
+        metrics=[metric],
         experiment="pairwise",
     )
 
     eval_result = eval_task.evaluate(
         model=model
     )
-    print_eval_result(eval_result)
+    print_eval_result(eval_result, colwidth=50)
 
 
 if __name__ == "__main__":
