@@ -135,3 +135,24 @@ custom_metric/std: 1.0
 2    This is neither funny. Nor a single sentence  The response fails to meet both criteria, as it is not entertaining and consists of more than on...                  1.0
 ```
 
+## Implementing the RAG triad with custom metrics
+
+RAG triad is a trio of metrics (answer relevance, context relevance, groundedness) that you can use to evaluate RAG 
+pipelines. You can read more about it in [Evaluating RAG pipelines](https://atamel.dev/posts/2025/01-09_evaluating_rag_pipelines/). 
+
+Using custom metrics, you can implement the RAG triad. See [pointwise_rag_triad.py](pointwise_rag_triad.py) for details.
+
+Run the evaluation with each metric:
+
+```python
+python pointwise_rag_triad.py answer_relevance
+python pointwise_rag_triad.py context_relevance
+python pointwise_rag_triad.py groundedness
+```
+
+Or all 3 metrics:
+
+```python
+python pointwise_rag_triad.py all_metrics
+```
+

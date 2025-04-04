@@ -10,7 +10,7 @@ sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
 
 # An attempt to implement the RAG triad metrics: answer relevance, context relevance, groundedness:
-# Reference: https://truera.com/ai-quality-education/generative-ai-rags/what-is-the-rag-triad/
+# See: https://atamel.dev/posts/2025/01-09_evaluating_rag_pipelines/
 
 answer_relevance_metric = PointwiseMetric(
     metric="answer_relevance",
@@ -56,7 +56,7 @@ def answer_relevance():
         experiment="pointwise-answer-relevance"
     )
     eval_result = eval_task.evaluate()
-    print_eval_result(eval_result)
+    print_eval_result(eval_result, colwidth=50)
 
 
 context_relevance_metric = PointwiseMetric(
@@ -109,7 +109,7 @@ def context_relevance():
         experiment="pointwise-context-relevance"
     )
     eval_result = eval_task.evaluate()
-    print_eval_result(eval_result)
+    print_eval_result(eval_result, colwidth=50)
 
 
 groundedness_metric = PointwiseMetric(
@@ -162,10 +162,10 @@ def groundedness():
         experiment="pointwise-groundedness"
     )
     eval_result = eval_task.evaluate()
-    print_eval_result(eval_result)
+    print_eval_result(eval_result, colwidth=50)
 
 
-def rag_triad():
+def all_metrics():
     prompts = [
         "What is Cymbal Starlight?",
         "Does Cymbal have an Anti-Lock braking system?",

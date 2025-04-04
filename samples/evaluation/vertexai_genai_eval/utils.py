@@ -11,5 +11,5 @@ def print_eval_result(eval_result, colwidth=150):
 
     print("==Metrics table==")
     pd.set_option('display.max_colwidth', colwidth)
-    #pd.set_option('display.max_columns', None)
+    pd.set_option('display.max_columns', None)
     print(eval_result.metrics_table)
