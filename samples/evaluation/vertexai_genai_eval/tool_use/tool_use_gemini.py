@@ -11,6 +11,12 @@ import sys
 sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
 
+# An example on how you can setup 2 functions for automatic function calling in Gemini,
+# use those functions from a prompt, and then evaluate the function call results with the Gen AI evaluation service. It
+# involves getting the function call history, converting it to the format Gen AI evaluation service expects and running
+# the evaluation.
+# See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#tool-use
+
 PROMPT = "What's the temperature, wind, humidity like in London, Paris?"
 PROJECT_ID = "genai-atamel"
 LOCATION = "us-central1"
@@ -80,14 +86,14 @@ def generate_content_with_function_calls():
             temperature=0),
     )
 
-    print(f"Response: {response.text}")
-    #print(response.automatic_function_calling_history)
+    print(f"Response text: {response.text}")
+    print(f"Automatic function calling history: {response.automatic_function_calling_history}")
     return response
 
 
-def unpack_response_for_genai_eval(response):
+def convert_function_calling_history_for_eval(automatic_function_calling_history):
     function_calls = []
-    for item in response.automatic_function_calling_history:
+    for item in automatic_function_calling_history:
         if item.role == 'model':
             for part in item.parts:
                 if part.function_call:
@@ -104,9 +110,9 @@ def unpack_response_for_genai_eval(response):
     return function_calls
 
 
-def evaluate(response):
-    responses = unpack_response_for_genai_eval(response)
-    print(f"Responses: {responses}")
+def evaluate_function_calling(automatic_function_calling_history):
+    converted_function_calling_history = convert_function_calling_history_for_eval(automatic_function_calling_history)
+    print(f"Converted function calling history: {converted_function_calling_history}")
 
     references = [
         {
@@ -160,7 +166,7 @@ def evaluate(response):
 
     eval_dataset = pandas.DataFrame(
         {
-            "response": [json.dumps(response) for response in responses],
+            "response": [json.dumps(history) for history in converted_function_calling_history],
             "reference": [json.dumps(reference) for reference in references],
         }
     )
@@ -182,7 +188,7 @@ def evaluate(response):
 def main():
     #logging.basicConfig(level=logging.DEBUG, format='%(message)s')
     response = generate_content_with_function_calls()
-    evaluate(response)
+    evaluate_function_calling(response.automatic_function_calling_history)
 
 if __name__ == '__main__':
     main()

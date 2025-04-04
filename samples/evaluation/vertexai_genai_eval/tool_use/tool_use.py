@@ -7,6 +7,8 @@ from vertexai.evaluation.constants import Metric
 sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
 
+# An example to show how you'd use tool-use metrics in Gen AI evaluation service with saved responses.
+# See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#tool-use
 def main():
     responses = [
         {
@@ -50,6 +52,18 @@ def main():
                     }
                 }
             ]
+        },
+        {
+            "content": "",
+            # Everything matches
+            "tool_calls": [
+                {
+                    "name": "location_to_lat_long",
+                    "arguments": {
+                        "location": "London"
+                    }
+                }
+            ]
         }
     ]
 
@@ -65,7 +79,7 @@ def main():
                 }
             ]
         }
-    ] * 4
+    ] * 5
 
     eval_dataset = pandas.DataFrame(
         {
