@@ -1,13 +1,16 @@
 # Gen AI evaluation service - computation-based metrics
 
+## Introduction 
+
 These are the [computation-based](https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#computation-based-metrics)
 metrics supported by Gen AI evaluation service out of the box:
 * Exact match 
 * Bleu
 * Rouge, Rouge-1, Rouge-2, Rouge-L, Rouge-LSum
 
-Note: There are also metrics related to tool use, which are technically computation-based metrics, but we'll cover them
-separately [here](../tool_use).
+> [!NOTE]
+> There are also metrics related to tool use, which are technically computation-based metrics, but we'll cover them
+> separately in [tool_use](../tool_use).
 
 **Exact match** metric computes whether a generated text matches a reference text exactly.
 0: No match, 1: Match
@@ -22,7 +25,9 @@ It measures recall (completeness)
 A float in the range of [0,1]
 0: Poor similarity, 1: Strong similarity to reference.
 
-See [computation_based.py](./computation_based.py) how you'd use these metrics in Gen AI evaluation service.
+## Computation-based metrics
+
+See [computation_based.py](./computation_based.py) on how you'd use these metrics in Gen AI evaluation service.
 
 Run the evaluation:
 
@@ -54,4 +59,5 @@ You can also see the results in the Experiments section of Vertex AI in Google C
 ![Vertex AI Experiments](../images/vertexai_exp2.png)
 
 Note how inflexible exact match and bleu scores are. Even with the slightest difference, the scores go down. 
-Rouge is slightly better but it also fails to properly capture the same semantic meanings.
+Rouge is slightly better but it also fails to properly capture the same semantic meanings. That's why we need model-based
+metrics.

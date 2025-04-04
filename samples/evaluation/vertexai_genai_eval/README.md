@@ -19,9 +19,9 @@ be measured in 2 ways:
 Follow the following sub-pages for samples and to learn more:
 
 * [Setup](./setup.md)
-* [Computation-based metrics](./computation-based/README.md)
-* [Model-based metrics](./model-based/README.md)
-* [Tool-use metrics](./tool-use/README.md)
+* [Computation-based metrics](./computation_based/README.md)
+* [Model-based metrics](./model_based/README.md)
+* [Tool-use metrics](./tool_use/README.md)
 
 ## References
 

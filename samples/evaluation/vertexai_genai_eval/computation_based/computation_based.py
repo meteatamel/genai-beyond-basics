@@ -6,6 +6,8 @@ from vertexai.evaluation.constants import Metric
 sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
 
+# Computation based metrics
+# See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#computation-based-metrics
 def main():
     responses = [
         "Hello, how are you?",
