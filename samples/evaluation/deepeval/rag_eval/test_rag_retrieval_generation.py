@@ -4,13 +4,21 @@ from deepeval import assert_test
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import (AnswerRelevancyMetric, ContextualPrecisionMetric, ContextualRecallMetric,
                               ContextualRelevancyMetric, FaithfulnessMetric)
-
-sys.path.append("../../../../")
-from samples.evaluation.deepeval.vertex_ai.google_vertex_ai import GoogleVertexAI
-from samples.evaluation.deepeval.utils import get_project_id
+from deepeval.models import GeminiModel
 
 # RAG evaluation
 # https://docs.confident-ai.com/docs/guides-rag-evaluation
+
+EVAL_MODEL =  "gemini-1.5-pro"
+PROJECT_ID = "genai-atamel"
+LOCATION = "us-central1"
+
+def get_eval_model():
+    return GeminiModel(
+        model_name=EVAL_MODEL,
+        project=PROJECT_ID,
+        location=LOCATION
+    )
 
 def get_test_case(expected_output=None):
     return LLMTestCase(
@@ -21,15 +29,6 @@ def get_test_case(expected_output=None):
             """If you are in the U.S. on an F-1 visa, you are allowed to stay for 60 days after completing
             your degree, unless you have applied for and been approved to participate in OPT."""
         ]
-    )
-
-EVAL_MODEL_NAME = "gemini-1.5-pro-002"
-
-def get_eval_model():
-    return GoogleVertexAI(
-        model_name=EVAL_MODEL_NAME,
-        project=get_project_id(),
-        location="us-central1"
     )
 
 def test_retrieval():

@@ -1,25 +1,25 @@
-import os
-
 from deepeval import assert_test
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import HallucinationMetric
-
-from vertex_ai.google_vertex_ai import GoogleVertexAI
-
-from utils import get_project_id
+from deepeval.models import GeminiModel
+from google import genai
 
 # The hallucination metric determines whether your LLM generates factually correct information by comparing the
 # actual_output to the provided context.
 # https://docs.confident-ai.com/docs/metrics-hallucination
 
 TEST_MODEL = "gemini-2.0-flash-001"
-EVAL_MODEL = "gemini-2.0-pro-exp-02-05"
+EVAL_MODEL =  "gemini-1.5-pro"
+PROJECT_ID = "genai-atamel"
 LOCATION = "us-central1"
 
 def test_hallucination():
-    test_model = GoogleVertexAI(model_name=TEST_MODEL,
-                           project=get_project_id(),
-                           location=LOCATION)
+    # Generate response from the test model as usual
+    client = genai.Client(
+        vertexai=True,
+        project=PROJECT_ID,
+        location=LOCATION
+    )
 
     context = [
         "Paris is the capital of France."
@@ -27,19 +27,27 @@ def test_hallucination():
 
     input = "What's the capital of France?"
 
+    response = client.models.generate_content(
+        model=TEST_MODEL,
+        contents=input
+    )
+
     test_case = LLMTestCase(
         input=input,
-        actual_output=test_model.generate(input),
+        actual_output=response.text,
         context=context
     )
 
-    eval_model = GoogleVertexAI(model_name=EVAL_MODEL,
-                           project=get_project_id(),
-                           location=LOCATION)
+    # Set the evaluation model in code:
+    eval_model = GeminiModel(
+        model_name=EVAL_MODEL,
+        project=PROJECT_ID,
+        location=LOCATION
+    )
 
     metric = HallucinationMetric(
         model=eval_model,
-        threshold=0.5)
+        threshold=0.8)
 
     metric.measure(test_case)
     print(f"Metric score: {metric.score}")
@@ -49,9 +57,12 @@ def test_hallucination():
 
 
 def test_hallucination_fails():
-    test_model = GoogleVertexAI(model_name=TEST_MODEL,
-                           project=get_project_id(),
-                           location=LOCATION)
+    # Generate response from the test model as usual
+    client = genai.Client(
+        vertexai=True,
+        project=PROJECT_ID,
+        location=LOCATION
+    )
 
     context = [
         "London is the capital of France."
@@ -59,19 +70,27 @@ def test_hallucination_fails():
 
     input = "What's the capital of France?"
 
+    response = client.models.generate_content(
+        model=TEST_MODEL,
+        contents=input
+    )
+
     test_case = LLMTestCase(
         input=input,
-        actual_output=test_model.generate(input),
+        actual_output=response.text,
         context=context
     )
 
-    eval_model = GoogleVertexAI(model_name=EVAL_MODEL,
-                           project=get_project_id(),
-                           location=LOCATION)
+    # Set the evaluation model in code:
+    eval_model = GeminiModel(
+        model_name=EVAL_MODEL,
+        project=PROJECT_ID,
+        location=LOCATION
+    )
 
     metric = HallucinationMetric(
         model=eval_model,
-        threshold=0.5)
+        threshold=0.8)
 
     metric.measure(test_case)
     print(f"Metric score: {metric.score}")

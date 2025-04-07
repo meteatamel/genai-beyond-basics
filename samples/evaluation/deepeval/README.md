@@ -7,45 +7,39 @@ LLM outputs in a similar way to Pytest with 14+ LLM-evaluated metrics backed by 
 
 In this tutorial, you'll learn how to use DeepEval with Vertex AI.
 
-## Set up DeepEval and Vertex AI
+## How to use DeepEval and Gemini
 
-By default, DeepEval uses Open AI but it can be configured to use any LLM as explained in
-[Using a custom LLM](https://docs.confident-ai.com/docs/metrics-introduction#using-a-custom-llm) docs. To use a custom
-LLM, you need to inherit `DeepEvalBaseLLM` class and implement its methods such as `get_model_name`, `load_model`,
-`generate` with your LLM.
+You can check out the [Using Gemini](https://docs.confident-ai.com/docs/metrics-introduction#using-gemini) documentation
+to see how to use Gemini from DeepEval for evaluations. To recap, there are 2 ways to set Gemini as the evaluation
+model.
 
-There's  a [Google VertexAI Example](https://docs.confident-ai.com/docs/metrics-introduction#google-vertexai-example)
-that shows how to implement DeepEval for Vertex AI. However, it unnecessarily uses LangChain and the implementation
-seems  a little lacking.
-
-Instead, I created 2 implementations of DeepEval for Vertex AI in [vertex_ai](./vertex_ai) folder:
-
-1. [google_vertex_ai.py](./vertex_ai/google_vertex_ai.py) contains `GoogleVertexAI` class and it implements DeepEval
-   with Vertex AI library.
-2. [google_vertex_ai_langchain.py](./vertex_ai/google_vertex_ai_langchain.py) contains `GoogleVertexAILangChain` class
-    and it implements DeepEval via LangChain over Vertex AI library.
-
-## How to use DeepEval and Vertex AI
-
-To use the `GoogleVertexAI` class, you simply need to specify the model name, your project id, and location:
+You can create a `GeminiModel` and pass it to the metric in code: 
 
 ```python
-from vertex_ai.google_vertex_ai import GoogleVertexAI
+from deepeval.models import GeminiModel
 
-model = GoogleVertexAI(model_name=your-model-name,
-                       project=your-project-id,
-                       location="us-central1")
-```
-
-Then, you can pass the model to the metric you want to use in your tests:
-
-```python
+eval_model = GeminiModel(
+    model_name=EVAL_MODEL,
+    project=PROJECT_ID,
+    location=LOCATION
+)
 metric = AnswerRelevancyMetric(
-    model=model,
-    threshold=0.5)
+    model=eval_model,
+    threshold=0.8)
 ```
 
-The same applies to `GoogleVertexAILangChain` class.  Let's look at some test cases.
+Alternatively, you can set the evaluation model from the command line:
+
+```console
+deepeval set-gemini --model-name="gemini-1.5-pro" \
+     --project-id="genai-atamel" \
+     --location="us-central1"
+```
+
+The metric will automatically use that model automatically:
+```python
+metric = AnswerRelevancyMetric(threshold=0.8)
+```
 
 ## Answer relevancy
 

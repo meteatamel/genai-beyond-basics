@@ -6,9 +6,8 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_vertexai import VertexAIEmbeddings, ChatVertexAI
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-#sys.path.append("../../../../")
-from samples.evaluation.deepeval.utils import get_project_id
-
+PROJECT_ID = "genai-atamel"
+LOCATION = "us-central1"
 PDF_PATH = "cymbal-starlight-2024.pdf"
 
 EMBEDDING_MODEL_NAME_1 = "textembedding-gecko@003"
@@ -54,7 +53,7 @@ def setup_rag_chain():
 
     print(f"Initialize the embedding model: {EMBEDDING_MODEL_NAME}")
     embeddings_model = VertexAIEmbeddings(
-        project=get_project_id(),
+        project=PROJECT_ID,
         model_name=EMBEDDING_MODEL_NAME
     )
 
@@ -69,8 +68,8 @@ def setup_rag_chain():
 
     print(f"Initialize the model: {MODEL_NAME}")
     model = ChatVertexAI(
-        project=get_project_id(),
-        location="us-central1",
+        project=PROJECT_ID,
+        location=LOCATION,
         model=MODEL_NAME,
         temperature=TEMPERATURE
     )

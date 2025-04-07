@@ -1,25 +1,25 @@
-import os
-
 from deepeval import assert_test
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import SummarizationMetric
-
-from vertex_ai.google_vertex_ai import GoogleVertexAI
-
-from utils import get_project_id
+from deepeval.models import GeminiModel
+from google import genai
 
 # The summarization metric uses LLMs to determine whether your LLM (application) is generating factually correct
 # summaries while including the necessary details from the original text
 # https://docs.confident-ai.com/docs/metrics-summarization
 
 TEST_MODEL = "gemini-2.0-flash-001"
-EVAL_MODEL = "gemini-2.0-pro-exp-02-05"
+EVAL_MODEL =  "gemini-1.5-pro"
+PROJECT_ID = "genai-atamel"
 LOCATION = "us-central1"
 
 def test_summarization():
-    test_model = GoogleVertexAI(model_name=TEST_MODEL,
-                           project=get_project_id(),
-                           location=LOCATION)
+    # Generate response from the test model as usual
+    client = genai.Client(
+        vertexai=True,
+        project=PROJECT_ID,
+        location=LOCATION
+    )
 
     input = """
     Please summarize the following:
@@ -31,16 +31,25 @@ def test_summarization():
     encapsulates the crucial points and details from the original content.
     """
 
+    response = client.models.generate_content(
+        model=TEST_MODEL,
+        contents=input
+    )
+
     test_case = LLMTestCase(
         input=input,
-        actual_output=test_model.generate(input))
+        actual_output=response.text,
+    )
 
-    eval_model = GoogleVertexAI(model_name=EVAL_MODEL,
-                           project=get_project_id(),
-                           location=LOCATION)
+    # Set the evaluation model in code:
+    eval_model = GeminiModel(
+        model_name=EVAL_MODEL,
+        project=PROJECT_ID,
+        location=LOCATION
+    )
 
     metric = SummarizationMetric(
-        threshold=0.5,
+        threshold=0.8,
         model=eval_model,
         assessment_questions=[
             "Is the coverage score based on a percentage of 'yes' answers?",

@@ -3,16 +3,17 @@ import sys
 from deepeval import assert_test
 from deepeval.test_case import LLMTestCase
 from deepeval.metrics import AnswerRelevancyMetric, FaithfulnessMetric, ContextualRelevancyMetric
+from deepeval.models import GeminiModel
 
 sys.path.append("../../../../")
-from samples.evaluation.deepeval.vertex_ai.google_vertex_ai import GoogleVertexAI
-from samples.evaluation.deepeval.utils import get_project_id
 from utils import setup_rag_chain
 
 # Using the RAG Triad for RAG evaluation:
 # https://docs.confident-ai.com/docs/guides-rag-triad
 
-EVAL_MODEL_NAME = "gemini-1.5-pro-002"
+EVAL_MODEL =  "gemini-1.5-pro"
+PROJECT_ID = "genai-atamel"
+LOCATION = "us-central1"
 
 def test_rag_triad_cymbal():
     rag_chain = setup_rag_chain()
@@ -35,10 +36,12 @@ def test_rag_triad_cymbal():
         retrieval_context=retrieval_context
     )
 
-    print(f"Evaluating with model: {EVAL_MODEL_NAME}")
-    eval_model = GoogleVertexAI(model_name=EVAL_MODEL_NAME,
-                           project=get_project_id(),
-                           location="us-central1")
+    print(f"Evaluating with model: {EVAL_MODEL}")
+    eval_model = GeminiModel(
+        model_name=EVAL_MODEL,
+        project=PROJECT_ID,
+        location=LOCATION
+    )
 
     answer_relevancy = AnswerRelevancyMetric(model=eval_model)
     faithfulness = FaithfulnessMetric(model=eval_model)

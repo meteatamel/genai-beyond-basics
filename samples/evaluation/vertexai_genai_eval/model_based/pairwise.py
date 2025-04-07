@@ -38,6 +38,9 @@ def main():
     # Model 1
     baseline_model = GenerativeModel("gemini-1.5-pro")
 
+    # metric = MetricPromptTemplateExamples.Pairwise.FLUENCY
+    # metric.baseline_model = baseline_model
+
     metric = PairwiseMetric(
         metric=Metric.PAIRWISE_FLUENCY,
         metric_prompt_template=MetricPromptTemplateExamples.get_prompt_template(Metric.PAIRWISE_FLUENCY),
