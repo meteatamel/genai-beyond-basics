@@ -22,6 +22,7 @@ Follow the following sub-pages for samples and to learn more:
 * [Computation-based metrics](./computation_based/README.md)
 * [Model-based metrics](./model_based/README.md)
 * [Tool-use metrics](./tool_use/README.md)
+* [Agent metrics](./agent/README.md)
 
 ## References
 
