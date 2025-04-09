@@ -14,11 +14,19 @@ be measured in 2 ways:
   * **Pointwise**: The judge model assesses the candidate model's output based on the evaluation criteria. 
   * **Pairwise**:  The judge model compares the two models (candidate and baseline) and pick the better one.
 
+There are also metrics on:
+
+* **Tool-use**: Technically computation-based, these metrics help you to see if a tool (function) call and name are 
+valid and it the parameter names and value match to what you expect. 
+* **Agent**: Mostly computation-based (but can be model-based too), these metrics help you to see if the agent's tool
+(function) use matches with the trajectory of tool use you expect against a reference. 
+
 ## Samples
 
-Follow the following sub-pages for samples and to learn more:
+Before you start, make sure to follow the [setup](setup.md) page. 
 
-* [Setup](./setup.md)
+Follow the following sub-pages for detailed samples:
+
 * [Computation-based metrics](./computation_based/README.md)
 * [Model-based metrics](./model_based/README.md)
 * [Tool-use metrics](./tool_use/README.md)

@@ -11,8 +11,8 @@ These are the metrics related to the [agents](https://cloud.google.com/vertex-ai
 * trajectory_precision
 * trajectory_recall
 
-These metrics help you to see if the agent's tool (function) use matches with the trajectory of tool use you expect
-against a reference. 
+Mostly computation-based (but can be model-based too), these metrics help you to see if the agent's tool (function) use
+matches with the trajectory of tool use you expect against a reference. 
 
 ## Standard metrics
 

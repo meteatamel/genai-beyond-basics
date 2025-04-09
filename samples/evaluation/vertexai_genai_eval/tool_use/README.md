@@ -9,7 +9,8 @@ These are the metrics related to the [tool use](https://cloud.google.com/vertex-
 * Tool parameter key match
 * Tool parameter key value match
 
-These metrics help you to see if a tool (function) call is valid, if the name and the parameters match to what you expect.
+Technically computation-based, these metrics help you to see if a tool (function) call and name are valid and it the 
+parameter names and value match to what you expect. 
 
 ## Tool-use metrics with saved responses
 
