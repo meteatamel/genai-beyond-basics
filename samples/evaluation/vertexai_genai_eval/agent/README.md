@@ -16,12 +16,12 @@ matches with the trajectory of tool use you expect against a reference.
 
 ## Standard metrics
 
-See [agents.py](agents.py) on how you'd use these metrics in Gen AI evaluation service with saved responses.
+See [agent.py](agent.py) on how you'd use these metrics in Gen AI evaluation service with saved responses.
 
 Run the evaluation:
 
 ```python
-python agents.py
+python agent.py
 ```
 
 ## Custom metrics
@@ -29,13 +29,13 @@ python agents.py
 Instead of relying on standard agent metrics, you can define your own prompts for custom trajectory metrics. You can
 also define custom computational metrics for trajectory evaluation (e.g. check if all the required tools are called).
 
-See [agents_custom_metric.py](agents_custom_metric.py) for details.
+See [agent_custom_metric.py](agent_custom_metric.py) for details.
 
 Run the evaluation:
 
 ```python
-python agents_custom_metric.py custom_trajectory_metric
-python agents_custom_metric.py custom_essential_tools_present_metric
+python agent_custom_metric.py custom_trajectory_metric
+python agent_custom_metric.py custom_essential_tools_present_metric
 ```
 
 

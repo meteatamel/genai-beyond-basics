@@ -27,12 +27,12 @@ A float in the range of [0,1]
 
 ## Computation-based metrics
 
-See [computation_based.py](./computation_based.py) on how you'd use these metrics in Gen AI evaluation service.
+See [computation.py](./computation.py) on how you'd use these metrics in Gen AI evaluation service.
 
 Run the evaluation:
 
 ```python
-python computation_based.py
+python computation.py
 ```
 
 After a few seconds, you should see the results:
