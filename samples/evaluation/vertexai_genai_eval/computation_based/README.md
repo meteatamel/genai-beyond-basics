@@ -25,7 +25,10 @@ It measures recall (completeness)
 A float in the range of [0,1]
 0: Poor similarity, 1: Strong similarity to reference.
 
-## Computation-based metrics
+Additionally, you can define your own custom metrics with [CustomMetric](https://github.com/googleapis/python-aiplatform/blob/main/vertexai/evaluation/metrics/_base.py#L75)
+class.   
+
+## Standard metrics
 
 See [computation.py](./computation.py) on how you'd use these metrics in Gen AI evaluation service.
 
@@ -61,3 +64,16 @@ You can also see the results in the Experiments section of Vertex AI in Google C
 Note how inflexible exact match and bleu scores are. Even with the slightest difference, the scores go down. 
 Rouge is slightly better but it also fails to properly capture the same semantic meanings. That's why we need model-based
 metrics.
+
+## Custom metrics
+
+Instead of relying on standard metrics, you can define your own metrics with [CustomMetric](https://github.com/googleapis/python-aiplatform/blob/main/vertexai/evaluation/metrics/_base.py#L75)
+class. 
+
+See [computation_custom.py](computation_custom.py) for details.
+
+Run the evaluation:
+
+```python
+python computation_custom.py
+```
