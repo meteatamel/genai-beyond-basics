@@ -10,10 +10,12 @@ from google import genai
 
 TEST_MODEL = "gemini-2.0-flash-001"
 EVAL_MODEL =  "gemini-1.5-pro"
+
+# Vertex AI parameters
 PROJECT_ID = "genai-atamel"
 LOCATION = "us-central1"
 
-def test_hallucination():
+def test_vertexai():
     # Generate response from the test model as usual
     client = genai.Client(
         vertexai=True,
@@ -56,7 +58,7 @@ def test_hallucination():
     assert_test(test_case, [metric])
 
 
-def test_hallucination_fails():
+def test_vertexai_fails():
     # Generate response from the test model as usual
     client = genai.Client(
         vertexai=True,

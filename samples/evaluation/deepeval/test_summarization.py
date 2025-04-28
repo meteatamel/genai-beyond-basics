@@ -10,10 +10,12 @@ from google import genai
 
 TEST_MODEL = "gemini-2.0-flash-001"
 EVAL_MODEL =  "gemini-1.5-pro"
+
+# Vertex AI parameters
 PROJECT_ID = "genai-atamel"
 LOCATION = "us-central1"
 
-def test_summarization():
+def test_vertexai():
     # Generate response from the test model as usual
     client = genai.Client(
         vertexai=True,

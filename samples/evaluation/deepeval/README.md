@@ -1,22 +1,31 @@
-# DeepEval and Vertex AI
+# DeepEval and Gemini
 
-![DeepEval and Vertex AI](images/deepeval_vertexai.png)
+![DeepEval and Gemini](images/deepeval_gemini.png)
 
 [DeepEval](https://docs.confident-ai.com/) is an open-source evaluation framework for LLMs. It allows to "unit test"
 LLM outputs in a similar way to Pytest with 14+ LLM-evaluated metrics backed by research.
 
-In this tutorial, you'll learn how to use DeepEval with Vertex AI.
+In this tutorial, you'll learn how to use DeepEval with Gemini running on Google AI and also Vertex AI.
 
 ## How to use DeepEval and Gemini
 
-You can check out the [Using Gemini](https://docs.confident-ai.com/docs/metrics-introduction#using-gemini) documentation
-to see how to use Gemini from DeepEval for evaluations. To recap, there are 2 ways to set Gemini as the evaluation
-model.
+You can check out the [Gemini](https://www.deepeval.com/docs/metrics-introduction#gemini) documentation
+of DeepEval to see how to use Gemini from DeepEval for evaluations. There are 2 ways to set Gemini 
+as the evaluation model: from code or from command line.
 
-You can create a `GeminiModel` and pass it to the metric in code: 
+## Vertex AI
+
+To set Gemini on Vertex AI from code, create a `GeminiModel` with Vertex AI parameters and pass it to the metric in code: 
 
 ```python
 from deepeval.models import GeminiModel
+
+TEST_MODEL = "gemini-2.0-flash-001"
+EVAL_MODEL =  "gemini-1.5-pro"
+
+# Vertex AI parameters
+PROJECT_ID = "genai-atamel"
+LOCATION = "us-central1"
 
 eval_model = GeminiModel(
     model_name=EVAL_MODEL,
@@ -36,7 +45,41 @@ deepeval set-gemini --model-name="gemini-1.5-pro" \
      --location="us-central1"
 ```
 
-The metric will automatically use that model automatically:
+The metric will use that model automatically:
+```python
+metric = AnswerRelevancyMetric(threshold=0.8)
+```
+
+## Google AI
+
+To set Gemini on Google AI from code, create a `GeminiModel` with Google AI parameters and pass it to the metric in code: 
+
+```python
+from deepeval.models import GeminiModel
+
+TEST_MODEL = "gemini-2.0-flash-001"
+EVAL_MODEL =  "gemini-1.5-pro"
+
+# Google AI parameters
+GOOGLEAI_API_KEY = "your-google-ai-api-key"
+
+eval_model = GeminiModel(
+    model_name=EVAL_MODEL,
+    api_key=GOOGLEAI_API_KEY
+)
+metric = AnswerRelevancyMetric(
+    model=eval_model,
+    threshold=0.8)
+```
+
+Alternatively, you can set the evaluation model from the command line:
+
+```console
+deepeval set-gemini --model-name="gemini-1.5-pro" \
+     --google-api-key="your-google-ai-api-key"
+```
+
+The metric will use that model automatically:
 ```python
 metric = AnswerRelevancyMetric(threshold=0.8)
 ```
