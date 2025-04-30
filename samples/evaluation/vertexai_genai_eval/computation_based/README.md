@@ -4,13 +4,18 @@
 
 These are the [computation-based](https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#computation-based-metrics)
 metrics supported by Gen AI evaluation service out of the box:
-* Exact match 
-* Bleu
-* Rouge, Rouge-1, Rouge-2, Rouge-L, Rouge-LSum
+
+* `exact_match`
+* `bleu`
+* `rouge`
+* `rouge_1`
+* `rouge_2`
+* `rouge_l`
+* `rouge_l_sum`
 
 > [!NOTE]
-> There are also metrics related to tool use, which are technically computation-based metrics, but we'll cover them
-> separately in [tool_use](../tool_use).
+> There are metrics related to tool use and agents, which are also computation-based metrics. 
+> They're covered separately in [agent](./agent) and [tool_use](./tool_use).
 
 **Exact match** metric computes whether a generated text matches a reference text exactly.
 0: No match, 1: Match

@@ -4,7 +4,7 @@ from vertexai.preview.evaluation import EvalTask
 from vertexai.preview.evaluation.constants import Metric
 from vertexai.preview.evaluation.metrics import TrajectorySingleToolUse
 
-sys.path.append("../../../../")
+sys.path.append("../../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
 
 # Metrics to evaluate agents

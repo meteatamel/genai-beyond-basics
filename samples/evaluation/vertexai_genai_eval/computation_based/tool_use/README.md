@@ -4,13 +4,13 @@
 
 These are the metrics related to the [tool use](https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#tool-use)
 
-* Tool call valid 
-* Tool name match
-* Tool parameter key match
-* Tool parameter key value match
+* `tool_call_valid`
+* `tool_name_match`
+* `tool_parameter_key_match`
+* `tool_parameter_kv_match`
 
-Technically computation-based, these metrics help you to see if a tool (function) call and name are valid and it the 
-parameter names and value match to what you expect. 
+These metrics assess if a tool (function) call and name are valid and if the parameter names and values 
+match to what you expect.
 
 ## Tool-use metrics with saved responses
 

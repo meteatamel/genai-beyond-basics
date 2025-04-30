@@ -4,31 +4,46 @@
 
 There are 2 classes of [model-based metrics](https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#model-based-metrics). 
 
-First, metrics used specifically for translation related tasks. These are the supported translation metrics:
+First, metrics used specifically for translation related tasks. [Comet](https://huggingface.co/Unbabel/wmt22-comet-da) 
+and [MetricX](https://github.com/google-research/metricx) are the supported translation metrics:
 
-* [Comet](https://huggingface.co/Unbabel/wmt22-comet-da)
-* [MetricX](https://github.com/google-research/metricx)
+* `comet`
+* `metricx`
 
-Second, more generic metrics where the judge model uses a metric prompt template to judge a candidate model. 
-These are the metrics with the [prebuilt metric prompt templates](https://cloud.google.com/vertex-ai/generative-ai/docs/models/metrics-templates):
-* Coherence
-* Fluency
-* Groundedness
-* Instruction Following
-* Multi-turn Chat Quality
-* Multi-turn Safety
-* Safety
-* Summarization Quality
-* Question Answering Quality
-* Text Quality
-* Verbosity
+Second, more generic metrics where the judge model evaluates a candidate model. For this case, there are 3 ways to define
+metrics:
 
-> [!NOTE]
-> Each metric has 2 templates: 1 for pointwise and 1 for pairwise evaluation. 
-> Details in [metric_prompt_template_examples.py](https://github.com/googleapis/python-aiplatform/blob/main/vertexai/evaluation/metrics/metric_prompt_template_examples.py).
+1- Define metrics with the pre-built metric prompt templates for pointwise or pairwise evaluation.
+2- Define metrics with your custom metric prompt templates. 
+3- Define metrics with a free-form metric prompt.
 
-Additionally, you can [define your own metrics](https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval)
-with a metric prompt template or define a free-form metric prompt for full flexibility  (see [metric_prompt_template.py](https://github.com/googleapis/python-aiplatform/blob/main/vertexai/evaluation/metrics/metric_prompt_template.py)).  
+These are the metrics with the [pre-built metric prompt templates](https://cloud.google.com/vertex-ai/generative-ai/docs/models/metrics-templates):
+
+* `coherence`
+* `fluency`
+* `safety`
+* `groundedness`
+* `instruction_following`
+* `verbosity`
+* `text_quality`
+* `summarization_quality`
+* `question_answering_quality`
+* `multi_turn_chat_quality`
+* `multi_turn_safety`
+* `pairwise_coherence`
+* `pairwise_fluency`
+* `pairwise_safety`
+* `pairwise_groundedness`
+* `pairwise_instruction_following`
+* `pairwise_verbosity`
+* `pairwise_text_quality`
+* `pairwise_summarization_quality`
+* `pairwise_question_answering_quality`
+* `pairwise_multi_turn_chat_quality`
+* `pairwise_multi_turn_safety`
+
+See [metric_prompt_template.py](https://github.com/googleapis/python-aiplatform/blob/main/vertexai/evaluation/metrics/metric_prompt_template.py)
+for details on custom metric prompt template.
 
 ## Translation metrics
 
@@ -111,7 +126,7 @@ pairwise_fluency/baseline_model_win_rate: 1.0
 
 ## Custom metrics
 
-Instead of relying on prebuilt prompt templates for metrics, you can define your own prompts for custom metrics. 
+Instead of relying on pre-built prompt templates for metrics, you can define your own prompts for custom metrics. 
 You can do this with a metric prompt template or define a free-form metric prompt for full flexibility. 
 
 See [pointwise_custom_metric.py](./pointwise_custom_metric.py) for details.
