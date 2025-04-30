@@ -9,7 +9,7 @@ from vertexai.evaluation import (
 )
 
 sys.path.append("../../../../")
-from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # Pointwise with a custom metric
 # https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#model-based-metrics
@@ -55,7 +55,7 @@ def template():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=[custom_metric],
-        experiment="pointwise-custom-metric-template"
+        experiment=get_experiment_name(__file__, "template")
     )
 
     eval_result = eval_task.evaluate()
@@ -105,7 +105,7 @@ def free_form():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=[custom_metric],
-        experiment="pointwise-custom-metric-free-form"
+        experiment=get_experiment_name(__file__, "free-form")
     )
 
     eval_result = eval_task.evaluate()

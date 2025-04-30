@@ -4,7 +4,7 @@ from vertexai.evaluation import EvalTask
 from vertexai.evaluation import PointwiseMetric, PointwiseMetricPromptTemplate
 
 sys.path.append("../../../../../")
-from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # Define a custom model-based trajectory metric
 # See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/evaluation-agents#metric_customization
@@ -90,7 +90,7 @@ def main():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=[custom__metric],
-        experiment="agents-custom-trajectory"
+        experiment=get_experiment_name(__file__)
     )
 
     eval_result = eval_task.evaluate()

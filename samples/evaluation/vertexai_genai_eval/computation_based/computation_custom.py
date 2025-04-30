@@ -3,7 +3,7 @@ import sys
 from vertexai.evaluation import EvalTask, CustomMetric
 
 sys.path.append("../../../../")
-from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # A sample custom computation-based metric to count the number of words
 # See: https://github.com/GoogleCloudPlatform/generative-ai/blob/6424f10b0ed5a2a31801173ea407d356d299a852/gemini/evaluation/bring_your_own_computation_based_metric.ipynb
@@ -38,7 +38,7 @@ def main():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=[custom_word_count_metric],
-        experiment="computation-custom"
+        experiment=get_experiment_name(__file__)
     )
 
     eval_result = eval_task.evaluate()

@@ -9,7 +9,7 @@ from vertexai.evaluation.metrics import PairwiseMetric
 from vertexai.generative_models import GenerativeModel
 
 sys.path.append("../../../../")
-from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # Pairwise metrics to compare 2 models against each other
 # See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/metrics-templates#overview
@@ -53,7 +53,7 @@ def main():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=[metric],
-        experiment="pairwise",
+        experiment=get_experiment_name(__file__),
     )
 
     eval_result = eval_task.evaluate(

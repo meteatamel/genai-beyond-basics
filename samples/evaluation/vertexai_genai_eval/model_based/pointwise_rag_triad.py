@@ -7,7 +7,7 @@ from vertexai.evaluation import (
 )
 
 sys.path.append("../../../../")
-from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # An attempt to implement the RAG triad metrics: answer relevance, context relevance, groundedness:
 # See: https://atamel.dev/posts/2025/01-09_evaluating_rag_pipelines/
@@ -53,7 +53,7 @@ def answer_relevance():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=[answer_relevance_metric],
-        experiment="pointwise-answer-relevance"
+        experiment=get_experiment_name(__file__, "answer-relevance")
     )
     eval_result = eval_task.evaluate()
     print_eval_result(eval_result, colwidth=50)
@@ -106,7 +106,7 @@ def context_relevance():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=[context_relevance_metric],
-        experiment="pointwise-context-relevance"
+        experiment=get_experiment_name(__file__, "context-relevance")
     )
     eval_result = eval_task.evaluate()
     print_eval_result(eval_result, colwidth=50)
@@ -159,7 +159,7 @@ def groundedness():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=[groundedness_metric],
-        experiment="pointwise-groundedness"
+        experiment=get_experiment_name(__file__, "groundedness")
     )
     eval_result = eval_task.evaluate()
     print_eval_result(eval_result, colwidth=50)
@@ -198,7 +198,7 @@ def all_metrics():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=[answer_relevance_metric, context_relevance_metric, groundedness_metric],
-        experiment="pointwise-rag-triad"
+        experiment=get_experiment_name(__file__)
     )
 
     eval_result = eval_task.evaluate()

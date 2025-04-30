@@ -5,7 +5,7 @@ from vertexai.preview.evaluation.constants import Metric
 from vertexai.preview.evaluation.metrics import TrajectorySingleToolUse
 
 sys.path.append("../../../../../")
-from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # Metrics to evaluate agents
 # See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/evaluation-agents
@@ -204,7 +204,7 @@ def main():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=metrics,
-        experiment="agents"
+        experiment=get_experiment_name(__file__)
     )
 
     eval_result = eval_task.evaluate()

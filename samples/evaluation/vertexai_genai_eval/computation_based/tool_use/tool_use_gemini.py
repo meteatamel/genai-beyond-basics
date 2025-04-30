@@ -9,7 +9,7 @@ import pandas
 import sys
 
 sys.path.append("../../../../../")
-from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # An example on how you can setup 2 functions for automatic function calling in Gemini,
 # use those functions from a prompt, and then evaluate the function call results with the Gen AI evaluation service. It
@@ -179,7 +179,7 @@ def evaluate_function_calling(automatic_function_calling_history):
             Metric.TOOL_PARAMETER_KEY_MATCH,
             Metric.TOOL_PARAMETER_KV_MATCH
         ],
-        experiment="tool-use-gemini"
+        experiment=get_experiment_name(__file__)
     )
 
     eval_result = eval_task.evaluate()

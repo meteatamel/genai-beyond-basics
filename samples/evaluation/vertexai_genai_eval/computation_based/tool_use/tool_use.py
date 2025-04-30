@@ -5,7 +5,7 @@ from vertexai.evaluation import EvalTask
 from vertexai.evaluation.constants import Metric
 
 sys.path.append("../../../../../")
-from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # An example to show how you'd use tool-use metrics in Gen AI evaluation service with saved responses.
 # See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#tool-use
@@ -96,7 +96,7 @@ def main():
             Metric.TOOL_PARAMETER_KEY_MATCH,
             Metric.TOOL_PARAMETER_KV_MATCH
         ],
-        experiment="tool-use"
+        experiment=get_experiment_name(__file__)
     )
 
     eval_result = eval_task.evaluate()

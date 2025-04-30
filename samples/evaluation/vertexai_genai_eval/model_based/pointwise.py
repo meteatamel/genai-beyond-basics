@@ -7,7 +7,7 @@ from vertexai.evaluation import (
 from vertexai.generative_models import GenerativeModel
 
 sys.path.append("../../../../")
-from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # Pointwise (single model) metrics can be used in 2 ways:
 # 1- Bring-your-own-response (BYOR) mode where the model responses are provided rather than calling the model.
@@ -69,7 +69,7 @@ def byor():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=metrics,
-        experiment="pointwise-byor"
+        experiment=get_experiment_name(__file__, "byor")
     )
 
     eval_result = eval_task.evaluate()
@@ -86,7 +86,7 @@ def model():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=metrics,
-        experiment="pointwise-model"
+        experiment=get_experiment_name(__file__, "model")
     )
 
     eval_result = eval_task.evaluate(

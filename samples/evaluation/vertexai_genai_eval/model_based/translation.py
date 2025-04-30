@@ -4,7 +4,7 @@ from vertexai.evaluation import EvalTask
 from vertexai.evaluation.metrics.pointwise_metric import Comet, MetricX
 
 sys.path.append("../../../../")
-from samples.evaluation.vertexai_genai_eval.utils import print_eval_result
+from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name,  print_eval_result
 
 # Model-based metrics specifically for translation related tasks.
 # See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#translation-models
@@ -45,7 +45,7 @@ def main():
     eval_task = EvalTask(
         dataset=eval_dataset,
         metrics=metrics,
-        experiment="translation"
+        experiment=get_experiment_name(__file__)
     )
 
     eval_result = eval_task.evaluate()
