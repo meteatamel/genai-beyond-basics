@@ -55,6 +55,9 @@ Computation-based:
   * `trajectory_single_tool_use`
 
 Model-based:
+* Translation:
+  * `comet`
+  * `metricx`
 * `coherence`
 * `fluency`
 * `safety`
