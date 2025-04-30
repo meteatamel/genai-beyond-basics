@@ -10,12 +10,12 @@ and [MetricX](https://github.com/google-research/metricx) are the supported tran
 * `comet`
 * `metricx`
 
-Second, more generic metrics where the judge model evaluates a candidate model. For this case, there are 3 ways to define
+Second, metrics where the judge model evaluates a candidate model. For this case, there are 3 ways to define
 metrics:
 
-1- Define metrics with the pre-built metric prompt templates for pointwise or pairwise evaluation.
-2- Define metrics with your custom metric prompt templates. 
-3- Define metrics with a free-form metric prompt.
+1. With pre-built metric prompt templates for pointwise and pairwise evaluation. 
+2. With custom metric prompt templates. 
+3. With a free-form metric prompt.
 
 These are the metrics with the [pre-built metric prompt templates](https://cloud.google.com/vertex-ai/generative-ai/docs/models/metrics-templates):
 
@@ -42,8 +42,7 @@ These are the metrics with the [pre-built metric prompt templates](https://cloud
 * `pairwise_multi_turn_chat_quality`
 * `pairwise_multi_turn_safety`
 
-See [metric_prompt_template.py](https://github.com/googleapis/python-aiplatform/blob/main/vertexai/evaluation/metrics/metric_prompt_template.py)
-for details on custom metric prompt template.
+For custom metric prompt templates, see [metric_prompt_template.py](https://github.com/googleapis/python-aiplatform/blob/main/vertexai/evaluation/metrics/metric_prompt_template.py).
 
 ## Translation metrics
 
