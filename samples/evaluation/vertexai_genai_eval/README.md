@@ -86,3 +86,4 @@ Model-based:
 * [Documentation: Gen AI evaluation service overview](https://cloud.google.com/vertex-ai/generative-ai/docs/models/evaluation-overview)
 * [GitHub: GenAI evaluation service code](https://github.com/googleapis/python-aiplatform/tree/main/vertexai/evaluation)
 * [Notebooks: GenAI evaluation service samples](https://github.com/GoogleCloudPlatform/generative-ai/tree/main/gemini/evaluation)
+* [Blog post: LLM Evaluation on GCP](https://medium.com/google-cloud/llms-evaluation-on-gcp-9186fad73f22)
