@@ -4,18 +4,17 @@ The [Gen AI evaluation service](https://cloud.google.com/vertex-ai/generative-ai
 Vertex AI lets you evaluate any generative model or application against a set of criteria or your own custom criteria 
 using metrics.
 
-There are 2 classes of metrics:
+These are the main metric classes:
 
 * **Computation-based**: These metrics are computed using mathematical formulas such as ROUGE, BLEU or tool use and 
 compare the model's output against a ground truth or reference.  
-  * **Tool-use**: These metrics assess if a tool (function) call and name are valid and if the parameter names and values
-  match to what you expect. 
-  * **Agent**: These metrics assess if the agent's tool (function) use matches with a reference trajectory.
 * **Model-based**: These metrics assess a candidate model with a judge model. The judge model for most use cases is 
 Gemini but you can also use models such as MetricX or COMET for translation use cases. Model-based metrics can further 
 be measured in pointwise (single model) or pairwise (two models) ways.
-  * **Agent**: Instead of relying on standard computation-based agent metrics, you can define model-based custom 
-  trajectory metrics.
+* **Tool-use**: These metrics assess if a tool (function) call and name are valid and if the parameter names and values
+match to what you expect. They're computation-based. 
+* **Agent**: These metrics assess if the agent's tool (function) use matches with a reference trajectory. They can be
+computation-based or model-based.
 
 ## Samples
 
@@ -40,18 +39,6 @@ Computation-based:
 * `rouge_2`
 * `rouge_l`
 * `rouge_l_sum`
-* Tool-use:
-  * `tool_call_valid`
-  * `tool_name_match`
-  * `tool_parameter_key_match`
-  * `tool_parameter_kv_match`
-* Agent:
-  * `trajectory_exact_match`
-  * `trajectory_in_order_match`
-  * `trajectory_any_order_match`
-  * `trajectory_precision`
-  * `trajectory_recall`
-  * `trajectory_single_tool_use`
 
 Model-based:
 * Translation:
@@ -79,6 +66,20 @@ Model-based:
 * `pairwise_question_answering_quality`
 * `pairwise_multi_turn_chat_quality`
 * `pairwise_multi_turn_safety`
+
+Tool-use:
+  * `tool_call_valid`
+  * `tool_name_match`
+  * `tool_parameter_key_match`
+  * `tool_parameter_kv_match`
+
+Agent:
+  * `trajectory_exact_match`
+  * `trajectory_in_order_match`
+  * `trajectory_any_order_match`
+  * `trajectory_precision`
+  * `trajectory_recall`
+  * `trajectory_single_tool_use`
 
 ## References
 
