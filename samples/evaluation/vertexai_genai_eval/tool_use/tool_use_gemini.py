@@ -8,7 +8,7 @@ import requests
 import pandas
 import sys
 
-sys.path.append("../../../../../")
+sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # An example on how you can setup 2 functions for automatic function calling in Gemini,
