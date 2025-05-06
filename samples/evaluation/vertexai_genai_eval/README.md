@@ -24,10 +24,9 @@ Before you start, make sure to follow the [setup](setup.md) page.
 Follow the following sub-pages for detailed samples:
 
 * [Computation-based metrics](./computation_based/README.md)
-  * [Tool-use metrics](./computation_based/tool_use/README.md)
-  * [Agent metrics](./computation_based/agent/README.md)
 * [Model-based metrics](./model_based/README.md)
-  * [Agent metrics](./model_based/agent/README.md)
+* [Tool-use metrics](./tool_use/README.md)
+* [Agent metrics](./agent/README.md)
 
 ## Metrics
 

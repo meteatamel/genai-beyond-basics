@@ -14,8 +14,8 @@ metrics supported by Gen AI evaluation service out of the box:
 * `rouge_l_sum`
 
 > [!NOTE]
-> There are metrics related to tool use and agents, which are also computation-based metrics. 
-> They're covered separately in [agent](./agent) and [tool_use](./tool_use).
+> There are metrics related to tool use and agents, which can also be computation-based. 
+> They're covered separately in [agent](../agent) and [tool_use](../tool_use).
 
 **Exact match** metric computes whether a generated text matches a reference text exactly.
 0: No match, 1: Match

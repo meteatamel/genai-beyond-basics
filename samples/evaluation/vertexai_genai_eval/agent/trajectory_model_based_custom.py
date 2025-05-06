@@ -3,7 +3,7 @@ import sys
 from vertexai.evaluation import EvalTask
 from vertexai.evaluation import PointwiseMetric, PointwiseMetricPromptTemplate
 
-sys.path.append("../../../../../")
+sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
 # Define a custom model-based trajectory metric
