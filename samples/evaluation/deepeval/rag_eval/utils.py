@@ -22,22 +22,22 @@ CHUNK_OVERLAP_1 = 100
 CHUNK_OVERLAP_2 = 0
 CHUNK_OVERLAP = CHUNK_OVERLAP_2
 
-SYSTEM_PROMPT_1 = """You are an assistant for question-answering tasks. 
-Use the following pieces of retrieved context to answer 
-the question. If you don't know the answer, say that you 
-don't know. Use three sentences maximum and keep the 
+SYSTEM_PROMPT_1 = """You are an assistant for question-answering tasks.
+Use the following pieces of retrieved context to answer
+the question. If you don't know the answer, say that you
+don't know. Use three sentences maximum and keep the
 answer concise.
 
 {context}"""
-SYSTEM_PROMPT_2 = """You are an assistant for question-answering tasks. 
-Use the following pieces of retrieved context to answer 
-the question. Only answer the question and if you don't know the answer, 
+SYSTEM_PROMPT_2 = """You are an assistant for question-answering tasks.
+Use the following pieces of retrieved context to answer
+the question. Only answer the question and if you don't know the answer,
 just say I don't know.
 
 {context}"""
 SYSTEM_PROMPT = SYSTEM_PROMPT_1
 
-MODEL_NAME="gemini-1.5-flash-002"
+MODEL_NAME="gemini-2.0-flash"
 TEMPERATURE=1
 
 def setup_rag_chain():
