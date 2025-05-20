@@ -6,7 +6,8 @@ from vertexai.evaluation.metrics import CustomMetric
 sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
-# Define a custom computation-based metric to check if all the required tools are called
+# Trajectory evaluation: Evaluate the path (sequence of tool calls) the agent took to reach the final response.
+# with a custom computation-based metric to check if all the required tools are called
 # See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/evaluation-agents#metric_customization
 
 def essential_tools_present(instance, required_tools = ["loc_to_lat_long", "lat_long_to_weather"]):

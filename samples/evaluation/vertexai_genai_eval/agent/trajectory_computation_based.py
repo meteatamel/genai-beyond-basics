@@ -7,8 +7,10 @@ from vertexai.preview.evaluation.metrics import TrajectorySingleToolUse
 sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
-# Metrics to evaluate agents
+# Trajectory evaluation: Evaluate the path (sequence of tool calls) the agent took to reach the final response with
+# computation-based metrics.
 # See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/evaluation-agents
+
 def main():
     predicted_trajectory = [
         # example 1 - perfect match

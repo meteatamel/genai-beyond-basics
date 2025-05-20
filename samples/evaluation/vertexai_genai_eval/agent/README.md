@@ -23,7 +23,7 @@ These are the standard computation-based trajectory metrics:
 
 For standard computation-based trajectory metrics with saved responses, see [trajectory_computation_based.py](./trajectory_computation_based.py).
 
-Run the evaluation:
+Run:
 
 ```python
 python trajectory_computation_based.py
@@ -32,7 +32,7 @@ python trajectory_computation_based.py
 For custom computation-based trajectory metrics (e.g. check if all the required tools are called), 
 see [trajectory_computation_based_custom.py](trajectory_computation_based_custom.py).
 
-Run the evaluation:
+Run:
 
 ```python
 python trajectory_computation_based_custom.py
@@ -43,7 +43,7 @@ python trajectory_computation_based_custom.py
 Instead of relying on computation-based agent trajectory metrics, you can also define model-based custom trajectory
 metrics. See [trajectory_model_based_custom.py](trajectory_model_based_custom.py) for details.
 
-Run the evaluation:
+Run:
 
 ```python
 python trajectory_model_based_custom.py
@@ -51,4 +51,22 @@ python trajectory_model_based_custom.py
 
 ## Final response evaluation 
 
-TODO
+Final response evaluation of agents is very similar to model evaluations. See [response_model_based.py](./response_model_based.py)
+for an example.
+
+Run:
+
+```python
+python response_model_based.py
+```
+
+## Trajectory and response evaluation with runnable interface 
+
+There's also a runnable interface where you can setup and run agent and parse the output for trajectory and response 
+evaluations. See [trajectory_and_response_runnable.py](./trajectory_and_response_runnable.py) for details.
+
+Run:
+
+```python
+python trajectory_and_response_runnable.py
+```

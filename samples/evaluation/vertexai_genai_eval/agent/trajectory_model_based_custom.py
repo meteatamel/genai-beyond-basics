@@ -6,7 +6,8 @@ from vertexai.evaluation import PointwiseMetric, PointwiseMetricPromptTemplate
 sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
-# Define a custom model-based trajectory metric
+# Trajectory evaluation: Evaluate the path (sequence of tool calls) the agent took to reach the final response with
+# model-based metrics.
 # See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/evaluation-agents#metric_customization
 
 def main():
