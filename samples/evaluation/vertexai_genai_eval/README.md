@@ -15,6 +15,7 @@ be measured in pointwise (single model) or pairwise (two models) ways.
 match to what you expect. They're computation-based. 
 * **Agent**: These metrics assess if the agent's tool (function) use matches with a reference trajectory. They can be
 computation-based or model-based.
+* **Multimodal**: Gecko metric assesses the quality of multimodal (image, video) outputs.
 
 ## Samples
 
@@ -26,6 +27,7 @@ Follow the following sub-pages for detailed samples:
 * [Model-based metrics](./model_based/README.md)
 * [Tool-use metrics](./tool_use/README.md)
 * [Agent metrics](./agent/README.md)
+* [Multimodal metrics](./multimodal/README.md)
 
 ## Metrics
 
