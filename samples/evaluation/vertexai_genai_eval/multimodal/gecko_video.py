@@ -11,8 +11,6 @@ from vertexai.preview.evaluation import (
     RubricGenerationConfig,
 )
 
-# FIXME: This does not seem to work. Compare with the notebook to see what the difference is.
-
 sys.path.append("../../../../")
 from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, print_eval_result
 
@@ -22,9 +20,9 @@ from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, pr
 # https://github.com/GoogleCloudPlatform/generative-ai/blob/main/gemini/evaluation/evaluate_videos_with_gecko.ipynb
 def main():
     prompts = [
-        #"Snow blanketed rocky mountains surround and shadow deep canyons. the canyons bend through the high elevated mountain peaks. black and white",
-        # "Lush green valley is carved between rocky cliffs. the valley winds through the high elevated rock faces. misty morning",
-        "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas",
+        "Snow b lanketed rocky mountains surround and shadow deep canyons. the canyons bend through the high elevated mountain peaks. black and white",
+        "Lush green valley is carved between rocky cliffs. the valley winds through the high elevated rock faces. misty morning",
+        # "A couple in formal evening wear going home get caught in a heavy downpour with umbrellas",
         # "Two friends, dressed in casual summer clothes, are caught in a light summer rain while running home",
         # "A tranquil tableau of in the heart of the Utah desert, a massive sandstone arch spanned the horizon",
         # "A eerie panorama of the Arizona desert, with ancient ruins silhouetted against the setting sun",
@@ -34,9 +32,9 @@ def main():
         # "A boat cruising rapidly along the Thames River with Big Ben behind",
     ]
     videos = [
-        #'{"contents": [{"parts": [{"file_data": {"mime_type": "video/mp4", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/videos/mountain.mp4"}}]}]}',
-        # '{"contents": [{"parts": [{"file_data": {"mime_type": "video/mp4", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/videos/mountain.mp4"}}]}]}',
-         '{"contents": [{"parts": [{"file_data": {"mime_type": "video/mp4", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/videos/couple.mp4"}}]}]}',
+        '{"contents": [{"parts": [{"file_data": {"mime_type": "video/mp4", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/videos/mountain.mp4"}}]}]}',
+        '{"contents": [{"parts": [{"file_data": {"mime_type": "video/mp4", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/videos/mountain.mp4"}}]}]}',
+        # '{"contents": [{"parts": [{"file_data": {"mime_type": "video/mp4", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/videos/couple.mp4"}}]}]}',
         # '{"contents": [{"parts": [{"file_data": {"mime_type": "video/mp4", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/videos/couple.mp4"}}]}]}',
         # '{"contents": [{"parts": [{"file_data": {"mime_type": "video/mp4", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/videos/desert.mp4"}}]}]}',
         # '{"contents": [{"parts": [{"file_data": {"mime_type": "video/mp4", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/videos/desert.mp4"}}]}]}',
@@ -56,7 +54,7 @@ def main():
     # Rubric Generation
     rubric_generation_config = RubricGenerationConfig(
         prompt_template=prompt_templates.RUBRIC_GENERATION_PROMPT,
-        parsing_fn=lambda response_str: utils.parse_json_to_qa_records(response_str, parse_for_image=False),
+        parsing_fn=utils.parse_json_to_qa_records,
     )
 
     # Rubric Validation
@@ -89,10 +87,10 @@ def main():
 
     # Calculate overall score for metric.
     dataset_with_final_scores = utils.compute_scores(eval_result.metrics_table)
-    print(f"scores: {dataset_with_final_scores['final_score']}")
+    print(f"final_score: {dataset_with_final_scores['final_score'].to_list()}")
 
-    overall_score = np.mean(dataset_with_final_scores["final_score"])
-    print(f"mean score: {overall_score}")
+    mean_final_score = np.mean(dataset_with_final_scores["final_score"])
+    print(f"mean final_score: {mean_final_score}")
 
 
 if __name__ == "__main__":

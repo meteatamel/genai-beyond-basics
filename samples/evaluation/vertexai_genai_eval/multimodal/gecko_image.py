@@ -21,7 +21,7 @@ from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, pr
 def main():
     prompts = [
         "steaming cup of coffee and a croissant on a table",
-        #"steaming cup of coffee and toast in a cafe",
+        "steaming cup of coffee and toast in a cafe",
         # "sunset over a calm ocean",
         # "sunset over a tranquil forest",
         # "butterfly with colorful wings on a flower",
@@ -39,7 +39,7 @@ def main():
     ]
     images = [
         '{"contents": [{"parts": [{"file_data": {"mime_type": "image/png", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/images/coffee.png"}}]}]}',
-        #'{"contents": [{"parts": [{"file_data": {"mime_type": "image/png", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/images/coffee.png"}}]}]}',
+        '{"contents": [{"parts": [{"file_data": {"mime_type": "image/png", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/images/coffee.png"}}]}]}',
         # '{"contents": [{"parts": [{"file_data": {"mime_type": "image/png", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/images/sunset.png"}}]}]}',
         # '{"contents": [{"parts": [{"file_data": {"mime_type": "image/png", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/images/sunset.png"}}]}]}',
         # '{"contents": [{"parts": [{"file_data": {"mime_type": "image/png", "file_uri": "gs://cloud-samples-data/generative-ai/evaluation/images/butterfly.png"}}]}]}',
@@ -99,10 +99,10 @@ def main():
 
     # Calculate overall score for metric.
     dataset_with_final_scores = utils.compute_scores(eval_result.metrics_table)
-    print(f"scores: {dataset_with_final_scores['final_score']}")
+    print(f"final_score: {dataset_with_final_scores['final_score'].to_list()}")
 
-    overall_score = np.mean(dataset_with_final_scores["final_score"])
-    print(f"mean score: {overall_score}")
+    mean_final_score = np.mean(dataset_with_final_scores["final_score"])
+    print(f"mean final_score: {mean_final_score}")
 
 
 if __name__ == "__main__":

@@ -430,8 +430,8 @@ correct answer.
 {video}
 
 # Output Format
-
+<question>
 Question: repeat the original question
 Verdict: a|b|c|d|e
-
+</question>
 """

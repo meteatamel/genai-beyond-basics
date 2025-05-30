@@ -49,7 +49,7 @@ class QAResult(QARecord):
         self.result = result
 
 
-def parse_json_to_qa_records(json_response: str, parse_for_image=True) -> dict[str, Any]:
+def parse_json_to_qa_records(json_response: str) -> dict[str, Any]:
     """
     Parse the JSON response and convert it to a questions and QARecords.
 
@@ -78,8 +78,8 @@ def parse_json_to_qa_records(json_response: str, parse_for_image=True) -> dict[s
         for qa in data["qas"]:
             record = QARecord(
                 question=qa["question"],
-                #question_type=qa["question_type"],
-                question_type=qa["question_type"] if parse_for_image else "",
+                # There's no question_type in videos
+                question_type=qa.get("question_type", ""),
                 gt_answer=qa["answer"],
                 answer_choices=qa["choices"],
                 justification=qa["justification"],
