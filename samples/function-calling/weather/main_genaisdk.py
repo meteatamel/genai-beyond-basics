@@ -5,12 +5,13 @@ import requests
 
 # Automatic function calling with the Google Gen AI SDK for Python
 
+logging.basicConfig(format="[%(levelname)s]: %(message)s", level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 PROMPT = "What's the temperature, wind, humidity like in London, Paris, Tokyo?"
 PROJECT_ID = "genai-atamel"
 LOCATION = "us-central1"
-MODEL_ID = "gemini-2.0-flash-001"
+MODEL_ID = "gemini-2.5-flash"
 
 def api_request(url):
     logger.debug(f"Making a request to: {url}")
