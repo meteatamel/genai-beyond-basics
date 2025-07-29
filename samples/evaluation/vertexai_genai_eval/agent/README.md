@@ -1,4 +1,4 @@
-# Gen AI evaluation service - agent metrics (computation-based)
+# Gen AI evaluation service - agent metrics
 
 ## Introduction 
 

@@ -10,6 +10,21 @@ from samples.evaluation.vertexai_genai_eval.utils import get_experiment_name, pr
 # An example to show how you'd use tool-use metrics in Gen AI evaluation service with saved responses.
 # See: https://cloud.google.com/vertex-ai/generative-ai/docs/models/determine-eval#tool-use
 def main():
+
+    references = [
+        {
+            "content": "",
+            "tool_calls": [
+                {
+                    "name": "location_to_lat_long",
+                    "arguments": {
+                        "location": "London"
+                    }
+                }
+            ]
+        }
+    ] * 7
+
     responses = [
         {
             "content": "",
@@ -20,8 +35,20 @@ def main():
         {
             "content": "",
             "tool_calls": [
+                # wrongly formatted (foo instead of name) tool call - fails Metric.TOOL_CALL_VALID
                 {
-                    # name (loc_to_lat_long) does not match - fails Metric.TOOL_NAME_MATCH
+                    "foo": "some_function",
+                    "arguments": {
+                        "some_arg": "some_value"
+                    }
+                }
+            ]
+        },
+        {
+            "content": "",
+            "tool_calls": [
+                {
+                    # name (loc_to_lat_long) does not match (location_to_lat_long) - fails Metric.TOOL_NAME_MATCH
                     "name": "loc_to_lat_long",
                     "arguments": {
                         "location": "London"
@@ -35,7 +62,7 @@ def main():
                 {
                     "name": "location_to_lat_long",
                     "arguments": {
-                        # key (city) does not match - fails Metric.TOOL_PARAMETER_KEY_MATCH
+                        # key (city) does not match (location) - fails Metric.TOOL_PARAMETER_KEY_MATCH
                         "city": "London"
                     }
                 }
@@ -47,7 +74,19 @@ def main():
                 {
                     "name": "location_to_lat_long",
                     "arguments": {
-                        # value (Paris) does not match - fails Metric.TOOL_PARAMETER_KV_MATCH
+                        # key (city) does not match (location) - fails Metric.TOOL_PARAMETER_KV_MATCH
+                        "city": "London"
+                    }
+                }
+            ]
+        },
+        {
+            "content": "",
+            "tool_calls": [
+                {
+                    "name": "location_to_lat_long",
+                    "arguments": {
+                        # value (Paris) does not match (London) - fails Metric.TOOL_PARAMETER_KV_MATCH
                         "location": "Paris"
                     }
                 }
@@ -66,20 +105,6 @@ def main():
             ]
         }
     ]
-
-    references = [
-        {
-            "content": "",
-            "tool_calls": [
-                {
-                    "name": "location_to_lat_long",
-                    "arguments": {
-                        "location": "London"
-                    }
-                }
-            ]
-        }
-    ] * 5
 
     eval_dataset = pandas.DataFrame(
         {
