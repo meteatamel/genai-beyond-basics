@@ -50,7 +50,10 @@ A collection of Generate AI related samples.
 * [Gen AI evaluation service in Vertex AI](./samples/evaluation/vertexai_genai_eval)
 * [DeepEval and Gemini](./samples/evaluation/deepeval)
 * [Promptfoo and Vertex AI](./samples/evaluation/promptfoo)
-* [LLM Guard and Vertex AI](./samples/evaluation/llmguard)
+
+### Guardrails 
+
+* [LLM Guard and Vertex AI](./samples/guardrails/llmguard)
 
 ### Tracing
 
