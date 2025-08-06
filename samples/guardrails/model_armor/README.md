@@ -21,16 +21,16 @@ confidence levels), and child sexual abuse material (applied by default).
 
 In its *basic* mode, it detects the following:
 
-* CREDIT_CARD_NUMBER
-* FINANCIAL_ACCOUNT_NUMBER
-* GCP_CREDENTIALS
-* GCP_API_KEY
-* PASSWORD
+* `CREDIT_CARD_NUMBER`
+* `FINANCIAL_ACCOUNT_NUMBER`
+* `GCP_CREDENTIALS`
+* `GCP_API_KEY`
+* `PASSWORD`
 
 Only in US regions:
 
-* US_SOCIAL_SECURITY_NUMBER
-* US_INDIVIDUAL_TAXPAYER_IDENTIFICATION_NUMBER
+* `US_SOCIAL_SECURITY_NUMBER`
+* `US_INDIVIDUAL_TAXPAYER_IDENTIFICATION_NUMBER`
 
 In its *advanced* mode, it offers more granular detection and also de-identification with custom templates.
 
@@ -52,16 +52,14 @@ Go to `Security` and `Model Armor` and `Create Template`.
 
 Create the template with the following values:
 
-Template id: `template_basic`
-Location type: `Region`
-Region: `europe-west4`
-
-Detections:
--Malicious URL detection
--Prompt injection and jailbreak detection with confidence level: medium and above
--Sensitive data protection with detection type: basic
-
-Responsible AI: Keep the default confidence level: medium and above
+* Template id: `template_basic`
+* Location type: `Region`
+* Region: `europe-west4`
+* Detections:
+  * Malicious URL detection
+  * Prompt injection and jailbreak detection with confidence level: medium and above
+  * Sensitive data protection with detection type: basic
+* Responsible AI: Keep the default confidence level: medium and above
 
 ![Create template](images/create-template.png)
 
@@ -192,7 +190,7 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-See [sanitize_prompt.py](./sanitize_prompt.py) and [sanitize_response.py](./sanitize_response.py) on the details.
+See [`sanitize_prompt.py`](./sanitize_prompt.py) and [`sanitize_response.py`](./sanitize_response.py) on the details.
 
 Filter a malicious URL in the user prompt:
 
