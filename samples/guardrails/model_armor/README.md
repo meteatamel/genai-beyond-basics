@@ -324,6 +324,137 @@ sanitization_result {
 }
 ```
 
+## Custom Detection and De-identification
+
+### Custom Detection
+
+The default settings for Sensitive Data Protection does not detect email addresses or IP address. You can see this when
+you try to filter the user prompt with the `template_basic` template:
+
+```shell
+export TEMPLATE_ID=template_basic
+python sanitize_prompt.py "The user's email is user@gmail.com and IP address is 123.123.123.123"
+
+sanitization_result {
+  filter_match_state: NO_MATCH_FOUND
+  ...
+```
+
+This can be easily fixed by creating a custom Sensitive Data Protection template. Let's see how to do that.
+
+First, make sure the Sensitive Data Protection API is enabled:
+
+```shell
+gcloud services enable dlp.googleapis.com
+```
+
+Go to `Security` => `Sensitive Data Protection` => `Configuration` => `Inspect` => `Create Template`
+
+Define template:
+
+* Template type: `Inspect`
+* Template ID: `inspect_email_and_ip`
+* Region: `europe-west4` (make sure this matches with the Model Armor template location)
+
+Configure detection: `Manage infoTypes` => Check `EMAIL_ADDRESS` and `IP_ADDRESS` => `Create`
+
+Now, go back to Model Armor and create a new template with id `template_email_and_ip`. Under `Sensitive data protection`,
+choose `Advanced` and for `Inspect template`, enter the path of the inspect template you just created: `projects/projectId/locations/locationId/inspectTemplates/inspect_email_and_ip`
+
+Filter the same prompt with the new template and you'll see that the email and IP is now filtered:
+
+```shell
+export TEMPLATE_ID=template_email_and_ip
+python sanitize_prompt.py "The user's email is user@gmail.com and IP address is 123.123.123.123"
+
+sanitization_result {
+  filter_match_state: MATCH_FOUND
+  filter_results {
+    key: "sdp"
+    value {
+      sdp_filter_result {
+        inspect_result {
+          execution_state: EXECUTION_SUCCESS
+          match_state: MATCH_FOUND
+          findings {
+            info_type: "EMAIL_ADDRESS"
+            likelihood: VERY_LIKELY
+            location {
+              byte_range {
+                start: 20
+                end: 34
+              }
+              codepoint_range {
+                start: 20
+                end: 34
+              }
+            }
+          }
+          findings {
+            info_type: "IP_ADDRESS"
+            likelihood: LIKELY
+            location {
+              byte_range {
+                start: 53
+                end: 68
+              }
+              codepoint_range {
+                start: 53
+                end: 68
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  ...
+```
+
+### De-identification
+
+Last but not least, you can also de-identify the detected email and IP address.
+
+Go to `Security` => `Sensitive Data Protection` => `Configuration` => `De-indentify` => `Create Template`
+
+Define template:
+
+* Template type: `De-idenfity`
+* Template ID: `deidentify_email_and_ip`
+* Region: `europe-west4` (make sure this matches with the Model Armor template location)
+
+Configure de-idenfication => `Transformation method` => `Replace` => String value: `Redacted` => `Create`
+
+Now, go back to Model Armor edit `template_email_and_ip`. Under `Sensitive data protection`,
+choose `Advanced` and for `De-identify template`, enter the path of the inspect template you just created: `projects/projectId/locations/locationId/deidentifyTemplates/deidentify_email_and_ip`
+
+Filter the same prompt and you'll see that the email and IP is now detected and de-identified:
+
+```shell
+python sanitize_prompt.py "The user's email is user@gmail.com and IP address is 123.123.123.123"
+
+sanitization_result {
+  filter_match_state: MATCH_FOUND
+  filter_results {
+    key: "sdp"
+    value {
+      sdp_filter_result {
+        deidentify_result {
+          execution_state: EXECUTION_SUCCESS
+          match_state: MATCH_FOUND
+          data {
+            text: "The user\'s email is [redacted] and IP address is [redacted]"
+          }
+          transformed_bytes: 29
+          info_types: "EMAIL_ADDRESS"
+          info_types: "IP_ADDRESS"
+        }
+      }
+    }
+  }
+  ...
+```
+
 ## References
 
 * [Documentation: Model Armor](https://cloud.google.com/security-command-center/docs/model-armor-overview)
