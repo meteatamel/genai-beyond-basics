@@ -51,8 +51,9 @@ A collection of Generate AI related samples.
 * [DeepEval and Gemini](./samples/evaluation/deepeval)
 * [Promptfoo and Vertex AI](./samples/evaluation/promptfoo)
 
-### Guardrails 
+### Guardrails
 
+* [Model Armor](./samples/guardrails/model_armor)
 * [LLM Guard and Vertex AI](./samples/guardrails/llmguard)
 
 ### Tracing
