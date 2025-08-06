@@ -6,7 +6,7 @@ to prevent the LLM from exposure to or generation of malicious or sensitive cont
 
 ![Model Armor](https://cloud.google.com/static/security-command-center/images/model-armor-architecture.svg)
 
-## Model Armor Filters
+## Filters
 
 Model Armor offers the following classes of filters.
 
@@ -37,7 +37,7 @@ In its *advanced* mode, it offers more granular detection and also de-identifica
 All these filters can be applied to directly to the text (prompt or response) but also text in documents such as
 PDFs, CSV, TXT, etc. See [Document screening](https://cloud.google.com/security-command-center/docs/model-armor-overview#ma-support-screening-pdfs) for details.
 
-## Model Armor Template
+## Template
 
 To use Model Armor, first you need to enable the API:
 
@@ -63,7 +63,7 @@ Create the template with the following values:
 
 ![Create template](images/create-template.png)
 
-## Model Armor Response
+## Response Format
 
 Let's take a look at how the Model Armor response looks like by trying to filter a user prompt ([`sanitizeUserPrompt`](https://cloud.google.com/security-command-center/docs/reference/model-armor/rest/v1/projects.locations.templates/sanitizeUserPrompt)) or a model response ([`sanitizeModelResponse`](https://cloud.google.com/security-command-center/docs/reference/model-armor/rest/v1/projects.locations.templates/sanitizeModelResponse)).
 
@@ -176,7 +176,7 @@ These are the filter results details:
 * `pi_and_jailbreak`: Prompt injection and jailbreak detection.
 * `sdp`: Sensitive Data Protection.
 
-## Filter prompts and responses
+## Test Filters
 
 Now that we understand how Model Armor responses look like, let's filter some prompts and responses.
 
