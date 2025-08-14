@@ -61,7 +61,7 @@ Let's configure the MCP server on Cloud Run in [`.gemini/settings.json`](./gemin
 }
 ```
 
-Now, when you start Gemini CLI, you can simply do `/mcp list` and see the filesystem server:
+Now, when you start Gemini CLI, you can simply do `/mcp list`:
 
 ```shell
 ℹ Configured MCP servers:
@@ -74,12 +74,12 @@ Now, when you start Gemini CLI, you can simply do `/mcp list` and see the filesy
     - greet
 ```
 
-You can then try the following prompt to see if Gemini CLI uses the filesystem server: `Greet Mete` or `Add 2 and 3`.
+You can then try the following prompt to see if Gemini CLI uses the MCP server: `Greet Mete` or `Add 2 and 3`.
 
 ## Test with Agent Development Kit (ADK)
 
-[ADK](https://google.github.io/adk-docs/) is an agent framework from Google. You can also use MCP servers from ADK. Let's
-see how you can use the filesystem server from ADK.
+[ADK](https://google.github.io/adk-docs/) is an agent framework from Google. Let's see how ADK can use an MCP server
+deployed on Cloud Run.
 
 Create a Python env and install ADK:
 
@@ -160,4 +160,4 @@ Let's configure the MCP server on Cloud Run in [`.gemini/settings.json`](./gemin
 }
 ```
 
-You can then try the following prompt to see if Gemini CLI uses the filesystem server: `Greet Mete` or `Add 2 and 3`.
+You can then try the following prompt to see if Gemini CLI uses the MCP server: `Greet Mete` or `Add 2 and 3`.
