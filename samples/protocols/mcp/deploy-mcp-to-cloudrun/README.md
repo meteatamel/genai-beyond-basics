@@ -76,6 +76,25 @@ Now, when you start Gemini CLI, you can simply do `/mcp list` and see the filesy
 
 You can then try the following prompt to see if Gemini CLI uses the filesystem server: `Greet Mete` or `Add 2 and 3`.
 
+## Test with Agent Development Kit (ADK)
+
+[ADK](https://google.github.io/adk-docs/) is an agent framework from Google. You can also use MCP servers from ADK. Let's
+see how you can use the filesystem server from ADK.
+
+Create a Python env and install ADK:
+
+```shell
+python -m venv .venv
+source .venv/bin/activate
+pip install google-adk
+```
+
+Take a look at [helloworld_agent](./helloworld_agent/). It's a minimal agent configured with the MCP server deployed
+to Cloud Run. Adjust the `MCP_SERVER_URL` in the [agent.py](./helloworld_agent/agent.py) and also rename `dotenv`
+to `.env` and update with your API keys or projects.
+
+You can now test the agent with `adk web` and see that it has access to `greet` and `add` from the MCP server.
+
 ## Deploy to Cloud Run (authenticated)
 
 Let's now deploy the same MCP server a Cloud Run service that requires authentication:

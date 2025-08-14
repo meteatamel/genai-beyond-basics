@@ -100,7 +100,8 @@ source .venv/bin/activate
 pip install google-adk
 ```
 
-Take a look at [`filesystem_assistant`](./filesystem_assistant/). It's a minimal agent configured with filesystem MCP server. Adjust the `TARGET_FOLDER_PATH` in the [`agent.py`](./filesystem_assistant/agent.py) and also rename `dotenv`
+Take a look at [`filesystem_assistant`](./filesystem_assistant/). It's a minimal agent configured with filesystem MCP server.
+Adjust the `TARGET_FOLDER_PATH` in the [`agent.py`](./filesystem_assistant/agent.py) and also rename `dotenv`
 to `.env` and update with your API keys or projects.
 
 You can now test the agent:
