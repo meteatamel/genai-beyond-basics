@@ -59,3 +59,7 @@ A collection of Generate AI related samples.
 ### Tracing
 
 * [Tracing with Langtrace and Gemini](./samples/tracing/langtrace)
+
+### Protocols
+
+* [Introduction to MCP](./samples/protocols/mcp/intro-to-mcp)
