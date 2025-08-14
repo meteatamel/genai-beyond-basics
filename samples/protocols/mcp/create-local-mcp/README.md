@@ -2,7 +2,7 @@
 
 Let's build a minimal MCP server and run it locally.
 
-## FastMCP 2.0
+## Install FastMCP 2.0
 
 [FastMCP](https://gofastmcp.com/) 2.0 is the easiest way to create MCP servers and clients in Python.
 
@@ -26,6 +26,8 @@ if __name__ == "__main__":
     mcp.run()
 ```
 
+### Test locally
+
 You can test the server with `fastmcp`:
 
 ```shell
@@ -37,6 +39,8 @@ Or simply with `python`:
 ```shell
 python server.py
 ```
+
+### Test with MCP inspector
 
 You can also run via MCP inspector through `fastmcp`:
 
@@ -66,6 +70,8 @@ Now, you need to run the server:
 ```shell
 python server.py
 ```
+
+### Test with MCP inspector
 
 In a separate terminal, start the MCP inspector:
 

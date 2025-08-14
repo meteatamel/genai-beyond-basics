@@ -1,0 +1,7 @@
+{
+  "mcpServers": {
+    "helloworld": {
+      "httpUrl": "https://hello-world-mcp-server-207195257545.europe-west1.run.app/mcp"
+    }
+  }
+}

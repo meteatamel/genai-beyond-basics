@@ -8,7 +8,7 @@ developer tools like MCP Inspector or Gemini CLI or apps like Claude Desktop can
 For example, [Filesystem MCP Server](https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem) is a
 Node.js server implementing Model Context Protocol (MCP) for filesystem operations.
 
-## MCP Inspector
+## Test with MCP Inspector
 
 The [MCP Inspector](https://modelcontextprotocol.io/legacy/tools/inspector) is an interactive developer tool for testing
 and debugging MCP servers.
@@ -29,13 +29,13 @@ Once you `Connect` and then `List Tools`, you should see the available tools and
 
 ![Model inspector](images/model-inspector.png)
 
-## Claude Desktop
+## Test with Claude Desktop
 
 This [quickstart](https://modelcontextprotocol.io/quickstart/user) shows how to setup and use the filesystem MCP server
 from Claude Desktop and enable it to access the filesystem. You can try prompts like `Can you write a poem and save it to my desktop?`
 to see how it works.
 
-## Gemini CLI
+## Test with Gemini CLI
 
 [Gemini CLI](https://github.com/google-gemini/gemini-cli) an open-source AI agent that brings the power of Gemini into
 your terminal. It also has [MCP support](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md).
@@ -87,7 +87,7 @@ Now, when you start Gemini CLI, you can simply do `/mcp list` and see the filesy
 
 You can then try the following prompt to see if Gemini CLI uses the filesystem server: `Can you create a directory named mcp-gemini?`
 
-## Agent Development Kit (ADK)
+## Test with Agent Development Kit (ADK)
 
 [ADK](https://google.github.io/adk-docs/) is an agent framework from Google. You can also use MCP servers from ADK. Let's
 see how you can use the filesystem server from ADK.
