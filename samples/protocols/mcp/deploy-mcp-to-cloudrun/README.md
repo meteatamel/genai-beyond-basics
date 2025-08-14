@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
 Also create a [Dockerfile](./Dockerfile) to containerize the app for Cloud Run.
 
-## Deploy to Cloud Run
+## Deploy to Cloud Run (unauthenticated)
 
 ```shell
 gcloud run deploy hello-world-mcp-server \
@@ -72,6 +72,73 @@ Now, when you start Gemini CLI, you can simply do `/mcp list` and see the filesy
     Tools:
     - add
     - greet
+```
+
+You can then try the following prompt to see if Gemini CLI uses the filesystem server: `Greet Mete` or `Add 2 and 3`.
+
+## Deploy to Cloud Run (authenticated)
+
+Let's now deploy the same MCP server a Cloud Run service that requires authentication:
+
+```shell
+gcloud run deploy hello-world-mcp-server-auth \
+    --no-allow-unauthenticated \
+    --region europe-west1 \
+    --source .
+```
+
+## Test with MCP inspector
+
+First, make sure your user account has the `run.invoker` role:
+
+```shell
+PROJECT_ID=genai-atamel
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member=user:$(gcloud config get-value account) \
+    --role='roles/run.invoker'
+```
+
+Print the identity token for authentication:
+
+```shell
+gcloud auth print-identity-token
+```
+
+In a separate terminal, start the MCP inspector:
+
+```shell
+npx @modelcontextprotocol/inspector
+```
+
+In MCP inspector, set the following:
+
+Transport type: `Stremable HTTP`
+URL: `https://hello-world-mcp-server-auth-207195257545.europe-west1.run.app/mcp`
+Under Authentication:
+    -API Token Authentication
+    Header Name: Authorization
+    Bearer Token: <paste your identity token>
+
+Now, you're talking to the MCP server running on authenticated Cloud Run over streamable HTTP.
+
+## Test with Gemini CLI
+
+Let's configure the MCP server on Cloud Run in [`.gemini/settings.json`](./gemini/settings.json) file:
+
+```shell
+{
+  "mcpServers": {
+    # "helloworld": {
+    #   "httpUrl": "https://hello-world-mcp-server-207195257545.europe-west1.run.app/mcp"
+    # },
+    "helloworld-auth": {
+      "httpUrl": "https://hello-world-mcp-server-auth-207195257545.europe-west1.run.app/mcp",
+      "headers": {
+        "Authorization": "Bearer your-auth-token-here"
+      }
+    }
+  }
+}
 ```
 
 You can then try the following prompt to see if Gemini CLI uses the filesystem server: `Greet Mete` or `Add 2 and 3`.
