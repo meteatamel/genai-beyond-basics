@@ -4,11 +4,11 @@ MCP is an open protocol that standardizes how applications provide context to la
 
 It has 3 distinct parts:
 
-| Primitive    | Who controls it?                                        | Use Cases                                                  |
-|:-------------|:--------------------------------------------------------|:-----------------------------------------------------------|
-| **Tools**    | **Model-controlled:** Model decides when to call these  | Give additional functionality to the model                 |
-| **Resources**| **App-controlled:** App decides when to call these      | Get additional data/context to messages                    |
-| **Prompts**  | **User-controlled:** The user decides when to use these | Workflows to run based on user input, like a slash command |
+| Building Block | Who controls it?                                        | Use Cases                                                                            |
+|:---------------|:--------------------------------------------------------|:-------------------------------------------------------------------------------------|
+| **Tools**      | **Model-controlled:** Model decides when to call these  | Allow LLM to interact with external systems                                          |
+| **Resources**  | **App-controlled:** App decides when to call these      | Provide read-only access to data for the LLM or client application.                  |
+| **Prompts**    | **User-controlled:** The user decides when to use these | Reusable message templates that help LLMs generate structured, purposeful responses. |
 
 Follow these steps to learn about MCP:
 
