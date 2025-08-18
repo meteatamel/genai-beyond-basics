@@ -81,4 +81,5 @@ def format_document(doc_id: str) -> PromptMessage:
 
 
 if __name__ == "__main__":
+    #mcp.run(transport="stdio")
     mcp.run(transport="http", host="127.0.0.1", port=8000)
