@@ -5,8 +5,7 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "/Users/atamel/Desktop",
-        "/Users/atamel/Downloads"
+        "/Users/atamel/Desktop"
       ]
     }
   }

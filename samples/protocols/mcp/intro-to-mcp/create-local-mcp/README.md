@@ -85,3 +85,11 @@ Transport type: `Stremable HTTP`
 URL: `http://127.0.0.1:8000/mcp`
 
 Now, you're talking to the server over streamable HTTP.
+
+### Test with a client
+
+You can also test with the provided MCP client:
+
+```shell
+python client.py
+```

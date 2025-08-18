@@ -54,8 +54,7 @@ in [`.gemini/settings.json`](./gemini/settings.json) file. In that file, you can
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "/Users/atamel/Desktop",
-        "/Users/atamel/Downloads"
+        "/Users/atamel/Desktop"
       ]
     }
   }
