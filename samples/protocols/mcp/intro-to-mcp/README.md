@@ -32,3 +32,14 @@ Follow these steps to learn about MCP:
 > * **Claude Desktop** supports only stdio but not HTTP transport. It supports MCP tools, resources, prompts but not resource templates.
 > * **Gemini CLI** supports both stdio and HTTP transport. It supports MCP tools and prompts but not resources or resource templates.
 > * **ADK** supports both stdio and HTTP transport. It supports MCP tools only.
+
+## References
+
+* [Course: Introduction to Model Context Protocol](https://anthropic.skilljar.com/introduction-to-model-context-protocol)
+* [Course: Model Context Protocol: Advanced Topics](https://anthropic.skilljar.com/model-context-protocol-advanced-topics)
+* [Blog: MCP Explained (blog series)](https://medium.com/@laurentkubaski/mcp-explained-45312250b161)
+* [Blog: Gemini CLI Tutorial Series — Part 8: Building your own MCP Server](https://medium.com/google-cloud/gemini-cli-tutorial-series-part-8-building-your-own-mcp-server-74d6add81cca)
+* [Docs: FastMCP](https://gofastmcp.com/getting-started/welcome)
+* [Docs: ADK MCP](https://google.github.io/adk-docs/mcp/)
+* [Codelab: Getting Started with MCP, ADK and A2A](https://codelabs.developers.google.com/codelabs/currency-agent)
+* [Codelab: How to deploy a secure MCP server on Cloud Run](https://codelabs.developers.google.com/codelabs/cloud-run/how-to-deploy-a-secure-mcp-server-on-cloud-run)
