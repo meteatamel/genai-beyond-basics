@@ -17,9 +17,10 @@ Follow these steps to learn about MCP:
 * [Deploy MCP server to Cloud Run](./deploy-mcp-to-cloudrun/)
 
 > [!NOTE]
-> FastMCP 1.0 vs FastMCP 2.0
+> 
 > The MCP Python SDK used in the code samples on https://modelcontextprotocol.io uses outdated `FastMCP 1.0`.
-> Instead, you should use `FastMCP 2.0` from here: https://gofastmcp.com/
-> You can tell if you're using the right one in the code as follows:
-> `#from mcp.server import FastMCP # this is FastMCP 1.0`
-> `from fastmcp import FastMCP # this is FastMCP 2.0 ==> USE THIS ONE`
+> Instead, you should use `FastMCP 2.0` from here: https://gofastmcp.com/. You can tell if you're using the right one in the code as follows:
+> 
+> `from mcp.server import FastMCP` ==> This is FastMCP 1.0: DO NOT USE
+> 
+> `from fastmcp import FastMCP` ==> This is FastMCP 2.0: USE THIS ONE
