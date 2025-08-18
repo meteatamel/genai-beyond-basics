@@ -1,20 +1,17 @@
 # Reference: Introduction to Model Context Protocol:
 # https://anthropic.skilljar.com/introduction-to-model-context-protocol
 
+import os
 from fastmcp import FastMCP
 from fastmcp.prompts.prompt import Message, PromptMessage, TextContent
 
 mcp = FastMCP("DocumentMCP", log_level="DEBUG")
 
+DOCS_DIR = os.path.join(os.path.dirname(__file__), "docs")
 
-docs = {
-    "deposition.txt": "This deposition covers the testimony of Angela Smith, P.E.",
-    "report.txt": "The report details the state of a 20m condenser tower.",
-    "financials.txt": "These financials outline the project's budget and expenditures.",
-    "outlook.txt": "This document presents the projected future performance of the system.",
-    "plan.txt": "The plan outlines the steps for the project's implementation.",
-    "spec.txt": "These specifications define the technical requirements for the equipment.",
-}
+
+def get_doc_path(doc_id: str) -> str:
+    return os.path.join(DOCS_DIR, doc_id)
 
 
 @mcp.tool(
@@ -22,10 +19,12 @@ docs = {
     description="Read the contents of a document and return it as a string.",
 )
 def read_document(doc_id: str) -> str:
-    if doc_id not in docs:
+    doc_path = get_doc_path(doc_id)
+    if not os.path.exists(doc_path):
         raise ValueError(f"Doc with id {doc_id} not found")
 
-    return docs[doc_id]
+    with open(doc_path, "r") as f:
+        return f.read()
 
 
 @mcp.tool(
@@ -33,22 +32,32 @@ def read_document(doc_id: str) -> str:
     description="Edit a document by replacing a string in the documents content with a new string",
 )
 def edit_document(doc_id: str, old_str: str, new_str: str) -> None:
-    if doc_id not in docs:
+    doc_path = get_doc_path(doc_id)
+    if not os.path.exists(doc_path):
         raise ValueError(f"Doc with id {doc_id} not found")
 
-    docs[doc_id] = docs[doc_id].replace(old_str, new_str)
+    with open(doc_path, "r") as f:
+        content = f.read()
+
+    content = content.replace(old_str, new_str)
+
+    with open(doc_path, "w") as f:
+        f.write(content)
 
 
 @mcp.resource("docs://documents", mime_type="application/json")
 def list_docs() -> list[str]:
-    return list(docs.keys())
+    return os.listdir(DOCS_DIR)
 
 
 @mcp.resource("docs://documents/{doc_id}", mime_type="text/plain")
 def fetch_doc(doc_id: str) -> str:
-    if doc_id not in docs:
+    doc_path = get_doc_path(doc_id)
+    if not os.path.exists(doc_path):
         raise ValueError(f"Doc with id {doc_id} not found")
-    return docs[doc_id]
+
+    with open(doc_path, "r") as f:
+        return f.read()
 
 
 @mcp.prompt(
