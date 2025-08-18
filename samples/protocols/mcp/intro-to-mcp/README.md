@@ -15,6 +15,7 @@ Follow these steps to learn about MCP:
 * [Use an existing MCP server](./use-existing-mcp/)
 * [Create a local MCP server](./create-local-mcp/)
 * [Deploy MCP server to Cloud Run](./deploy-mcp-to-cloudrun/)
+* [Document MCP server with tools, resources, prompt](./document-server)
 
 > [!NOTE]
 > 
