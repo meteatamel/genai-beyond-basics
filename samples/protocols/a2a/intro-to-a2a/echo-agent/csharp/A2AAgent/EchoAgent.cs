@@ -2,6 +2,10 @@ using A2A;
 
 namespace A2AAgent;
 
+// This is a simple echo agent that demonstrates the core concepts of A2A protocol.
+// This agent connects to the A2A framework with the attach method.
+// When it receives messages, it simply respods by echoing them back.
+// When it receives an agent card query, it returns a simple agent card with its details.
 public class EchoAgent
 {
     // Connect the agent to the A2A framework
@@ -28,6 +32,16 @@ public class EchoAgent
 
     private async Task<AgentCard> GetAgentCardAsync(string agentUrl, CancellationToken cancellationToken)
     {
+        // Create and return a simple agent card with its details
+        AgentSkill skill = new()
+        {
+            Id = "echo",
+            Name = "Echo tool",
+            Description = "Echos every received message back to the user.",
+            Tags = ["echo"],
+            Examples = ["hello", "how are you"]
+        };
+
         return new AgentCard()
         {
             Name = "Echo Agent",
@@ -37,7 +51,7 @@ public class EchoAgent
             DefaultInputModes = ["text"],
             DefaultOutputModes = ["text"],
             Capabilities = new AgentCapabilities() { Streaming = true },
-            Skills = [],
+            Skills = [skill],
         };
     }
 }

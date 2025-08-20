@@ -19,6 +19,8 @@ from a2a.utils.constants import (
 BASE_URL = 'http://localhost:5209'
 
 async def main() -> None:
+    """A2A client to test the A2A server."""
+
     logging.basicConfig(level=logging.INFO)
     logger = logging.getLogger(__name__)
 

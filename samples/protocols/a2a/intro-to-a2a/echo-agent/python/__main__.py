@@ -9,7 +9,9 @@ from agent_executor import EchoAgentExecutor
 PORT = 5209
 BASE_URL = f'http://localhost:{PORT}'
 
+# The entry point of the A2A server which defines the agent card and request handler and runs the server.
 if __name__ == '__main__':
+    # Define the agent card with the skill and capabilities
     skill = AgentSkill(
         id='echo',
         name='Echo tool',
@@ -29,14 +31,17 @@ if __name__ == '__main__':
         skills=[skill]
     )
 
+    # Define the request handler with the EchoAgentExecutor
     request_handler = DefaultRequestHandler(
         agent_executor=EchoAgentExecutor(),
         task_store=InMemoryTaskStore(),
     )
 
+    # Create the A2A server application with the agent card and request handler
     server = A2AStarletteApplication(
         agent_card=agent_card,
         http_handler=request_handler,
     )
 
+    # Run the server
     uvicorn.run(server.build(), host='0.0.0.0', port=PORT)

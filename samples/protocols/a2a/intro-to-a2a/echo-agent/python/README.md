@@ -1,6 +1,15 @@
 # Echo Agent - Python
 
-A simple echo agent that demonstrates the core concepts of A2A protocol. This agent receives messages and respond by echoing them back, providing a clear example of how A2A communication flows.
+A barebones agent that demonstrates the core concepts of A2A protocol. This agent receives messages and respond by
+echoing them back, providing a clear example of how A2A communication flows.
+
+Here are the relevant files:
+
+* [`agent.py`](./agent.py): An agent that simply echoes back the received message.
+* [`agent_executor.py`](./agent_executor.py): A wrapper around the EchoAgent to implement execute and cancel methods in
+order to participate in A2A framework.
+* [`__main__.py`](./__main__.py): The entry point of the A2A server which defines the agent card and request handler and runs the server.
+* [`a2a_client.py`](./a2a_client.py): A2A client to test the A2A server.
 
 Create and activate a virtual environment:
 

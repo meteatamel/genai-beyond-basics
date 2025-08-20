@@ -1,9 +1,10 @@
 # Echo Agent - CSharp
 
-A simple echo agent that demonstrates the core concepts of A2A protocol. This agent receives messages and respond by echoing them back, providing a clear example of how A2A communication flows.
+A barebones agent that demonstrates the core concepts of A2A protocol. This agent receives messages and respond by
+echoing them back, providing a clear example of how A2A communication flows.
 
-See [A2AAgent](./A2AAgent/) for the A2A enabled agent and [A2AClient](./A2AClient/) for the client
-to test it.
+[A2AAgent](./A2AAgent/) containts the A2A enabled agent and [A2AClient](./A2AClient/) containts the client to connect
+and test it.
 
 Start the agent:
 

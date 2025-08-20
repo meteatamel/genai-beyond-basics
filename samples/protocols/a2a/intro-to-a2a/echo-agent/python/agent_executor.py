@@ -5,7 +5,7 @@ from agent import EchoAgent
 
 
 class EchoAgentExecutor(AgentExecutor):
-    """Echo Agent Executor."""
+    """A wrapper around the EchoAgent to implement execute and cancel methods in order to participate in A2A framework."""
 
     def __init__(self):
         self.agent = EchoAgent()
