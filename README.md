@@ -68,4 +68,4 @@ A collection of Generate AI related samples.
 
 #### A2A
 
-* [Echo Agent](./samples/protocols/a2a/echo)
+* [Introduction to A2A](./samples/protocols/a2a/intro-to-a2a/)
