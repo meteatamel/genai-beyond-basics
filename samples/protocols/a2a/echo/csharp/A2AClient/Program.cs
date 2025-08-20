@@ -2,7 +2,7 @@
 using System.Net.ServerSentEvents;
 
 // 1. Get the agent card
-A2ACardResolver cardResolver = new(new Uri("http://localhost:5209/"));
+A2ACardResolver cardResolver = new(new Uri("http://localhost:5209"));
 AgentCard echoAgentCard = await cardResolver.GetAgentCardAsync();
 
 Console.WriteLine($"Connected to agent: {echoAgentCard.Name}");

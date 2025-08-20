@@ -62,4 +62,10 @@ A collection of Generate AI related samples.
 
 ### Protocols
 
+#### MCP
+
 * [Introduction to MCP](./samples/protocols/mcp/intro-to-mcp)
+
+#### A2A
+
+* [Echo Agent](./samples/protocols/a2a/echo)

@@ -4,6 +4,7 @@ namespace A2AAgent;
 
 public class EchoAgent
 {
+    // Connect the agent to the A2A framework
     public void Attach(ITaskManager taskManager)
     {
         taskManager.OnMessageReceived = ProcessMessageAsync;
