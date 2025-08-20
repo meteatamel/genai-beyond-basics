@@ -4,7 +4,7 @@ The Agent2Agent (A2A) Protocol is an open standard designed to enable seamless c
 
 ![A2A Protocol](https://a2a-protocol.org/latest/assets/a2a-mcp-readme.png)
 
-Follow these steps to learn about MCP:
+Follow these steps to learn about A2A:
 
 * [Echo agent in different languages](./echo-agent/)
 
