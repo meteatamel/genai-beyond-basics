@@ -43,4 +43,4 @@ gcloud run deploy a2a-currency-agent \
     --set-env-vars=GOOGLE_CLOUD_PROJECT="genai-atamel",GOOGLE_CLOUD_REGION="us-central1",GOOGLE_GENAI_USE_VERTEXAI="true"
 ```
 
-Check that the Agent Card is published at [`http://:8080/.well-known/agent.json`](http://:8001/.well-known/agent.json)
+Check that the Agent Card is published at [`https://a2a-currency-agent-207195257545.us-central1.run.app/.well-known/agent.json`](https://a2a-currency-agent-207195257545.us-central1.run.app/.well-known/agent.json)
