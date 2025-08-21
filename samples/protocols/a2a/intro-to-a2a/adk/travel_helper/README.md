@@ -24,7 +24,7 @@ export GOOGLE_CLOUD_LOCATION=us-central1
 ```
 
 > [!WARNING]
-> Make sure the currency agent is running before starting the travel helper agent.
+> Make sure the currency agent is running locally or on Cloud Run before starting the travel helper agent.
 
 Run the agent:
 
