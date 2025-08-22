@@ -50,5 +50,5 @@ root_agent = Agent(
 )
 
 # Expose the agent over A2A protocol
-# a2a_app = to_a2a(root_agent, port=int(os.getenv('PORT', '8001')))
-a2a_app = to_a2a(root_agent, host="https://a2a-currency-agent-207195257545.us-central1.run.app", port=int(os.getenv('PORT', '8001')))
+#a2a_app = to_a2a(root_agent, port=int(os.getenv('PORT', '8001')))
+a2a_app = to_a2a(root_agent, host="a2a-currency-agent-207195257545.us-central1.run.app", port=int(os.getenv('PORT', '8001')))

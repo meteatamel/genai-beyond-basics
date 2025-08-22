@@ -8,7 +8,6 @@ Here are the relevant projects:
 * [A2AAgent](./A2AAgent/) is the agent with the A2A server.
 * [A2AClient](./A2AClient/) is the A2AClient to connect and test the A2A server.
 
-
 ## Start the agent with the A2A server
 
 Start the agent:
