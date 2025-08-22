@@ -9,9 +9,13 @@ from agent_executor import EchoAgentExecutor
 PORT = 5209
 BASE_URL = f'http://localhost:{PORT}'
 
-# The entry point of the A2A server which defines the agent card and request handler and runs the server.
+# The entry point of the A2A server for the agent which defines the agent card and request handler and runs the server.
 if __name__ == '__main__':
     # Define the agent card with the skill and capabilities
+    capabilities = AgentCapabilities(
+        streaming=True
+    )
+
     skill = AgentSkill(
         id='echo',
         name='Echo tool',
@@ -27,7 +31,7 @@ if __name__ == '__main__':
         version='1.0.0',
         default_input_modes=['text'],
         default_output_modes=['text'],
-        capabilities=AgentCapabilities(streaming=True),
+        capabilities=capabilities,
         skills=[skill]
     )
 
