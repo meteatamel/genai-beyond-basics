@@ -42,8 +42,8 @@ npx @modelcontextprotocol/inspector
 
 In MCP inspector, set the following:
 
-Transport type: `Stremable HTTP`
-URL: `https://hello-world-mcp-server-207195257545.europe-west1.run.app/mcp`
+- Transport type: `Stremable HTTP`
+- URL: `https://hello-world-mcp-server-207195257545.europe-west1.run.app/mcp`
 
 Now, you're talking to the MCP server running on Cloud Run over streamable HTTP.
 
@@ -152,12 +152,12 @@ npx @modelcontextprotocol/inspector
 
 In MCP inspector, set the following:
 
-Transport type: `Stremable HTTP`
-URL: `https://hello-world-mcp-server-auth-207195257545.europe-west1.run.app/mcp`
-Under Authentication:
-    -API Token Authentication
-    Header Name: Authorization
-    Bearer Token: <paste your identity token>
+- Transport type: `Stremable HTTP`
+- URL: `https://hello-world-mcp-server-auth-207195257545.europe-west1.run.app/mcp`
+- Authentication
+    - API Token Authentication
+        - Header Name: Authorization
+        - Bearer Token: paste_your_identity_token_here
 
 Now, you're talking to the MCP server running on authenticated Cloud Run over streamable HTTP.
 
