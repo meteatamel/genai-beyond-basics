@@ -62,10 +62,5 @@ A collection of Generate AI related samples.
 
 ### Protocols
 
-#### MCP
-
-* [Introduction to MCP](./samples/protocols/mcp/intro-to-mcp)
-
-#### A2A
-
-* [Introduction to A2A](./samples/protocols/a2a/intro-to-a2a/)
+* [Model Context Protocol (MCP)](./samples/protocols/mcp/)
+* [Agent2Agent Protocol (A2A)](./samples/protocols/a2a/)

@@ -1,4 +1,4 @@
-# Introduction to Model Context Protocol (MCP)
+# Model Context Protocol (MCP)
 
 MCP is an open protocol that standardizes how applications provide context to large language models (LLMs).
 
@@ -18,16 +18,16 @@ Follow these steps to learn about MCP:
 * [Document MCP server with tools, resources, prompt](./document-server)
 
 > [!NOTE]
-> 
+>
 > The MCP Python SDK used in the code samples on https://modelcontextprotocol.io uses outdated `FastMCP 1.0`.
 > Instead, you should use `FastMCP 2.0` from here: https://gofastmcp.com/. You can tell if you're using the right one in the code as follows:
-> 
+>
 > `from mcp.server import FastMCP` ==> This is FastMCP 1.0: DO NOT USE
-> 
+>
 > `from fastmcp import FastMCP` ==> This is FastMCP 2.0: USE THIS ONE
-> 
-> There's different levels of MCP support in various tools.
-> For example:
+>
+> There's different levels of MCP support in various tools. For example:
+>
 > * **MCP inspector** supports both stdio and HTTP transport. It supports MCP tools, resources, resource templates, and prompts.
 > * **Claude Desktop** supports only stdio but not HTTP transport. It supports MCP tools, resources, prompts but not resource templates.
 > * **Gemini CLI** supports both stdio and HTTP transport. It supports MCP tools and prompts but not resources or resource templates.
