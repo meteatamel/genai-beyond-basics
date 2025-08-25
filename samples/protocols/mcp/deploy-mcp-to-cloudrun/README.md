@@ -2,7 +2,7 @@
 
 Let's deploy the local MCP server to Cloud Run, so others can also use the MCP server.
 
-## Get server ready for Cloud Run
+## Get MCP server ready for Cloud Run
 
 First, you need to modify the [server.py](./server.py) slightly for Cloud Run:
 
@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
 Also create a [Dockerfile](./Dockerfile) to containerize the app for Cloud Run.
 
-## Deploy to Cloud Run (unauthenticated)
+## Deploy MCP server to Cloud Run (unauthenticated)
 
 ```shell
 gcloud run deploy hello-world-mcp-server \
@@ -93,9 +93,30 @@ Take a look at [helloworld_agent](./helloworld_agent/). It's a minimal agent con
 to Cloud Run. Adjust the `MCP_SERVER_URL` in the [agent.py](./helloworld_agent/agent.py) and also rename `dotenv`
 to `.env` and update with your API keys or projects.
 
-You can now test the agent with `adk web` and see that it has access to `greet` and `add` from the MCP server.
+You can now test the agent locally with `adk web` and see that it has access to `greet` and `add` from the MCP server.
 
-## Deploy to Cloud Run (authenticated)
+You can also deploy the agent to Cloud Run. Enable the necessary services for Cloud Run:
+
+```shell
+gcloud services enable artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  run.googleapis.com
+```
+
+Deploy using the adk tool:
+
+```shell
+adk deploy cloud_run \
+  --project=genai-atamel \
+  --region=us-central1 \
+  --service_name=helloworld-agent \
+  --with_ui \
+  ./helloworld_agent
+```
+
+In this case, both the agent and the MCP server are deployed and managed by Cloud Run.
+
+## Deploy MCP server to Cloud Run (authenticated)
 
 Let's now deploy the same MCP server a Cloud Run service that requires authentication:
 

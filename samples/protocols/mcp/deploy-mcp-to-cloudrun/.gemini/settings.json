@@ -1,13 +1,14 @@
 {
   "mcpServers": {
-    // "helloworld": {
-    //   "httpUrl": "https://hello-world-mcp-server-207195257545.europe-west1.run.app/mcp"
-    // },
-    "helloworld-auth": {
-      "httpUrl": "https://hello-world-mcp-server-auth-207195257545.europe-west1.run.app/mcp",
-      "headers": {
-        "Authorization": "Bearer your-auth-token-here"
-      }
+    "helloworld": {
+      "httpUrl": "https://hello-world-mcp-server-207195257545.europe-west1.run.app/mcp"
     }
+    // ,
+    // "helloworld-auth": {
+    //   "httpUrl": "https://hello-world-mcp-server-auth-207195257545.europe-west1.run.app/mcp",
+    //   "headers": {
+    //     "Authorization": "Bearer your-auth-token-here"
+    //   }
+    // }
   }
 }

@@ -44,7 +44,16 @@ Once you [install](https://github.com/google-gemini/gemini-cli/?tab=readme-ov-fi
 a Install Gemini CLI:
 
 You can configure MCP servers at the global level in the `~/.gemini/settings.json` file or in your project's root directory
-in [`.gemini/settings.json`](./gemini/settings.json) file. In that file, you can configure the MCP server:
+in [`.gemini/settings.json`](./gemini/settings.json) file or you can simply add it with [`gemini mcp`](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md#managing-mcp-servers-with-gemini-mcp).
+
+Let's try with `gemini mcp`:
+
+```shell
+gemini mcp add filesystem \
+  npx -y @modelcontextprotocol/server-filesystem /Users/atamel/Desktop
+```
+
+This adds a `.gemini/settings.json` file with the MCP server:
 
 ```shell
 {
