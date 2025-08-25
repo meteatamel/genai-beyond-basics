@@ -1,6 +1,7 @@
 # Agent2Agent Protocol (A2A)
 
-The Agent2Agent (A2A) Protocol is an open standard designed to enable seamless communication and collaboration between AI agents.
+[Agent2Agent (A2A) Protocol]((https://a2a-protocol.org/latest/)) is an open protocol from Google that standardizes how
+agents running on diverse frameworks and platforms communicate.
 
 ![A2A Protocol](https://a2a-protocol.org/latest/assets/a2a-mcp-readme.png)
 
