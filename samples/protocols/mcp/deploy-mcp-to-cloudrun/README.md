@@ -82,7 +82,7 @@ You can then try the following prompt to see if Gemini CLI uses the MCP server: 
 deployed on Cloud Run.
 
 Take a look at [hello_world_agent](./hello_world_agent/). It's a minimal agent configured with the MCP server deployed
-to Cloud Run. Adjust the `MCP_SERVER_URL` in the [agent.py](./helloworld_agent/agent.py) and also rename `dotenv`
+to Cloud Run. Adjust the `MCP_SERVER_URL` in the [agent.py](./hello_world_agent/agent.py) and also rename `dotenv`
 to `.env` and update with your API keys or projects.
 
 Create a Python env and install ADK:
@@ -112,7 +112,7 @@ adk deploy cloud_run \
   --region=us-central1 \
   --service_name=hello-world-agent \
   --with_ui \
-  ./helloworld_agent
+  ./hello_world_agent
 ```
 
 In this case, both the agent and the MCP server are deployed and managed by Cloud Run.
@@ -183,3 +183,47 @@ Let's configure the MCP server on Cloud Run in [`.gemini/settings.json`](./gemin
 ```
 
 You can then try the following prompt to see if Gemini CLI uses the MCP server: `Greet Mete` or `Add 2 and 3`.
+
+## Test with Agent Development Kit (ADK)
+
+Take a look at [hello_world_agent_auth](./hello_world_agent_auth/). It's a minimal agent configured with the MCP server
+deployed to Cloud Run with authentication.
+
+Adjust the `MCP_SERVER_URL` in the [agent.py](./hello_world_agent_auth/agent.py) and also rename `dotenv`
+to `.env` and update with your API keys or projects.
+
+Create a Python env and install ADK:
+
+```shell
+cd hello_world_agent_auth
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+By default, Cloud Run services run as the Compute Engine default service account (`PROJECT_NUMBER-compute@developer.gserviceaccount.com`).
+Grant it with the Cloud Run Invoker Role:
+
+```shell
+gcloud run services add-iam-policy-binding hello-world-mcp-server-auth \
+    --member=serviceAccount:207195257545-compute@developer.gserviceaccount.com \
+    --role=roles/run.invoker \
+    --region=europe-west1
+```
+
+> [!WARNING]
+> In production environments, you should create a dedicated service account for the Cloud Run service instead of using
+> the default Compute Engine service account.
+
+Deploy using the adk tool:
+
+```shell
+adk deploy cloud_run \
+  --project=genai-atamel \
+  --region=us-central1 \
+  --service_name=hello-world-agent-auth \
+  --with_ui \
+  ./hello_world_agent_auth
+```
+
+In this case, both the agent and the MCP server are deployed and managed by Cloud Run with authentication enabled.
