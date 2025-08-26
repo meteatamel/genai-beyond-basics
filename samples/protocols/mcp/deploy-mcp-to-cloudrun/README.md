@@ -81,17 +81,18 @@ You can then try the following prompt to see if Gemini CLI uses the MCP server: 
 [ADK](https://google.github.io/adk-docs/) is an agent framework from Google. Let's see how ADK can use an MCP server
 deployed on Cloud Run.
 
+Take a look at [hello_world_agent](./hello_world_agent/). It's a minimal agent configured with the MCP server deployed
+to Cloud Run. Adjust the `MCP_SERVER_URL` in the [agent.py](./helloworld_agent/agent.py) and also rename `dotenv`
+to `.env` and update with your API keys or projects.
+
 Create a Python env and install ADK:
 
 ```shell
+cd hello_world_agent
 python -m venv .venv
 source .venv/bin/activate
-pip install google-adk
+pip install -r requirements.txt
 ```
-
-Take a look at [helloworld_agent](./helloworld_agent/). It's a minimal agent configured with the MCP server deployed
-to Cloud Run. Adjust the `MCP_SERVER_URL` in the [agent.py](./helloworld_agent/agent.py) and also rename `dotenv`
-to `.env` and update with your API keys or projects.
 
 You can now test the agent locally with `adk web` and see that it has access to `greet` and `add` from the MCP server.
 
@@ -109,7 +110,7 @@ Deploy using the adk tool:
 adk deploy cloud_run \
   --project=genai-atamel \
   --region=us-central1 \
-  --service_name=helloworld-agent \
+  --service_name=hello-world-agent \
   --with_ui \
   ./helloworld_agent
 ```
