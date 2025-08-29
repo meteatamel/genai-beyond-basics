@@ -14,7 +14,6 @@ currency_agent = RemoteA2aAgent(
     name="currency_agent",
     description="Agent that can convert from one currency to another.",
     agent_card=f"http://localhost:8001/{AGENT_CARD_WELL_KNOWN_PATH}"
-    # This does not seem to work due to this bug [2405](https://github.com/google/adk-python/issues/2405)
     #agent_card=f"https://a2a-currency-agent-207195257545.us-central1.run.app/{AGENT_CARD_WELL_KNOWN_PATH}"
 )
 

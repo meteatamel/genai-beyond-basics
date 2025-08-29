@@ -2,7 +2,7 @@
 
 Travel helper is an ADK agent using a local weather agent and a remote currency agent.
 
-## Start the agent
+## Setup the travel helper agent
 
 Create and activate a virtual environment:
 
@@ -17,15 +17,9 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Set environment variables for your project:
+Rename `dotenv` to `.env` and update with your API keys or projects.
 
-```shell
-export GOOGLE_GENAI_USE_VERTEXAI=TRUE
-export GOOGLE_CLOUD_PROJECT=genai-atamel
-export GOOGLE_CLOUD_LOCATION=us-central1
-```
-
-## Test the agent with the currency agent on local A2A server
+## Test the local travel helper agent with the currency agent on local A2A server
 
 > [!WARNING]
 > Make sure the currency agent is running locally before running the travel helper agent.
@@ -33,10 +27,7 @@ export GOOGLE_CLOUD_LOCATION=us-central1
 Run the agent:
 
 ```shell
-adk run .
-
-...
-Running agent travel_helper_agent, type exit to exit.
+adk web
 ```
 
 Ask a question for the local agent:
@@ -59,7 +50,7 @@ Ask a question for the currency agent:
 [travel_helper_agent]: 1 British Pounds (GBP) = 1.1567 Euros (EUR)
 ```
 
-## Test the agent with the currency agent on Cloud Run
+## Test the local travel helper agent with the currency agent on Cloud Run
 
 > [!WARNING]
 > Make sure the currency agent is deployed on Cloud Run before running the travel helper agent.
@@ -71,15 +62,32 @@ Change [agent.py](./agent.py) to point to a Cloud Run instance:
 agent_card=f"https://a2a-currency-agent-207195257545.us-central1.run.app/{AGENT_CARD_WELL_KNOWN_PATH}"
 ```
 
-Run the agent:
+You can now test the agent locally with `adk web` and see that it has access to currency agent deployed on Cloud Run
+via A2A.
+
+## Test the travel agent on Cloud Run with the currency agent on Cloud Run
+
+You can also deploy the travel agent to Cloud Run. Enable the necessary services for Cloud Run:
 
 ```shell
-adk run .
-
-...
-Running agent travel_helper_agent, type exit to exit.
+gcloud services enable artifactregistry.googleapis.com \
+  cloudbuild.googleapis.com \
+  run.googleapis.com
 ```
 
+Deploy using the adk tool:
+
+```shell
+adk deploy cloud_run \
+  --project=genai-atamel \
+  --region=us-central1 \
+  --service_name=travel-helper-agent \
+  --with_ui \
+  ./travel_helper
+```
+
+In this case, both the travel agent and the currency agent are deployed and managed by Cloud Run and communicating
+via A2A.
+
 > [!WARNING]
-> Deployment of currency agent to Cloud Run works but the travel helper agent cannot use it. I think it is due to this
-> bug: [2405](https://github.com/google/adk-python/issues/2405)
+> Travel agent deployment does not seem to work due to the default `Dockerfile` not including the A2A package.
