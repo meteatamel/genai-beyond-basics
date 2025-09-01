@@ -58,7 +58,7 @@ Ask a question for the currency agent:
 Change [agent.py](./agent.py) to point to a Cloud Run instance:
 
 ```python
-# agent_card=f"http://localhost:8001/{AGENT_CARD_WELL_KNOWN_PATH}"
+# agent_card=f"http://localhost:8080/{AGENT_CARD_WELL_KNOWN_PATH}"
 agent_card=f"https://a2a-currency-agent-207195257545.us-central1.run.app/{AGENT_CARD_WELL_KNOWN_PATH}"
 ```
 
@@ -90,4 +90,9 @@ In this case, both the travel agent and the currency agent are deployed and mana
 via A2A.
 
 > [!WARNING]
-> Travel agent deployment does not seem to work due to the default `Dockerfile` not including the A2A package.
+> Travel agent deployment will not initially work due to the default `Dockerfile` not including the A2A package.
+> See [2807](https://github.com/google/adk-python/issues/2807).
+> After the initial deploy, edit the `Dockerfile` in Google Cloud Console and change the following line:
+> `RUN pip install google-adk==1.13.0`
+> to:
+> `RUN pip install google-adk[a2a]==1.13.0`
