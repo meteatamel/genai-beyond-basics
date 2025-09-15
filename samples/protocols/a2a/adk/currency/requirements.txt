@@ -1,1 +1,1 @@
-google-adk[a2a]>=1.13.0
+google-adk[a2a]>=1.14.1
