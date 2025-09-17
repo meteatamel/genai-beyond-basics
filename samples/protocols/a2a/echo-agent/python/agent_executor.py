@@ -15,9 +15,11 @@ class EchoAgentExecutor(AgentExecutor):
         context: RequestContext,
         event_queue: EventQueue,
     ) -> None:
-        text_message = context.message.parts[0].root.text
-        result = await self.agent.invoke(text_message)
-        await event_queue.enqueue_event(new_agent_text_message(result))
+        query = context.get_user_input()
+        result = await self.agent.invoke(query)
+        await event_queue.enqueue_event(
+            new_agent_text_message(result)
+        )
 
     async def cancel(
         self, context: RequestContext, event_queue: EventQueue
