@@ -10,6 +10,14 @@ Follow these steps to learn about A2A:
 * [Echo agent in different languages](./echo-agent/)
 * [A2A in Agent Development Kit (ADK)](./adk/)
 
+## Slides
+
+There's a [presentation](https://speakerdeck.com/meteatamel/agent2agent-a2a-protocol) that accompanies the tutorial.
+
+<a href="https://speakerdeck.com/meteatamel/agent2agent-a2a-protocol">
+    <img alt="A2A Protocol" src="images/a2a-protocol.png" width="50%" height="50%">
+</a>
+
 ## References
 
 * [A2A Protocol](https://a2a-protocol.org/latest/)
