@@ -34,6 +34,14 @@ Follow these steps to learn about MCP:
 > * **Gemini CLI** supports both stdio and HTTP transport. It supports MCP tools and prompts but not resources or resource templates.
 > * **ADK** supports both stdio and HTTP transport. It supports MCP tools only.
 
+## Slides
+
+There's a [presentation](https://speakerdeck.com/meteatamel/model-context-protocol) that accompanies the tutorial.
+
+<a href="https://speakerdeck.com/meteatamel/model-context-protocol">
+    <img alt="Model Content Protocol" src="images/model-context-protocol.png" width="50%" height="50%">
+</a>
+
 ## References
 
 * [Model Context Protocol](https://modelcontextprotocol.io/)
