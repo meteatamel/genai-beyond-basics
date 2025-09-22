@@ -46,3 +46,4 @@ Follow these steps to learn about MCP:
 * [Codelab: Getting Started with MCP, ADK and A2A](https://codelabs.developers.google.com/codelabs/currency-agent)
 * [Codelab: How to deploy a secure MCP server on Cloud Run](https://codelabs.developers.google.com/codelabs/cloud-run/how-to-deploy-a-secure-mcp-server-on-cloud-run)
 * [Video: Why Everyone’s Talking About MCP?](https://youtu.be/_d0duu3dED4)
+* [Python SDK code snippets](https://github.com/modelcontextprotocol/python-sdk/tree/main/examples/snippets)
