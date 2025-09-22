@@ -11,9 +11,9 @@ Node.js server implementing Model Context Protocol (MCP) for filesystem operatio
 ## Test with MCP Inspector
 
 The [MCP Inspector](https://modelcontextprotocol.io/legacy/tools/inspector) is an interactive developer tool for testing
-and debugging MCP servers.
+and debugging MCP servers locally.
 
-Run the filesystem MCP server with the MCP inspector:
+Locally, run the filesystem MCP server with the MCP inspector as follows:
 
 ```shell
 npx -y @modelcontextprotocol/inspector npx @modelcontextprotocol/server-filesystem /Users/atamel/Desktop
@@ -40,13 +40,15 @@ to see how it works.
 [Gemini CLI](https://github.com/google-gemini/gemini-cli) an open-source AI agent that brings the power of Gemini into
 your terminal. It also has [MCP support](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md).
 
-Once you [install](https://github.com/google-gemini/gemini-cli/?tab=readme-ov-file#quick-install) Gemini CLI, create
-a Install Gemini CLI:
+Gemini CLI is installed by default in Cloud Shell. You can also [install](https://github.com/google-gemini/gemini-cli/?tab=readme-ov-file#quick-install) it locally.
 
 You can configure MCP servers at the global level in the `~/.gemini/settings.json` file or in your project's root directory
 in [`.gemini/settings.json`](./gemini/settings.json) file or you can simply add it with [`gemini mcp`](https://github.com/google-gemini/gemini-cli/blob/main/docs/tools/mcp-server.md#managing-mcp-servers-with-gemini-mcp).
 
 Let's try with `gemini mcp`:
+
+> [!IMPORTANT]
+> Adjust the path `/Users/atamel/Desktop` accordingly. For example, in Cloud Shell, the path can be `/home/atameldev/`
 
 ```shell
 gemini mcp add filesystem \
@@ -70,7 +72,15 @@ This adds a `.gemini/settings.json` file with the MCP server:
 }
 ```
 
-Now, when you start Gemini CLI, you can simply do `/mcp list` and see the filesystem server:
+Now, when you start Gemini CLI:
+
+Start the Gemini CLI:
+
+```shell
+gemini
+```
+
+You can simply do `/mcp list` and see the filesystem server:
 
 ```shell
 ℹ Configured MCP servers:
@@ -97,8 +107,7 @@ You can then try the following prompt to see if Gemini CLI uses the filesystem s
 
 ## Test with Agent Development Kit (ADK)
 
-[ADK](https://google.github.io/adk-docs/) is an agent framework from Google. You can also use MCP servers from ADK. Let's
-see how you can use the filesystem server from ADK.
+[ADK](https://google.github.io/adk-docs/) is an agent framework from Google. You can also use MCP servers from ADK. Let's see how you can use the filesystem server from ADK.
 
 Create a Python env and install ADK:
 
@@ -109,6 +118,7 @@ pip install google-adk
 ```
 
 Take a look at [`filesystem_assistant`](./filesystem_assistant/). It's a minimal agent configured with filesystem MCP server.
+
 Adjust the `TARGET_FOLDER_PATH` in the [`agent.py`](./filesystem_assistant/agent.py) and also rename `dotenv`
 to `.env` and update with your API keys or projects.
 

@@ -5,7 +5,7 @@ from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, StdioServerParamet
 # IMPORTANT: This MUST be an ABSOLUTE path to a folder the npx process can access.
 # Replace with a valid absolute path on your system.
 TARGET_FOLDER_PATH = "/Users/atamel/Desktop" # On Mac
-#TARGET_FOLDER_PATH = "/home/atamel/" # on Cloud Shell
+#TARGET_FOLDER_PATH = "/home/atameldev/" # on Cloud Shell
 
 instruction_prompt = f"""
     You're the file system assistant agent. Your task is to help the user to manage its files on the filesystem.
