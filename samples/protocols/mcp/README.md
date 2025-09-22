@@ -1,5 +1,7 @@
 # Model Context Protocol (MCP)
 
+## Overview
+
 [Model Context Protocol](https://modelcontextprotocol.io/) (MCP) is an open protocol from Anthropic that standardizes
 how models and agents access external tools and resources.
 
@@ -10,6 +12,8 @@ It has 3 distinct parts:
 | **Tools**      | **Model-controlled:** Model decides when to call these  | Allow LLM to interact with external systems                                          |
 | **Resources**  | **App-controlled:** App decides when to call these      | Provide read-only access to data for the LLM or client application.                  |
 | **Prompts**    | **User-controlled:** The user decides when to use these | Reusable message templates that help LLMs generate structured, purposeful responses. |
+
+## Steps
 
 Follow these steps to learn about MCP:
 

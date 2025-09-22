@@ -1,9 +1,13 @@
 # Agent2Agent Protocol (A2A)
 
+## Overview
+
 [Agent2Agent (A2A) Protocol]((https://a2a-protocol.org/latest/)) is an open protocol from Google that standardizes how
 agents running on diverse frameworks and platforms communicate.
 
 ![A2A Protocol](https://a2a-protocol.org/latest/assets/a2a-mcp-readme.png)
+
+## Steps
 
 Follow these steps to learn about A2A:
 
