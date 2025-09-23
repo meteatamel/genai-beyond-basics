@@ -3,6 +3,8 @@
 A barebones agent that demonstrates the core concepts of A2A protocol. This agent receives messages and respond by
 echoing them back, providing a clear example of how A2A communication flows.
 
+![A2A Agent](../images/a2a-agent.png)
+
 Here are the relevant files:
 
 * [`agent.py`](./agent.py): An agent that simply echoes back the received message.
