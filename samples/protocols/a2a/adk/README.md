@@ -1,5 +1,7 @@
 # A2A in Agent Development Kit (ADK)
 
+![Travel Helper Agent](../images/travel-helper-agent.png)
+
 An example that shows how to use A2A in ADK:
 
 * [currency](./currency/) is an ADK agent exposed over A2A.
