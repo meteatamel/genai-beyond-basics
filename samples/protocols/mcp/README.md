@@ -15,12 +15,17 @@ It has 3 distinct parts:
 
 ## Steps
 
-Follow these steps to learn about MCP:
+Follow these steps to learn about MCP.
+
+MCP Server features:
 
 * [Use an existing MCP server](./use-existing-mcp/)
 * [Create a local MCP server](./create-local-mcp/)
 * [Deploy MCP server to Cloud Run](./deploy-mcp-to-cloudrun/)
 * [Document MCP server with tools, resources, prompt](./document-server)
+
+MCP Client features:
+
 * [Elicitation](./elicitation/)
 
 > [!NOTE]
