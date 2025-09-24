@@ -21,6 +21,7 @@ Follow these steps to learn about MCP:
 * [Create a local MCP server](./create-local-mcp/)
 * [Deploy MCP server to Cloud Run](./deploy-mcp-to-cloudrun/)
 * [Document MCP server with tools, resources, prompt](./document-server)
+* [Elicitation](./elicitation/)
 
 > [!NOTE]
 >
