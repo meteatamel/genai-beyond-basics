@@ -24,10 +24,11 @@ MCP Server features:
 * [Deploy MCP server to Cloud Run](./deploy-mcp-to-cloudrun/)
 * [Document MCP server with tools, resources, prompt](./document-server)
 
-MCP Client features:
+Other features:
 
 * [Elicitation](./elicitation/)
 * [Sampling](./sampling)
+* [Progress](./progress)
 
 > [!NOTE]
 >
