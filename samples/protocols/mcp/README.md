@@ -27,6 +27,7 @@ MCP Server features:
 MCP Client features:
 
 * [Elicitation](./elicitation/)
+* [Sampling](./sampling)
 
 > [!NOTE]
 >
