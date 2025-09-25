@@ -8,6 +8,7 @@ from fastmcp.client.sampling import (
 from google import genai
 from google.genai.types import GenerateContentConfig
 
+# LLM integration to generate content on behalf of the server
 async def generate_content(model: str,
                      system_prompt: str,
                      temperature: float,
@@ -30,7 +31,7 @@ async def generate_content(model: str,
 
     return response.text
 
-
+# Sampling handler to handle sampling requests from the server
 async def sampling_handler(
     messages: list[SamplingMessage],
     params: SamplingParams,
