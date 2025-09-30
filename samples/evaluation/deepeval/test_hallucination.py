@@ -8,8 +8,8 @@ from google import genai
 # actual_output to the provided context.
 # https://docs.confident-ai.com/docs/metrics-hallucination
 
-TEST_MODEL = "gemini-2.0-flash-001"
-EVAL_MODEL =  "gemini-1.5-pro"
+TEST_MODEL = "gemini-2.0-flash"
+EVAL_MODEL =  "gemini-2.0-flash"
 
 # Vertex AI parameters
 PROJECT_ID = "genai-atamel"

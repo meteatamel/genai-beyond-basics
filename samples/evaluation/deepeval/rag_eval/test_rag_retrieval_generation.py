@@ -9,7 +9,7 @@ from deepeval.models import GeminiModel
 # RAG evaluation
 # https://docs.confident-ai.com/docs/guides-rag-evaluation
 
-EVAL_MODEL =  "gemini-1.5-pro"
+EVAL_MODEL =  "gemini-2.0-flash"
 PROJECT_ID = "genai-atamel"
 LOCATION = "us-central1"
 

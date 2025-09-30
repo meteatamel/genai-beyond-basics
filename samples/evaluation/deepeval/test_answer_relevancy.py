@@ -8,8 +8,8 @@ from google import genai
 # actual_output of your LLM application is compared to the provided input
 # https://docs.confident-ai.com/docs/metrics-answer-relevancy
 
-TEST_MODEL = "gemini-2.0-flash-001"
-EVAL_MODEL =  "gemini-1.5-pro"
+TEST_MODEL = "gemini-2.0-flash"
+EVAL_MODEL =  "gemini-2.0-flash"
 
 # Vertex AI parameters
 PROJECT_ID = "genai-atamel"

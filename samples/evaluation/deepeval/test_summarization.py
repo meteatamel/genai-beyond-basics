@@ -8,8 +8,8 @@ from google import genai
 # summaries while including the necessary details from the original text
 # https://docs.confident-ai.com/docs/metrics-summarization
 
-TEST_MODEL = "gemini-2.0-flash-001"
-EVAL_MODEL =  "gemini-1.5-pro"
+TEST_MODEL = "gemini-2.0-flash"
+EVAL_MODEL =  "gemini-2.0-flash"
 
 # Vertex AI parameters
 PROJECT_ID = "genai-atamel"
