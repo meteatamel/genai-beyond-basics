@@ -18,13 +18,13 @@ export GEMINI_API_KEY=your-gemini-api-key
 ```
 
 ```sh
-python main.py generate "What's the cargo capacity of Cymbal Starlight?"
+python main.py generate_content "What's the cargo capacity of Cymbal Starlight?"
 ```
 
 You get a response where the LLM does not really know what Cymbal is:
 
 ```sh
-Generating content with file search store 'None'
+Generating content with file search store: None
 Response: I couldn't find any information about a vessel named "Cymbal Starlight" with a publicly listed cargo capacity.
 
 It's possible:
@@ -40,10 +40,19 @@ Could you provide more context or verify the name?
 Now, let's create a file search store:
 
 ```shell
-python main.py create my-file-search-store
+python main.py create_store my-file-search-store
 
 Created a file search store:
-  my-file-search-store - fileSearchStores/myfilesearchstore-xainjwkp2jhy
+  fileSearchStores/myfilesearchstore-5a9x71ifjge9 - my-file-search-store
+```
+
+You can also list all the file search stores you have:
+
+```shell
+python main.py list_stores
+
+List of file search stores:
+  fileSearchStores/myfilesearchstore-5a9x71ifjge9 - my-file-search-store
 ```
 
 ## Upload the PDF
@@ -51,9 +60,9 @@ Created a file search store:
 Upload the PDF file to the file search store:
 
 ```shell
-python main.py upload fileSearchStores/myfilesearchstore-xainjwkp2jhy cymbal-starlight-2024.pdf
+python main.py upload_to_store fileSearchStores/myfilesearchstore-5a9x71ifjge9 cymbal-starlight-2024.pdf
 
-Uploading file 'cymbal-starlight-2024.pdf' to file search store 'fileSearchStores/myfilesearchstore-xainjwkp2jhy'
+Uploading file: cymbal-starlight-2024.pdf to file search store: fileSearchStores/myfilesearchstore-5a9x71ifjge9
 Waiting for upload to complete...
 Upload completed.
 ```
@@ -63,16 +72,24 @@ Upload completed.
 We're ready to ask questions about the vehicle with file search tool enabled:
 
 ```sh
-python main.py generate "What's the cargo capacity of Cymbal Starlight?" fileSearchStores/myfilesearchstore-xainjwkp2jhy
+python main.py generate_content "What's the cargo capacity of Cymbal Starlight?" fileSearchStores/myfilesearchstore-5a9x71ifjge9
 ```
 
 ```shell
-Generating content with file search store 'fileSearchStores/myfilesearchstore-xainjwkp2jhy'
+Generating content with file search store: fileSearchStores/myfilesearchstore-5a9x71ifjge9
 Response: The Cymbal Starlight 2024 has a cargo capacity of 13.5 cubic feet, which is located in the trunk of the vehicle. It is important to distribute the weight evenly and not overload the trunk, as this could impact the vehicle's handling and stability. The vehicle can also accommodate up to two suitcases in the trunk, and it is recommended to use soft-sided luggage to maximize space and cargo straps to secure it while driving.
 Grounding sources:  cymbal-starlight-2024.pdf
 ```
 
 Yay, it works!
+
+Once done, you can delete the file store:
+
+```shell
+python main.py delete_store fileSearchStores/myfilesearchstore-5a9x71ifjge9
+
+Deleted file search store: fileSearchStores/myfilesearchstore-5a9x71ifjge9
+```
 
 ## References
 

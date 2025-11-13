@@ -5,37 +5,72 @@ import time
 from google import genai
 from google.genai.types import GenerateContentConfig, Tool, FileSearch
 
-# File Search Tool is only supported by Gemini API right now (not Vertex AI API)
-# Reference: https://ai.google.dev/gemini-api/docs/file-search
+"""
+This module exposes simple helper functions that show how to use File 
+Search Tool of Gemini API. Note that File Search Tool is only supported 
+by Gemini API (not Vertex AI API)
+Each function is intended to be callable from the command line via the `cli()` helper.
+"""
+
 client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
 
-def create(display_name: str = "my-file-search-store") -> str:
+def create_store(display_name: str = None) -> str:
+    """Create a new file search store.
+
+    Args:
+        display_name: Optional human-readable display name for the store.
+
+    Returns:
+        The resource name (string) of the created file search store.
+    """
     file_search_store = client.file_search_stores.create(
         config={'display_name': display_name}
     )
     print(f"Created a file search store:")
-    print(f"  {file_search_store.display_name} - {file_search_store.name}")
+    print(f"  {file_search_store.name} - {file_search_store.display_name}")
     return file_search_store.name
 
 
-def list():
+def list_stores():
+    """List all file search stores in the current project.
+
+    Prints the display name and resource name for each store.
+    """
     print("List of file search stores:")
     for file_search_store in client.file_search_stores.list():
-        print(f"  {file_search_store.display_name} - {file_search_store.name}")
+        print(f"  {file_search_store.name} - {file_search_store.display_name}")
 
 
-def delete(file_search_store_name: str = None):
+def delete_store(file_search_store_name: str = None):
+    """Delete a file search store.
+
+    If `file_search_store_name` is provided, deletes that single store (force
+    delete). If None, deletes all stores by iterating over them.
+
+    Args:
+        file_search_store_name: Optional resource name of the store to delete.
+    """
     if file_search_store_name:
-        print(f"Deleting file search store '{file_search_store_name}'")
         client.file_search_stores.delete(name=file_search_store_name, config={"force": True})
+        print(f"Deleted file search store:")
+        print(f"  {file_search_store_name}")
     else:
         for file_search_store in client.file_search_stores.list():
-            delete(file_search_store.name)
+            delete_store(file_search_store.name)
 
 
-def upload(file_search_store_name: str, file_path: str):
-    print(f"Uploading file '{file_path}' to file search store '{file_search_store_name}'")
+def upload_to_store(file_search_store_name: str, file_path: str):
+    """Upload a local file to a file search store.
+
+    Args:
+        file_search_store_name: Resource name of the target file search store.
+        file_path: Local path to the file to upload.
+
+    The function polls the long-running operation until completion and prints
+    progress to stdout.
+    """
+    print(f"Uploading file: {file_path} to file search store: {file_search_store_name}")
     upload_op = client.file_search_stores.upload_to_file_search_store(
         file_search_store_name=file_search_store_name,
         file=file_path,
@@ -56,7 +91,16 @@ def upload(file_search_store_name: str, file_path: str):
     print("Upload completed.")
 
 
-def generate(prompt: str, file_search_store_name: str = None):
+def generate_content(prompt: str, file_search_store_name: str = None):
+    """Generate content optionally grounded with a file-search store.
+
+    Args:
+        prompt: The prompt (string) to send to the model.
+        file_search_store_name: Optional resource name; if provided, the model
+            will be allowed to use the File Search tool for grounding.
+
+    The function prints the model response and any grounding sources found.
+    """
     generate_config = None
     if file_search_store_name:
         generate_config = GenerateContentConfig(
@@ -67,7 +111,7 @@ def generate(prompt: str, file_search_store_name: str = None):
             )]
         )
 
-    print(f"Generating content with file search store '{file_search_store_name}'")
+    print(f"Generating content with file search store: {file_search_store_name}")
     response = client.models.generate_content(
         model='gemini-2.5-flash',
         contents=prompt,
@@ -75,15 +119,28 @@ def generate(prompt: str, file_search_store_name: str = None):
     )
     print(f"Response: {response.text}")
 
-    grounding = response.candidates[0].grounding_metadata
-    if not grounding:
-        print("Grounding sources: None")
-    else:
-        sources = {c.retrieved_context.title for c in grounding.grounding_chunks}
-        print("Grounding sources: ", *sources)
+    if file_search_store_name:
+        grounding = response.candidates[0].grounding_metadata
+        if not grounding:
+            print("Grounding sources: None")
+        else:
+            sources = {c.retrieved_context.title for c in grounding.grounding_chunks}
+            print("Grounding sources: ", *sources)
 
 
-def cli():
+def _cli():
+    """Simple command-line interface to call the helper functions.
+
+    Usage: python main.py <function> [args...]
+
+    The CLI maps the first positional argument to a function defined in this
+    module and passes the remaining positional arguments as strings. Example:
+        python main.py create my-store-name
+        python main.py upload <store-name> ./path/to/file.pdf
+
+    Note: arguments from the CLI are strings; functions that require other
+    types must convert them when called programmatically.
+    """
     if len(sys.argv) < 2:
         print("Usage: python main.py <function> [args...]")
         sys.exit(1)
@@ -103,4 +160,4 @@ def cli():
 
 
 if __name__ == "__main__":
-    cli()
+    _cli()
