@@ -60,28 +60,38 @@ def delete_store(file_search_store_name: str = None):
             delete_store(file_search_store.name)
 
 
-def upload_to_store(file_search_store_name: str, file_path: str):
+def upload_to_store(file_search_store_name: str, file_path: str, display_name: str = None):
     """Upload a local file to a file search store.
 
     Args:
         file_search_store_name: Resource name of the target file search store.
         file_path: Local path to the file to upload.
+        display_name: Optional human-readable display name for the file.
 
     The function polls the long-running operation until completion and prints
     progress to stdout.
     """
-    print(f"Uploading file: {file_path} to file search store: {file_search_store_name}")
+    print(f"Uploading file: {file_path} with display name: {display_name} to file search store:")
+    print(f"  {file_search_store_name}")
     upload_op = client.file_search_stores.upload_to_file_search_store(
         file_search_store_name=file_search_store_name,
         file=file_path,
-        # config={
-        #     'chunking_config': {
-        #         'white_space_config': {
-        #             'max_tokens_per_chunk': 200,
-        #             'max_overlap_tokens': 20
-        #         }
-        #     }
-        # }
+        config={
+            # Optional display name for the uploaded file.
+            'display_name': display_name,
+            # Optional config for telling the service how to chunk the data.
+            # 'chunking_config': {
+            #     'white_space_config': {
+            #         'max_tokens_per_chunk': 200,
+            #         'max_overlap_tokens': 20
+            #     }
+            # },
+            # Optional custom metadata to associate with the file.
+            # 'custom_metadata': [
+            #     {"key": "author", "string_value": "Robert Graves"},
+            #     {"key": "year", "numeric_value": 1934}
+            # ]
+        }
     )
 
     while not upload_op.done:
@@ -89,6 +99,29 @@ def upload_to_store(file_search_store_name: str, file_path: str):
         time.sleep(5)
         upload_op = client.operations.get(upload_op)
     print("Upload completed.")
+
+
+def list_docs(file_search_store_name: str):
+    """List all documents in a file search store.
+
+    Args:
+        file_search_store_name: The file search store name.
+    """
+
+    print(f"List of documents in file search store: ")
+    for document in client.file_search_stores.documents.list(parent=file_search_store_name):
+        print(f"  {document.name} - {document.display_name}")
+
+
+def delete_doc(document_name: str):
+    """Delete a document from a file search store.
+
+    Args:
+        document_name: Resource name of the document to delete.
+    """
+    client.file_search_stores.documents.delete(name=document_name, config={"force": True})
+    print(f"Deleted document:")
+    print(f"  {document_name}")
 
 
 def generate_content(prompt: str, file_search_store_name: str = None):

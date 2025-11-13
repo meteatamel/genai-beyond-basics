@@ -46,7 +46,7 @@ Created a file search store:
   fileSearchStores/myfilesearchstore-5a9x71ifjge9 - my-file-search-store
 ```
 
-You can also list all the file search stores you have:
+You can list all the file search stores you have:
 
 ```shell
 python main.py list_stores
@@ -62,9 +62,30 @@ Upload the PDF file to the file search store:
 ```shell
 python main.py upload_to_store fileSearchStores/myfilesearchstore-5a9x71ifjge9 cymbal-starlight-2024.pdf
 
-Uploading file: cymbal-starlight-2024.pdf to file search store: fileSearchStores/myfilesearchstore-5a9x71ifjge9
+Uploading file: cymbal-starlight-2024.pdf with display name: None to file search store: 
+  fileSearchStores/myfilesearchstore-5a9x71ifjge9
 Waiting for upload to complete...
 Upload completed.
+```
+
+Alternatively, you can give a different display name to the file in the file search store:
+
+```shell
+python main.py upload_to_store fileSearchStores/myfilesearchstore-5a9x71ifjge9 cymbal-starlight-2024.pdf cymbal-starlight.pdf
+
+Uploading file: cymbal-starlight-2024.pdf with display name: cymbal-starlight.pdf to file search store: 
+  fileSearchStores/myfilesearchstore-5a9x71ifjge9
+Waiting for upload to complete...
+Upload completed.
+```
+
+You can list all the documents in the file search store:
+
+```shell
+python main.py list_docs fileSearchStores/myfilesearchstore-5a9x71ifjge9
+
+List of documents in file search store: 
+  fileSearchStores/myfilesearchstore-5a9x71ifjge9/documents/cymbalstarlight2024pdf-sgog7sk0i5f4 - cymbal-starlight-2024.pdf
 ```
 
 ## With file search tool
@@ -83,12 +104,25 @@ Grounding sources:  cymbal-starlight-2024.pdf
 
 Yay, it works!
 
-Once done, you can delete the file store:
+## Cleanup
+
+You can delete the document in the file store:
+
+```shell
+python main.py delete_doc fileSearchStores/myfilesearchstore-5a9x71ifjge9/documents/cymbalstarlight2024pdf-sgog7sk0i5f4
+
+Deleted document: 
+  fileSearchStores/myfilesearchstore-5a9x71ifjge9/documents/cymbalstarlight2024pdf-sgog7sk0i5f4
+```
+
+You can delete the file store:
 
 ```shell
 python main.py delete_store fileSearchStores/myfilesearchstore-5a9x71ifjge9
 
-Deleted file search store: fileSearchStores/myfilesearchstore-5a9x71ifjge9
+Deleted file search store: 
+
+  fileSearchStores/myfilesearchstore-5a9x71ifjge9
 ```
 
 ## References
