@@ -32,7 +32,9 @@ Start both the UI and agent servers:
 npm run dev
 ```
 
-Navigate to `localhost:3000` and start prompting your AI agent.
+Navigate to `localhost:3000` and start prompting your AI agent:
+
+![AG-UI starter template app](images/starter-template-app.png)
 
 ## Add AG-UI to an existing ADK agent
 
@@ -197,7 +199,9 @@ From the frontend directory, start the development environment at `localhost:300
 npm run dev
 ```
 
-Navigate to `localhost:3000` and start prompting your AI agent.
+Navigate to `localhost:3000` and start prompting your AI agent:
+
+![Existing ADK app](images/existing-adk-app.png)
 
 ## References
 
