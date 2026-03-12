@@ -18,7 +18,7 @@ export GEMINI_API_KEY="your_gemini_api_key_here"
 ```
 
 Samples have server (agent) and client (renderer) parts that both need to be started. You can find different ADK agent
-samples in [adk](https://github.com/google/A2UI/tree/main/samples/agent/adk) and client renders in
+samples in [adk](https://github.com/google/A2UI/tree/main/samples/agent/adk) and client renderers in
 [client](https://github.com/google/A2UI/tree/main/samples/client) folders in the A2UI repo.
 
 ## Restaurant Finder app
@@ -88,3 +88,36 @@ npm run demo:contact
 You should see the UI generated and rendered:
 
 ![Contact manager app](images/contact-manager-app.png)
+
+## A2UI Component Gallery Agent
+
+This is a "kitchen sink" example, rendering every available component in the A2UI standard catalog to showcase their
+visual appearance and interactive behavior.
+
+In the [samples/agent/adk/componenet_gallery](https://github.com/google/A2UI/tree/main/samples/agent/adk/component_gallery)
+directory, start the ADK agent:
+
+```sh
+uv run .
+```
+
+In the [samples/client/lit_component_gallery](https://github.com/google/A2UI/tree/main/samples/client/lit/component_gallery)
+directory, install dependencies
+
+```sh
+npm install
+```
+
+Start the dev server:
+
+```sh
+npm run dev
+```
+
+Navigate to `http://localhost:5173`. You should see the component gallery:
+
+![Component gallery app](images/component-gallery-app.png)
+
+## References
+
+* [GitHub: A2UI samples](https://github.com/google/A2UI/tree/main/samples)
