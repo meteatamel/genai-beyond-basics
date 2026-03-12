@@ -24,7 +24,7 @@ A2UI](https://www.copilotkit.ai/ag-ui-and-a2ui) for more details.
 Follow these steps to learn more:
 
 * [A2UI with Agent Development Kit (ADK)](./adk/)
-* TODO: [A2UI with CopilotKit and Agent Development Kit (ADK)](./copilotkit)
+* [A2UI with CopilotKit and Agent Development Kit (ADK)](./copilotkit)
 
 ## References
 
