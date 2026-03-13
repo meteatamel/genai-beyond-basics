@@ -8,8 +8,8 @@ with an integrated restaurant finder agent that can find restaurants and book re
 Clone the repository:
 
 ```sh
-git clone https://github.com/CopilotKit/with-a2a-a2ui.git
-cd with-a2a-a2ui
+git clone https://github.com/CopilotKit/CopilotKit.git
+cd CopilotKit/examples/integrations/a2a-a2ui
 ```
 
 Install dependencies:
@@ -36,4 +36,4 @@ TODO: There's a bug currently on the client side.
 
 ## References
 
-* [GitHub: CopilotKit <> A2A + A2UI Starter](https://github.com/CopilotKit/with-a2a-a2ui)
+* [GitHub: CopilotKit <> A2A + A2UI Starter](https://github.com/CopilotKit/CopilotKit/tree/main/examples/integrations/a2a-a2ui)
