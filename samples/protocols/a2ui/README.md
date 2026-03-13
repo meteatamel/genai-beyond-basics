@@ -41,7 +41,7 @@ Follow these steps to learn more:
 * [CopilotKit Generative UI](https://www.copilotkit.ai/generative-ui)
 * [CopilotKit + A2UI](https://docs.copilotkit.ai/a2a/generative-ui/declarative-a2ui)
 * [CopilotKit A2UI Composer](https://a2ui-composer.ag-ui.com/)
-* [GitHub: CopilotKit <> A2A + A2UI Starter](https://github.com/CopilotKit/with-a2a-a2ui)
+* [GitHub: CopilotKit <> A2A + A2UI Starter](https://github.com/CopilotKit/CopilotKit/tree/main/examples/integrations/a2a-a2ui)
 ---
 * [YouTube: A2UI: The Protocol That Makes AI Design Functional UIs](https://youtu.be/PS8mZFhodfE)
 * [YouTube: AI Agents Can Now Build Their Own UI in Real Time](https://youtu.be/MD8VQzvMVek)
