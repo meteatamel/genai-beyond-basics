@@ -2,7 +2,7 @@
 
 ## Overview
 
-[A2UI](https://a2ui.org/) is a declarative UI protocol, from Google, that enables AI agents to generate rich,
+[A2UI](https://a2ui.org/) is a generative UI protocol, from Google, that enables AI agents to generate rich,
 interactive user interfaces across web, mobile, desktop. 
 
 ## A2UI vs. AG-UI

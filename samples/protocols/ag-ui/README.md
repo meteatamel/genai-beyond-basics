@@ -2,9 +2,10 @@
 
 ## Overview
 
-AG-UI is an open, lightweight, event-based protocol, created by the [CopilotKit](https://www.copilotkit.ai/), that
-standardizes how agent backends connect to agent frontends. Built for simplicity and flexibility, it enables
-seamless integration between AI agents, real time user context, and user interfaces.
+[AG-UI](https://github.com/ag-ui-protocol/ag-ui) is an open, lightweight, event-based protocol, created by the
+[CopilotKit](https://www.copilotkit.ai/), that standardizes how agent backends connect to agent frontends. Built for
+simplicity and flexibility, it enables seamless integration between AI agents, real time user context, and user
+interfaces.
 
 ![AG-UI Protocol](https://github.com/user-attachments/assets/cd0376f3-0a3d-4cc3-a931-2b166c4efe5e)
 
