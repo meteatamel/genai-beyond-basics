@@ -13,10 +13,7 @@ Despite similar names, AG-UI and A2UI serve very different and complementary rol
 * **A2UI** is a declarative generative UI spec, originated by Google, which agents can use to return UI widgets as part
   of their responses.
 
-This arhictecture diagram from [Cole Medin](https://github.com/coleam00) does a good job explaining how A2UI and AG-UI
-work together:
-
-![AG-UI, A2UI](https://raw.githubusercontent.com/coleam00/second-brain-research-dashboard/refs/heads/main/GenerativeUIDiagram.png)
+![MCP, A2A, A2UI, AG-UI](images/mcp-a2a-a2ui-agui.png)
 
 See [AG-UI and Generative UI Specs](https://docs.ag-ui.com/concepts/generative-ui-specs) and [AG-UI and
 A2UI](https://www.copilotkit.ai/ag-ui-and-a2ui) for more details.
