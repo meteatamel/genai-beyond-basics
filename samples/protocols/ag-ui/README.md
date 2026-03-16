@@ -14,7 +14,7 @@ others [clients](https://docs.ag-ui.com/introduction#clients).
 
 **Agents**: Most major agent frameworks such as LangGraph, CrewAI, Google ADK and [more](https://docs.ag-ui.com/introduction#agent-framework-1st-party) are supported.
 
-You can read more details on A2UI protocol in [Core architecture](https://docs.ag-ui.com/concepts/architecture) and
+You can read more details on AG-UI protocol in [Core architecture](https://docs.ag-ui.com/concepts/architecture) and
 [Events](https://docs.ag-ui.com/concepts/events) docs.
 
 ## AG-UI vs. MCP, A2A

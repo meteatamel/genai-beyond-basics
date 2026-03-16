@@ -2,7 +2,7 @@
 
 ## Overview
 
-[Model Context Protocol](https://modelcontextprotocol.io/) (MCP) is an open protocol, originally from Anthropic, that standardizes how models and agents access external tools and resources.
+[Model Context Protocol](https://modelcontextprotocol.io/) (MCP) is an open protocol, from Anthropic, that standardizes how models and agents access external tools and resources.
 
 It has 3 distinct parts:
 
