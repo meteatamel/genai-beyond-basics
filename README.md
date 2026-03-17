@@ -61,7 +61,7 @@ A collection of Generate AI related samples.
 
 * [Tracing with Langtrace and Gemini](./samples/tracing/langtrace)
 
-### Protocols
+### [Protocols](./samples/protocols/README.md)
 
 * [Model Context Protocol (MCP)](./samples/protocols/mcp/)
 * [Agent2Agent Protocol (A2A)](./samples/protocols/a2a/)
