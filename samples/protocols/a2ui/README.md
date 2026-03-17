@@ -12,7 +12,7 @@ Despite similar names, AG-UI and A2UI serve very different and complementary rol
 * **AG-UI** connects your user-facing application to any agentic backend.
 * **A2UI** is a declarative generative UI spec, which agents can use to return UI widgets as part of their responses.
 
-![MCP, A2A, A2UI, AG-UI](../images/mcp-a2a-a2ui-agui.png)
+![AG-UI and A2UI](../images/agui-and-a2ui.png)
 
 See [AG-UI and Generative UI Specs](https://docs.ag-ui.com/concepts/generative-ui-specs) and [AG-UI and
 A2UI](https://www.copilotkit.ai/ag-ui-and-a2ui) for more details.

@@ -37,7 +37,7 @@ Despite similar names, AG-UI and A2UI serve very different and complementary rol
 * **A2UI** is a declarative generative UI spec, originated by Google, which agents can use to return UI widgets as part
   of their responses.
 
-![MCP, A2A, A2UI, AG-UI](../images/mcp-a2a-a2ui-agui.png)
+![AG-UI and A2UI](../images/agui-and-a2ui.png)
 
  AG-UI is not a generative UI specification — it’s a user interaction protocol that provides the bi-directional runtime
  connection between the agent and the application. See [AG-UI and Generative UI
