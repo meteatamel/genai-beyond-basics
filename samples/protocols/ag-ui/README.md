@@ -56,6 +56,7 @@ Follow these steps to learn more:
 * [Docs: AG-UI protocol](https://docs.ag-ui.com/introduction)
 * [GitHub: AG-UI protocol](https://github.com/ag-ui-protocol/ag-ui)
 * [Docs: CopilotKit](https://docs.copilotkit.ai/)
+* [AG-UI Interactive Dojo](https://dojo.ag-ui.com/)
 ---
 * [MCP, A2A, and AG-UI](https://docs.ag-ui.com/agentic-protocols)
 * [AG-UI and A2UI](https://www.copilotkit.ai/ag-ui-and-a2ui)
