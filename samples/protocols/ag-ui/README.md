@@ -1,7 +1,5 @@
 # Agent-User Interaction Protocol (AG-UI)
 
-![AG-UI and ADK](adk/images/agui-and-adk.png)
-
 ## Overview
 
 [AG-UI](https://github.com/ag-ui-protocol/ag-ui) is an open, lightweight, event-based protocol, created by the
