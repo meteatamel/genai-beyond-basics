@@ -1,6 +1,6 @@
 # AG-UI with Agent Development Kit (ADK)
 
-![AG-UI and ADK](adk/images/agui-and-adk.png)
+![AG-UI and ADK](images/agui-and-adk.png)
 
 You can use ADK agents with AG-UI in a couple of ways. You can either start fresh with AG-UI's starter template or 
 integrate AG-UI into your existing ADK agent. Let's try both.
