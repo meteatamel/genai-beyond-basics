@@ -192,6 +192,7 @@ Follow these steps to learn more:
 
 * [A2UI with Agent Development Kit (ADK)](./adk/)
 * [A2UI with CopilotKit and Agent Development Kit (ADK)](./copilotkit)
+* Play with CopilotKit's [A2UI Composer](https://a2ui-composer.ag-ui.com/) to experiment with A2UI components.
 
 ## References
 
