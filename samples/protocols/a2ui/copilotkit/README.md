@@ -32,7 +32,8 @@ npm run dev
 
 Go to `localhost:3000` and start prompting your AI agent. For example `Top 5 Chinese restaurants in New York`.
 
-TODO: There's a bug currently on the client side.
+> [!WARNING]  
+> There's a bug currently on the client side. See [issue #3429](https://github.com/CopilotKit/CopilotKit/issues/3429).
 
 ## References
 
