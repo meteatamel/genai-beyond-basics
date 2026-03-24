@@ -1,6 +1,6 @@
 # Agent to UI Protocol (A2UI)
 
-## Overview
+![A2UI](images/a2ui.png)
 
 [A2UI](https://a2ui.org/) is a generative UI protocol, from Google, that enables AI agents to generate rich,
 interactive user interfaces across web, mobile, desktop. The idea with A2UI is that when a user asks a question to an
