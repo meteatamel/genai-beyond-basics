@@ -11,7 +11,14 @@ You can read [Core Concepts](https://a2ui.org/concepts/overview/) for the detail
 
 ## Message types and format
 
-A2UI defines a sequence of JSON messages that describe the UI and data for the UI:
+There are 4 message types in A2UI:
+
+* **createSurface**: Create a new surface and specify its catalog.
+* **updateComponents**: Add or update UI components in a surface.
+* **updateDataModel**: Update application state.
+* **deleteSurface**: Remove an UI surface.
+
+They're in JSON format and describe the UI and data for the UI:
 
 ```json
 {
@@ -38,15 +45,6 @@ A2UI defines a sequence of JSON messages that describe the UI and data for the U
 }
 ```
 
-There are 4 message types:
-
-* **createSurface**: Create a new surface and specify its catalog.
-* **updateComponents**: Add or update UI components in a surface.
-* **updateDataModel**: Update application state.
-* **deleteSurface**: Remove an UI surface.
-
-You can see an example resturant booking message flow in [Restaurant Booking](https://a2ui.org/concepts/data-flow/#lifecycle-example-restaurant-booking)
-
 ## Components
 
 A2UI defines a standard catalog of UI components organized by purpose:
@@ -58,9 +56,115 @@ A2UI defines a standard catalog of UI components organized by purpose:
 
 For the complete component gallery with examples, see [Component Reference](https://a2ui.org/reference/components/)
 
+## Message Flow
+
+Here's an example [Restaurant Booking](https://a2ui.org/concepts/data-flow/#lifecycle-example-restaurant-booking) message
+flow from documentation.
+
+1. Agent creates surface:
+
+```json
+{
+  "version": "v0.9",
+  "createSurface": {
+    "surfaceId": "booking",
+    "catalogId": "https://a2ui.org/specification/v0_9/basic_catalog.json"
+  }
+}
+```
+
+2. Agent defines UI structure:
+
+```json
+{
+  "version": "v0.9",
+  "updateComponents": {
+    "surfaceId": "booking",
+    "components": [
+      {
+        "id": "root",
+        "component": "Column",
+        "children": ["header", "guests-field", "submit-btn"]
+      },
+      {
+        "id": "header",
+        "component": "Text",
+        "text": "Confirm Reservation",
+        "variant": "h1"
+      },
+      {
+        "id": "guests-field",
+        "component": "TextField",
+        "label": "Guests",
+        "value": { "path": "/reservation/guests" }
+      },
+      {
+        "id": "submit-btn",
+        "component": "Button",
+        "child": "submit-text",
+        "variant": "primary",
+        "action": {
+          "event": {
+            "name": "confirm",
+            "context": {
+              "details": { "path": "/reservation" }
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+```
+
+3. Agent populates data:
+
+```json
+{
+  "version": "v0.9",
+  "updateDataModel": {
+    "surfaceId": "booking",
+    "path": "/reservation",
+    "value": {
+      "datetime": "2025-12-16T19:00:00Z",
+      "guests": "2"
+    }
+  }
+}
+```
+
+4. User edits guests to "3" → Client updates `/reservation/guests` automatically
+
+5. User clicks "Confirm" → Client sends action:
+
+```json
+{
+  "version": "v0.9",
+  "action": {
+    "name": "confirm",
+    "surfaceId": "booking",
+    "context": {
+      "details": {
+        "datetime": "2025-12-16T19:00:00Z",
+        "guests": "3"
+      }
+    }
+  }
+}
+```
+
+6. Agent responds → Updates UI or sends:
+
+```json
+{
+  "version": "v0.9",
+  "deleteSurface": { "surfaceId": "booking" }
+}
+``` 
+
 ## Transport Options
 
-A2UI is transport-agnostic, meaning any mechanism that can deliver JSON messages works. Currently, A2A and AG UI are supported with REST API, WebSockets, and SSE as planned or proposed. See [transports](https://a2ui.org/concepts/transports/) 
+A2UI is transport-agnostic, meaning any mechanism that can deliver JSON messages works. Currently, A2A and AG UI are supported with REST API, WebSockets, and SSE as planned or proposed. See [Transports](https://a2ui.org/concepts/transports/) 
 on the latest supported transports.
 
 ## A2UI vs. AG-UI
@@ -70,7 +174,7 @@ Despite similar names, AG-UI and A2UI serve very different and complementary rol
 * **AG-UI** connects your user-facing application to any agentic backend.
 * **A2UI** is a declarative generative UI spec, which agents can use to return UI widgets as part of their responses.
 
-![AG-UI and A2UI](../images/agui-and-a2ui.png)
+<img src="../images/agui-and-a2ui.png" alt="AG-UI and A2UI" width="50%" />
 
 See [AG-UI and Generative UI Specs](https://docs.ag-ui.com/concepts/generative-ui-specs) and [AG-UI and
 A2UI](https://www.copilotkit.ai/ag-ui-and-a2ui) for more details.
