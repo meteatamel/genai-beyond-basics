@@ -77,6 +77,12 @@ If you look into the logs, you should also see the A2UI JSON response:
 ...
 ```
 
+Let's take a look at what's happening under the hood. 
+
+On the agent side, you can take a look at the agent code in [`samples/agent/adk/restaurant_finder`](https://github.com/google/A2UI/tree/main/samples/agent/adk/restaurant_finder). Specifically, [`prompt_builder.py`](https://github.com/google/A2UI/blob/main/samples/agent/adk/restaurant_finder/prompt_builder.py) shows how to build the prompt for the agent to generate A2UI responses.
+
+On the client side, you can take a look at the Lit implementation of A2UI in [`renderers/lit`](https://github.com/google/A2UI/tree/main/renderers/lit). 
+
 ## Contact manager app
 
 You can also try the contact manager app:
