@@ -79,9 +79,77 @@ If you look into the logs, you should also see the A2UI JSON response:
 
 Let's take a look at what's happening under the hood. 
 
-On the agent side, you can take a look at the agent code in [`samples/agent/adk/restaurant_finder`](https://github.com/google/A2UI/tree/main/samples/agent/adk/restaurant_finder). Specifically, [`prompt_builder.py`](https://github.com/google/A2UI/blob/main/samples/agent/adk/restaurant_finder/prompt_builder.py) shows how to build the prompt for the agent to generate A2UI responses.
+On the agent side, you can review the agent code in [`samples/agent/adk/restaurant_finder`](https://github.com/google/A2UI/tree/main/samples/agent/adk/restaurant_finder). Specifically, [`prompt_builder.py`](https://github.com/google/A2UI/blob/main/samples/agent/adk/restaurant_finder/prompt_builder.py) shows how to build the prompt for the agent to generate A2UI responses.
 
-On the client side, you can take a look at the Lit implementation of A2UI in [`renderers/lit`](https://github.com/google/A2UI/tree/main/renderers/lit). 
+We're instructing the agent to generate A2UI responses using the following prompt:
+
+```python
+ROLE_DESCRIPTION = (
+    "You are a helpful restaurant finding assistant. Your final output MUST be a a2ui"
+    " UI JSON response."
+)
+
+UI_DESCRIPTION = """
+-   If the query is for a list of restaurants, use the restaurant data you have already received from the `get_restaurants` tool to populate the `dataModelUpdate.contents` array (e.g., as a `valueMap` for the "items" key).
+-   If the number of restaurants is 5 or fewer, you MUST use the `SINGLE_COLUMN_LIST_EXAMPLE` template.
+-   If the number of restaurants is more than 5, you MUST use the `TWO_COLUMN_LIST_EXAMPLE` template.
+-   If the query is to book a restaurant (e.g., "USER_WANTS_TO_BOOK..."), you MUST use the `BOOKING_FORM_EXAMPLE` template.
+-   If the query is a booking submission (e.g., "User submitted a booking..."), you MUST use the `CONFIRMATION_EXAMPLE` template.
+"""
+```
+
+The `A2uiSchemaManager` loads component catalogs, generates system prompts that teach the LLM how to produce valid A2UI
+JSON, and `generate_system_prompt` method  combines your agent's role description with the A2UI JSON schema and few-shot
+examples, so the LLM knows exactly how to format its output:
+
+```python
+version = VERSION_0_9
+restaurant_prompt = A2uiSchemaManager(
+    version,
+    catalogs=[
+        BasicCatalog.get_config(
+            version=version,
+            examples_path=f"examples/{version}",
+        )
+    ],
+    schema_modifiers=[remove_strict_validation],
+).generate_system_prompt(
+    role_description=ROLE_DESCRIPTION,
+    ui_description=UI_DESCRIPTION,
+    include_schema=True,
+    include_examples=True,
+    validate_examples=True,
+)
+```
+
+Then you create your agent with the system prompt in [agent.py](https://github.com/google/A2UI/blob/main/samples/agent/adk/restaurant_finder/agent.py):
+
+```python
+return LlmAgent(
+    model=LiteLlm(model=LITELLM_MODEL),
+    name="restaurant_agent",
+    description="An agent that finds restaurants and helps book tables.",
+    instruction=instruction,
+    tools=[get_restaurants],
+)
+```
+
+Once the agent generated the JSON output, you need to validate it against the A2UI schema before streaming back to the
+client:
+
+```python
+# --- Validation Steps ---
+# Check if it validates against the A2UI_SCHEMA
+# This will raise jsonschema.exceptions.ValidationError if it fails
+logger.info(
+    "--- RestaurantAgent.stream: Validating against A2UI_SCHEMA... ---"
+)
+selected_catalog.validator.validate(parsed_json_data)
+```
+
+You can see [A2UI - Agent-to-UI for ADK](https://google.github.io/adk-docs/integrations/a2ui/) for more details.
+
+On the client side, you can take a look at the Lit implementation of A2UI in [`renderers/lit`](https://github.com/google/A2UI/tree/main/renderers/lit) which takes the generated JSON and renders it.
 
 ## Contact manager app
 
@@ -126,4 +194,5 @@ Navigate to `http://localhost:5173`. You should see the component gallery:
 
 ## References
 
+* [A2UI — Agent-to-UI for ADK](https://google.github.io/adk-docs/integrations/a2ui/)
 * [GitHub: A2UI samples](https://github.com/google/A2UI/tree/main/samples)
