@@ -209,6 +209,7 @@ Follow these steps to learn more:
 * [CopilotKit A2UI Composer](https://a2ui-composer.ag-ui.com/)
 * [GitHub: CopilotKit <> A2A + A2UI Starter](https://github.com/CopilotKit/CopilotKit/tree/main/examples/integrations/a2a-a2ui)
 ---
+* [Codelab: Frontend Experiences with ADK and A2UI](https://codelabs.developers.google.com/next26/adk-a2ui)
 * [YouTube: Generative UI for any agent, anywhere: A2UI, AG-UI, MCP Apps, and more](https://youtu.be/UsMDkEsR-ok)
 * [YouTube: A2UI: The Protocol That Makes AI Design Functional UIs](https://youtu.be/PS8mZFhodfE)
 * [YouTube: AI Agents Can Now Build Their Own UI in Real Time](https://youtu.be/MD8VQzvMVek)
