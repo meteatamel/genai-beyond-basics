@@ -199,6 +199,7 @@ Follow these steps to learn more:
 * [Docs: A2UI protocol](https://a2ui.org/)
 * [GitHub: A2UI](https://github.com/google/A2UI) & [A2UI protocol spec](https://github.com/google/A2UI/tree/main/specification)
 * [Blog: Introducing A2UI: An open project for agent-driven interfaces](https://developers.googleblog.com/introducing-a2ui-an-open-project-for-agent-driven-interfaces/)
+* [Blog: A2UI v0.9: The New Standard for Portable, Framework-Agnostic Generative UI](https://developers.googleblog.com/a2ui-v0-9-generative-ui/)
 * [AG-UI and A2UI](https://www.copilotkit.ai/ag-ui-and-a2ui)
 * [AG-UI and Generative UI Specs](https://docs.ag-ui.com/concepts/generative-ui-specs)
 * [Agent UI Ecosystem](https://a2ui.org/introduction/agent-ui-ecosystem/)
