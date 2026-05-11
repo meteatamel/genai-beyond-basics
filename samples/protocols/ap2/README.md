@@ -12,6 +12,7 @@ TODO
 * [GitHub: AP2](https://github.com/google-agentic-commerce/AP2)
 * [GitHub: AP2 spec](https://github.com/google-agentic-commerce/AP2/blob/main/docs/ap2/specification.md)
 * [Blog: Powering AI commerce with the new Agent Payments Protocol (AP2)](https://cloud.google.com/blog/products/ai-machine-learning/announcing-agents-to-payments-ap2-protocol)
+* [Blog: An Illustrated Guide to AP2 (Agent Payment Protocol)](https://arthurchiao.art/blog/ap2-illustrated-guide/)
 * [YouTube: Intro to Google Agent Payments Protocol (AP2)](https://youtu.be/yLTp3ic2j5c)
 * [YouTube: How the Agent Payments Protocol (AP2) lets AI shop for you, securely](https://youtu.be/jSHj0z9Gi24).
 * [YouTube: Agent payments, can you do my shopping? | The Agent Factory Podcast](https://youtu.be/T1MtWnEYXM0)
