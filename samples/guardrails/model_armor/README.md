@@ -4,7 +4,7 @@
 enhance the security and safety of your AI applications. It helps you to filter both input (prompts) and output (responses)
 to prevent the LLM from exposure to or generation of malicious or sensitive content.
 
-![Model Armor](https://cloud.google.com/static/security-command-center/images/model-armor-architecture.svg)
+![Model Armor](https://docs.cloud.google.com/static/model-armor/images/model-armor-architecture.svg)
 
 ## Filters
 
