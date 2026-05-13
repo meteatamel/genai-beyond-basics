@@ -5,7 +5,7 @@ import os
 from fastmcp import FastMCP
 from fastmcp.prompts.prompt import PromptMessage, TextContent
 
-mcp = FastMCP("DocumentMCP", log_level="DEBUG")
+mcp = FastMCP("DocumentMCP")
 
 DOCS_DIR = os.path.join(os.path.dirname(__file__), "docs")
 
@@ -66,7 +66,7 @@ def fetch_doc(doc_id: str) -> str:
     name="format",
     description="Rewrites the contents of the document in Markdown format.",
 )
-def format_document(doc_id: str) -> PromptMessage:
+def format_document(doc_id: str) -> str:
     """Return a prompt message to reformat a document into Markdown."""
     prompt = f"""
     Your goal is to reformat a document to be written with markdown syntax.
@@ -80,7 +80,7 @@ def format_document(doc_id: str) -> PromptMessage:
     Use the 'edit_document' tool to edit the document. After the document has been edited, respond with the final version of the doc. Don't explain your changes.
     """
 
-    return PromptMessage(role="user", content=TextContent(type="text", text=prompt))
+    return prompt
 
 
 if __name__ == "__main__":
