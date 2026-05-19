@@ -73,6 +73,13 @@ In Human Not Present scenario, the User approves an Intent Mandate and the agent
 
 See the detailed flow here: [Human Not Present Scenario](https://arthurchiao.art/blog/ap2-illustrated-guide/#222-delegated-tasks-human-not-present)
 
+## Steps
+
+Follow these steps run some demos:
+
+* [Agent Payments Protocol Sample: Human Present Purchases with a Card](https://github.com/google-agentic-commerce/AP2/tree/main/code/samples/python/scenarios/a2a/human-present/cards)
+* [Agent Payments Protocol Sample: Human Not Present Purchases with a Card](https://github.com/google-agentic-commerce/AP2/blob/main/code/samples/python/scenarios/a2a/human-not-present/cards/)
+
 ## References
 
 * [GitHub: AP2](https://github.com/google-agentic-commerce/AP2)

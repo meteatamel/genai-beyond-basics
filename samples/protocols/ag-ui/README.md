@@ -55,6 +55,14 @@ Follow these steps to learn more:
 * [AG-UI with Agent Development Kit (ADK)](./adk/)
 * Play with [AG-UI Interactive Dojo](https://dojo.ag-ui.com/) to get a feel for the protocol with different agent frameworks.
 
+## Slides
+
+There's a [presentation](https://speakerdeck.com/meteatamel/agent-user-interaction-protocol-ag-ui) that accompanies the tutorial.
+
+<a href="https://speakerdeck.com/meteatamel/agent-user-interaction-protocol-ag-ui">
+    <img alt="Agent-User Interaction Protocol" src="images/agent-user-interaction-protocol.png" width="50%" height="50%">
+</a>
+
 ## References
 
 * [Docs: AG-UI protocol](https://docs.ag-ui.com/introduction)

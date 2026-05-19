@@ -194,6 +194,14 @@ Follow these steps to learn more:
 * [A2UI with CopilotKit and Agent Development Kit (ADK)](./copilotkit)
 * Play with CopilotKit's [A2UI Composer](https://a2ui-composer.ag-ui.com/) to experiment with A2UI components.
 
+## Slides
+
+There's a [presentation](https://speakerdeck.com/meteatamel/agent-user-interaction-protocol-ag-ui) that accompanies the tutorial.
+
+<a href="https://speakerdeck.com/meteatamel/agent-to-ui-protocol-a2ui">
+    <img alt="A2UI Protocol" src="images/a2ui-protocol.png" width="50%" height="50%">
+</a>
+
 ## References
 
 * [Docs: A2UI protocol](https://a2ui.org/)
