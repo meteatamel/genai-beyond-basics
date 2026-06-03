@@ -6,7 +6,8 @@ from google.adk.a2a.utils.agent_to_a2a import to_a2a
 
 logger = logging.getLogger(__name__)
 
-def convert_currency(from_currency: str,  to_currency: str):
+
+def convert_currency(from_currency: str, to_currency: str):
     """Given a from and to currency, returns the converted amount.
 
     Args:
@@ -24,7 +25,7 @@ def convert_currency(from_currency: str,  to_currency: str):
         response.raise_for_status()
         data = response.json()
         logger.debug(f"Response: {data}")
-        return data['rates'][to_currency]
+        return data["rates"][to_currency]
     except requests.exceptions.HTTPError as err:
         logger.error(f"HTTP error occurred: {err}")
         return None
@@ -43,17 +44,14 @@ instruction_prompt = """
 
 root_agent = Agent(
     name="currency_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.5-flash",
     description="Agent to convert from one currency to another.",
     instruction=instruction_prompt,
-    tools=[convert_currency]
+    tools=[convert_currency],
 )
 
 # Expose the agent over A2A protocol locally
-a2a_app = to_a2a(root_agent,
-                 host="0.0.0.0",
-                 port=int(os.getenv('PORT', '8080'))
-                 )
+a2a_app = to_a2a(root_agent, host="0.0.0.0", port=int(os.getenv("PORT", "8080")))
 
 # Expose the agent over A2A protocol on Cloud Run
 # a2a_app = to_a2a(root_agent,

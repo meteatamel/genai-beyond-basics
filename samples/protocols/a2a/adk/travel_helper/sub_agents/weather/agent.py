@@ -5,6 +5,7 @@ import requests
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
+
 def api_request(url):
     try:
         response = requests.get(url)
@@ -43,24 +44,26 @@ def lat_long_to_weather(latitude: str, longitude: str):
         The weather information for the location in JSON.
     """
     logger.info(f"Calling lat_long_to_weather({latitude}, {longitude})")
-    url = (f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&daily=temperature_2m_max,"
-           f"temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max")
+    url = (
+        f"https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&daily=temperature_2m_max,"
+        f"temperature_2m_min,sunrise,sunset,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max"
+    )
     return api_request(url)
 
 
 instruction_prompt = """
     You're a weather agent that can answer user questions about the weather in a city. Make sure to answer in this format:
     For the next 7 days, the weather in <city> will be:
-    * Temperature: 
-    * Rain: 
-    * Wind: 
-    * UV index: 
+    * Temperature:
+    * Rain:
+    * Wind:
+    * UV index:
 """
 
 root_agent = Agent(
     name="weather_agent",
-    model="gemini-2.0-flash",
+    model="gemini-3.5-flash",
     description="Agent to answer questions about weather in a city.",
     instruction=instruction_prompt,
-    tools=[location_to_lat_long, lat_long_to_weather]
+    tools=[location_to_lat_long, lat_long_to_weather],
 )

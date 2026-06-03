@@ -22,7 +22,7 @@ Set environment variables for your project:
 ```shell
 export GOOGLE_GENAI_USE_VERTEXAI=TRUE
 export GOOGLE_CLOUD_PROJECT=genai-atamel
-export GOOGLE_CLOUD_LOCATION=us-central1
+export GOOGLE_CLOUD_LOCATION=global
 ```
 
 Run the A2A agent server locally:
