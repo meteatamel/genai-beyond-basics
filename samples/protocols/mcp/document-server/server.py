@@ -3,7 +3,6 @@
 
 import os
 from fastmcp import FastMCP
-from fastmcp.prompts.prompt import PromptMessage, TextContent
 
 mcp = FastMCP("DocumentMCP")
 

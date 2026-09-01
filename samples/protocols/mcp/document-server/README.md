@@ -3,6 +3,21 @@
 See [server.py](./server.py) for a sample document MCP server that uses MCP tools, resources, and prompts to read
 and edit documents and format them into markdown.
 
+## Setup
+
+Create and activate a virtual environment:
+
+```shell
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Install the dependencies:
+
+```shell
+pip install -r requirements.txt
+```
+
 ## Test with MCP inspector
 
 Start the server:
