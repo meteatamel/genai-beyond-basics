@@ -1,5 +1,6 @@
-# ADK .env file
+# ADK files
 .env
+.adk/
 
 # VSCode workspaces folder
 workspaces/
