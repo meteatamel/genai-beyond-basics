@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="A2A" Version="0.1.0-preview.2" />
-    <PackageReference Include="A2A.AspNetCore" Version="0.1.0-preview.2" />
+    <PackageReference Include="A2A" Version="1.0.0-preview3" />
+    <PackageReference Include="A2A.AspNetCore" Version="1.0.0-preview3" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
   </ItemGroup>
 

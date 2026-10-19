@@ -1,9 +1,18 @@
 import uvicorn
+from starlette.applications import Starlette
 
-from a2a.server.apps import A2AStarletteApplication
 from a2a.server.request_handlers import DefaultRequestHandler
+from a2a.server.routes import (
+    create_agent_card_routes,
+    create_jsonrpc_routes,
+)
 from a2a.server.tasks import InMemoryTaskStore
-from a2a.types import AgentCapabilities, AgentCard, AgentSkill
+from a2a.types import (
+    AgentCapabilities,
+    AgentCard,
+    AgentInterface,
+    AgentSkill,
+)
 from agent_executor import EchoAgentExecutor
 
 PORT = 5209
@@ -27,25 +36,33 @@ if __name__ == '__main__':
     agent_card = AgentCard(
         name='Echo Agent',
         description='An agent that will echo every message it receives.',
-        url=BASE_URL,
+        supported_interfaces=[
+            AgentInterface(
+                protocol_binding='JSONRPC',
+                url=BASE_URL,
+                protocol_version='1.0',
+            )
+        ],
         version='1.0.0',
-        default_input_modes=['text'],
-        default_output_modes=['text'],
+        default_input_modes=['text/plain'],
+        default_output_modes=['text/plain'],
         capabilities=capabilities,
-        skills=[skill]
+        skills=[skill],
     )
 
-    # Define the request handler with the EchoAgentExecutor
+    # Define the request handler with the EchoAgentExecutor and agent card
     request_handler = DefaultRequestHandler(
         agent_executor=EchoAgentExecutor(),
         task_store=InMemoryTaskStore(),
+        agent_card=agent_card,
     )
 
-    # Create the A2A server application with the agent card and request handler
-    server = A2AStarletteApplication(
-        agent_card=agent_card,
-        http_handler=request_handler,
-    )
+    # Create the Starlette application with the agent card and JSON-RPC routes
+    routes = []
+    routes.extend(create_agent_card_routes(agent_card))
+    routes.extend(create_jsonrpc_routes(request_handler, '/'))
+    app = Starlette(routes=routes)
 
     # Run the server
-    uvicorn.run(server.build(), host='0.0.0.0', port=PORT)
+    uvicorn.run(app, host='0.0.0.0', port=PORT)
+

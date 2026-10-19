@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,8 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="A2A" Version="0.1.0-preview.2" />
-    <PackageReference Include="System.Net.ServerSentEvents" Version="10.0.0-preview.7.25380.108" />
+    <PackageReference Include="A2A" Version="1.0.0-preview3" />
   </ItemGroup>
 
 </Project>

@@ -39,15 +39,52 @@ INFO:     Application startup complete.
 INFO:     Uvicorn running on http://0.0.0.0:5209 (Press CTRL+C to quit)
 ```
 
-## Test the A2A server with A2AClient
+## Test the A2A server with A2A client
 
 In a separate terminal, test the agent:
 
 ```shell
 python a2a_client.py
 
-INFO:httpx:HTTP Request: POST http://localhost:5209/agent "HTTP/1.1 200 OK"
-{'id': '2a369695-7b4a-49bf-8cdb-5f4e1622da73', 'jsonrpc': '2.0', 'result': {'kind': 'message', 'messageId': 'a0654c73-60f8-43aa-ab21-68ee427d47df', 'parts': [{'kind': 'text', 'text': 'Echo: "Hello from the A2A client!"'}], 'role': 'agent'}}
+=== Non-Streaming Communication ===
+Received response: Echo: Hello from the A2A client!
+
+=== Streaming Communication ===
+Received streaming chunk: Echo: Hello from the A2A client!
+```
+
+## Test the A2A server with A2A CLI
+
+[A2A CLI](https://github.com/a2aproject/a2a-cli) (`a2a`) is the official command-line client for discovering and messaging A2A agents from your terminal.
+
+Install the CLI (macOS/Linux via Homebrew):
+
+```shell
+brew tap a2aproject/a2a-cli https://github.com/a2aproject/a2a-cli
+brew install a2a
+```
+
+Discover the agent card:
+
+```shell
+a2a card get http://localhost:5209
+
+Name:         Echo Agent
+Description:  An agent that will echo every message it receives.
+Version:      1.0.0
+Interfaces:
+  JSONRPC      http://localhost:5209
+Streaming:    true
+Skills:
+  echo                 Echo tool
+```
+
+Send a message to the agent:
+
+```shell
+a2a send -a http://localhost:5209 "Hello from the A2A CLI!"
+
+[agent] Echo: Hello from the A2A CLI!
 ```
 
 ## Test the A2A server with A2A Inspector
@@ -77,4 +114,5 @@ agent, download agent card, and chat with the agent over A2A:
 
 * [Python Quickstart Tutorial: Building an A2A Agent](https://a2a-protocol.org/latest/tutorials/python/1-introduction/)
 * [A2A Python SDK](https://github.com/a2aproject/a2a-python)
+* [A2A CLI](https://github.com/a2aproject/a2a-cli)
 * [A2A Inspector](https://github.com/a2aproject/a2a-inspector)

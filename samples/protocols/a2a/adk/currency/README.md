@@ -51,7 +51,40 @@ docker run \
 
 ## Test the A2A server
 
-Check that the Agent Card is published at [`http://localhost:8080/.well-known/agent-card.json`](http://localhost:8001/.well-known/agent-card.json)
+Check that the Agent Card is published at [`http://localhost:8080/.well-known/agent-card.json`](http://localhost:8080/.well-known/agent-card.json).
+
+You can test the agent from your terminal using [A2A CLI](https://github.com/a2aproject/a2a-cli) (`a2a`):
+
+```shell
+# Discover the agent card
+a2a card get http://localhost:8080
+
+Name:         currency_agent
+Description:  Agent to convert from one currency to another.
+Version:      0.0.1
+Interfaces:
+  JSONRPC      http://localhost:8080
+Streaming:    true
+Skills:
+  currency_agent       model
+  currency_agent-convert_currency convert_currency
+```
+
+```shell
+# Send a currency conversion question
+a2a send -a http://localhost:8080 "How much is 1 GBP in EUR?"
+
+Task:     598a1dce-f628-45cc-bbe0-305a639ffc02
+Context:  8e770de5-beb6-4a48-8c43-9e0736b696bf
+Status:   completed (2026-10-19T15:29:30Z)
+Artifacts:
+  [93ef7de9-fb90-4b19-a4e3-aadc07c057ab] 1 British Pounds (GBP) = 1.1876 Euros (EUR)
+History:
+  [user] How much is 1 GBP in EUR?
+  [agent] {"args":{"from_currency":"GBP","to_currency":"EUR"},"id":"call_2821308","name":"convert_currency"}
+  [agent] {"id":"call_2821308","name":"convert_currency","response":{"result":1.1876}}
+  [agent] 1 British Pounds (GBP) = 1.1876 Euros (EUR)
+```
 
 You can also use [A2A Inspector](https://github.com/a2aproject/a2a-inspector).
 
@@ -61,10 +94,7 @@ Change [agent.py](./agent.py) to point to a Cloud Run instance:
 
 ```python
 # Expose the agent over A2A protocol locally
-# a2a_app = to_a2a(root_agent,
-#                  host="0.0.0.0",
-#                  port=int(os.getenv('PORT', '8080'))
-                #  )
+# a2a_app = to_a2a(root_agent, host="localhost", port=int(os.getenv("PORT", "8080")))
 
 # Expose the agent over A2A protocol on Cloud Run
 a2a_app = to_a2a(root_agent,

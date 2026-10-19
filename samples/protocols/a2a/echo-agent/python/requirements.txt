@@ -1,3 +1,2 @@
-a2a-sdk
-a2a-sdk[http-server]
+a2a-sdk[http-server]>=1.0.0
 uvicorn

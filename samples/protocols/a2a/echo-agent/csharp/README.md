@@ -31,7 +31,8 @@ info: Microsoft.Hosting.Lifetime[0]
 In a separate terminal, test the agent:
 
 ```shell
-cd A2AClient/
+cd A2AClient
+dotnet run
 
 Connected to agent: Echo Agent
 Description: An agent that will echo every message it receives.
@@ -42,6 +43,40 @@ Received response: Echo: Hello from the A2A client!
 
 === Streaming Communication ===
 Received streaming chunk: Echo: Hello from the A2A client!
+```
+
+## Test the A2A server with A2A CLI
+
+[A2A CLI](https://github.com/a2aproject/a2a-cli) (`a2a`) is the official command-line client for discovering and messaging A2A agents from your terminal.
+
+Install the CLI (macOS/Linux via Homebrew):
+
+```shell
+brew tap a2aproject/a2a-cli https://github.com/a2aproject/a2a-cli
+brew install a2a
+```
+
+Discover the agent card:
+
+```shell
+a2a card get http://localhost:5209
+
+Name:         Echo Agent
+Description:  An agent that will echo every message it receives.
+Version:      1.0.0
+Interfaces:
+  JSONRPC      http://localhost:5209/agent
+Streaming:    true
+Skills:
+  echo                 Echo tool
+```
+
+Send a message to the agent:
+
+```shell
+a2a send -a http://localhost:5209 "Hello from the A2A CLI!"
+
+[agent] Echo: Hello from the A2A CLI!
 ```
 
 ## Test the A2A server with A2A Inspector
@@ -62,14 +97,8 @@ Starting frontend build (watch mode)...
 [BACKEND] INFO:     Uvicorn running on http://127.0.0.1:5001 (Press CTRL+C to quit)
 ```
 
-Open `http://127.0.0.1:5001` in the browser, enter `http://0.0.0.0:5209/.well-known/agent.json` for the agent.
-
-> [!NOTE]
-> Normally, you'd need to only enter `http://0.0.0.0:5209` and A2A Inspector would fetch the card from
-> `http://0.0.0.0:5209/.well-known/agent-card.json` but C# A2A library still uses the legacy agent card url
-> `http://0.0.0.0:5209/.well-known/agent.json`.
-
-Now, you can connect to the agent, download agent card, and chat with the agent over A2A:
+Open `http://127.0.0.1:5001` in the browser, enter `http://localhost:5209` for the agent. Now, you can connect to the
+agent, download agent card, and chat with the agent over A2A:
 
 ![A2A Inspector](../images/a2a-inspector.png)
 
@@ -77,4 +106,5 @@ Now, you can connect to the agent, download agent card, and chat with the agent 
 
 * [Blog: Building AI Agents with the A2A .NET SDK](https://devblogs.microsoft.com/foundry/building-ai-agents-a2a-dotnet-sdk/)
 * [A2A .NET SDK](https://github.com/a2aproject/a2a-dotnet)
+* [A2A CLI](https://github.com/a2aproject/a2a-cli)
 * [A2A Inspector](https://github.com/a2aproject/a2a-inspector)
