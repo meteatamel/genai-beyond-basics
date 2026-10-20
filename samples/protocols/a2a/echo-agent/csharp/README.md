@@ -74,9 +74,9 @@ Skills:
 Send a message to the agent:
 
 ```shell
-a2a send -a http://localhost:5209 "Hello from the A2A CLI!"
+a2a send -a http://localhost:5209 "Hello from the A2A CLI"
 
-[agent] Echo: Hello from the A2A CLI!
+[agent] Echo: Hello from the A2A CLI
 ```
 
 ## Test the A2A server with A2A Inspector

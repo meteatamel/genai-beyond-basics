@@ -61,9 +61,9 @@ Skills:
 
 ```shell
 # Send a message to the agent
-a2a send -a http://localhost:5209 "Hello from the A2A CLI!"
+a2a send -a http://localhost:5209 "Hello from the A2A CLI"
 
-[agent] Echo: Hello from the A2A CLI!
+[agent] Echo: Hello from the A2A CLI
 ```
 
 ## 2. Zero-Code Echo Server (`--echo`)
@@ -90,15 +90,15 @@ Streaming:    true
 
 ```shell
 # Send a message
-a2a send -a http://localhost:8080 "Hello from A2A CLI!"
+a2a send -a http://localhost:8080 "Hello from A2A CLI"
 
 Task:     01a154bc-0736-7274-bbe7-b5cf583439b5
 Context:  01a154bc-0736-735f-a194-9560779880ea
 Status:   completed (2026-10-19T16:16:11+01:00)
 Artifacts:
-  [01a154bc-0736-7451-b3c7-6c65766b2b19] Hello from A2A CLI!
+  [01a154bc-0736-7451-b3c7-6c65766b2b19] Hello from A2A CLI
 History:
-  [user] Hello from A2A CLI!
+  [user] Hello from A2A CLI
 ```
 
 ## 3. Turn Any Script into an A2A Agent (`--exec`)
