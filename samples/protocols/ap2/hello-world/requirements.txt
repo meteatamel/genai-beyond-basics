@@ -1,0 +1,1 @@
+ap2 @ git+https://github.com/google-agentic-commerce/AP2.git

@@ -67,3 +67,4 @@ A collection of Generate AI related samples.
 * [Agent2Agent Protocol (A2A)](./samples/protocols/a2a/)
 * [Agent-User Interaction Protocol (AG-UI)](./samples/protocols/ag-ui/)
 * [Agent to UI Protocol (A2UI)](./samples/protocols/a2ui/)
+* [Agent Payments Protocol (AP2)](./samples/protocols/ap2/)
