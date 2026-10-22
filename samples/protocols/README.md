@@ -10,6 +10,7 @@ This directory contains samples of some of the main agent protocols.
 | [Agent2Agent Protocol (A2A)](./a2a) | An open protocol, from Google, that standardizes how agents running on diverse frameworks and platforms communicate |
 | [Agent-User Interaction Protocol (AG-UI)](./ag-ui) | An open protocol, from CopilotKit, that standardizes how agents communicate with user interfaces |
 | [Agent to UI Protocol (A2UI)](./a2ui) | A generative UI protocol, from Google, that enables AI agents to generate rich, interactive user interfaces across web, mobile, desktop. |
+| [Universal Commerce Protocol (UCP)](./ucp) | An open standard, co-developed by Google, Shopify, and industry partners, that standardizes merchant discovery, capability negotiation, and checkout sessions for agentic commerce |
 | [Agent Payments Protocol (AP2)](./ap2) | An open protocol, from Google, that secures agent-initiated payments using cryptographically signed mandates and verifiable credentials |
 
 ## References

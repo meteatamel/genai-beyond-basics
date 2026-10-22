@@ -2,7 +2,7 @@
 
 ![AP2](images/ap2.png)
 
-[Agent Payments Protocol (AP2)](https://ap2-protocol.org/) is an open protocol, originated by Google, for securing agent-initiated payment transactions. AP2 operates as a security and authorization layer alongside the [Agent2Agent Protocol (A2A)](../a2a/), [Model Context Protocol (MCP)](../mcp/), and [Universal Commerce Protocol (UCP)](https://ucp.dev/).
+[Agent Payments Protocol (AP2)](https://ap2-protocol.org/) is an open protocol, originated by Google, for securing agent-initiated payment transactions. AP2 operates as a security and authorization layer alongside the [Agent2Agent Protocol (A2A)](../a2a/), [Model Context Protocol (MCP)](../mcp/), and [Universal Commerce Protocol (UCP)](../ucp/).
 
 Traditional payment systems assume a human is directly clicking "Buy" on a trusted interface. Autonomous AI agents break this assumption, raising four core challenges that AP2 addresses:
 
