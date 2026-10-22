@@ -1,6 +1,6 @@
 # Agent Protocols
 
-![MCP, A2A, A2UI, AG-UI](images/mcp-a2a-a2ui-agui.png)
+![MCP, A2A, UCP, AP2, A2UI, AG-UI](images/mcp-a2a-ucp-ap2-a2ui-agui.png)
 
 This directory contains samples of some of the main agent protocols.
 
