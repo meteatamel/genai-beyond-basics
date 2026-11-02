@@ -24,6 +24,7 @@ from ap2.sdk.generated.open_payment_mandate import (
     AllowedPayees,
     AmountRange,
     OpenPaymentMandate,
+    PaymentReference,
 )
 from ap2.sdk.generated.payment_mandate import PaymentMandate
 from ap2.sdk.generated.types.amount import Amount
@@ -112,13 +113,17 @@ def main() -> None:
         issuer_key=user_jwk,
     )
 
+    open_checkout_hash = compute_sha256_b64url(open_checkout_token)
+
     # Open Payment Mandate: constrains HOW MUCH the agent can spend ($150.00 = 15000 cents)
+    # and permanently links to the Open Checkout Mandate via PaymentReference
     open_payment_token = client.create(
         payloads=[
             OpenPaymentMandate(
                 constraints=[
                     AmountRange(currency="USD", min=0, max=15000),
                     AllowedPayees(allowed=[merchant]),
+                    PaymentReference(conditional_transaction_id=open_checkout_hash),
                 ],
                 cnf={"jwk": agent_pub_dict},
                 iat=now,
@@ -225,7 +230,10 @@ def main() -> None:
         expected_nonce="nonce_pay_98765",
     )
     payment_chain = PaymentMandateChain.parse(payment_payloads)
-    payment_violations = payment_chain.verify(expected_transaction_id=checkout_hash)
+    payment_violations = payment_chain.verify(
+        expected_transaction_id=checkout_hash,
+        expected_open_checkout_hash=open_checkout_hash,
+    )
     assert not payment_violations, f"Unexpected violations: {payment_violations}"
     print("[Payment Processor] Payment Mandate Chain verified! Amount $120.00 <= $150.00 max.")
 
@@ -291,7 +299,10 @@ def main() -> None:
         expected_nonce="nonce_over_budget",
     )
     over_budget_chain = PaymentMandateChain.parse(over_budget_payloads)
-    violations = over_budget_chain.verify(expected_transaction_id="tx_over_budget")
+    violations = over_budget_chain.verify(
+        expected_transaction_id="tx_over_budget",
+        expected_open_checkout_hash=open_checkout_hash,
+    )
     print(f"[Payment Processor] Rejected over-budget payment! Violations: {violations}")
 
 

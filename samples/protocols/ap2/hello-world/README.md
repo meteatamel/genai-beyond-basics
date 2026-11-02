@@ -5,7 +5,7 @@ A minimal, self-contained "Hello World" sample using the official [AP2 Python SD
 Without needing to spin up multiple servers or configure API keys, [mandate_demo.py](./mandate_demo.py) walks through an end-to-end **Autonomous (Human Not Present)** AP2 transaction in a single script:
 
 1. **Key Generation**: Generates ES256 (`P-256`) JWK keys for the **User (Trusted Surface)**, **Shopping Agent**, **Merchant**, and **Payment Processor**.
-2. **Open Mandates (`SD-JWT`)**: The User approves an `OpenCheckoutMandate` (constraining allowed merchants and acceptable SKUs) and an `OpenPaymentMandate` (constraining maximum spend to `$150.00`), both cryptographically bound to the Shopping Agent's public key via the `cnf` claim.
+2. **Open Mandates (`SD-JWT`)**: The User approves an `OpenCheckoutMandate` (constraining allowed merchants and acceptable SKUs) and an `OpenPaymentMandate` (constraining maximum spend to `$150.00` and linking to the open checkout mandate hash via `PaymentReference`), both cryptographically bound to the Shopping Agent's public key via the `cnf` claim.
 3. **Merchant Checkout JWT**: The Merchant creates and signs a UCP-compatible `Checkout` JWT for `CloudRunner White Shoes` (`SKU-SHOE-WHITE`) priced at `$120.00`.
 4. **Closed Mandates (`KB-SD-JWT` Delegation Chain)**: Acting autonomously, the Shopping Agent signs a closed `CheckoutMandate` (bound to the `checkout_hash`) and a closed `PaymentMandate` on top of the user's open mandates using `MandateClient.present()`.
 5. **Deterministic Verification & Receipts**:

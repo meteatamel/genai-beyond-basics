@@ -9,6 +9,8 @@ This sample demonstrates the 4-step **Universal Commerce Protocol (UCP)** lifecy
 3. **Update Checkout (`PUT /checkout-sessions/{id}`)**: The client provides buyer details, selects shipping (`Express Delivery` for `$5.00`), and applies promo code `SAVE10` (`-$4.00` in minor units), transitioning the session to `status = "ready_for_complete"`.
 4. **Complete Checkout (`POST /checkout-sessions/{id}/complete`)**: The client submits a tokenized payment instrument for a negotiated payment handler (`com.google.pay`), transitioning the session to `status = "completed"` and returning an `OrderConfirmation` with a permalink URL.
 
+> **Note:** To keep this Hello World runnable in a single process without hosting an external platform profile server, request inputs (`CreateCheckoutInput`, `UpdateCheckoutInput`, `CompleteCheckoutInput`) pass simplified parameters directly in the request body, while all server **responses** are validated against the full official `ucp_sdk` Pydantic models (`BusinessSchema` and `Checkout`). For full UCP REST request envelopes (`line_items`, `discounts`, `fulfillment`, `payment.instruments`) and RFC 9421 HTTP Message Signatures, see the [Official UCP Python Flower Shop Server](https://github.com/Universal-Commerce-Protocol/samples/tree/main/rest/python/server).
+
 ## Run the sample
 
 ### Option 1: Single-command run (in-process ASGI server)

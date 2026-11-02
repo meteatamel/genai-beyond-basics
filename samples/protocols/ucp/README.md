@@ -39,7 +39,10 @@ Capabilities are the "verbs" of UCP. They use reverse-domain naming (`{reverse-d
 | `dev.ucp.shopping.catalog.search` | Searches across a business product catalog |
 | `dev.ucp.shopping.catalog.lookup` | Retrieves a specific product or variant by ID |
 | `dev.ucp.shopping.order` | Order lifecycle tracking and webhook events |
+| `dev.ucp.shopping.permalink` | Shareable links to pre-populated carts and products |
 | `dev.ucp.common.identity_linking` | OAuth 2.0 account linking for loyalty and personalized offers |
+| `dev.ucp.common.location.search` / `lookup` | Searches and retrieves physical store and pickup location details |
+| `dev.ucp.common.ask` | Natural-language Q&A about a business's resources, policies, and services |
 | `dev.ucp.lodging.booking` | Hotel and lodging booking sessions |
 
 ### Extensions
@@ -52,11 +55,16 @@ Extensions compose onto base capabilities via JSON Schema `allOf` using the `ext
 | `dev.ucp.shopping.discount` | `checkout`, `cart` | Promo codes and automatic discounts |
 | `dev.ucp.shopping.buyer_consent` | `checkout`, `cart` | Explicit buyer consent capture |
 | `dev.ucp.common.loyalty` | `checkout`, `cart`, `catalog` | Loyalty member benefits, rewards, and points |
+| `dev.ucp.common.payment.authentication` | `checkout` | Browser-surface device data collection and 3DS challenges |
 | `dev.ucp.common.payment.ap2_mandate` | `checkout` | Cryptographic [AP2](../ap2/) mandates for verifiable agent authorization |
+| `dev.ucp.common.payment.split_payments` | `checkout` | Multi-instrument allocation and split settlements |
+| `dev.ucp.common.payment.terms` | `checkout` | Deposits, installments, and deferred payment schedules |
 
-## Discovery & Capability Negotiation
+## Discovery, Capability Negotiation & Signatures
 
-Every UCP business publishes an unauthenticated JSON profile at `GET /.well-known/ucp` that advertises its protocol version, service endpoints, capabilities, payment handlers, and ES256 JWK signing keys (`keys[]`).
+Every UCP business publishes an unauthenticated JSON profile at `GET /.well-known/ucp` that advertises its protocol version, service endpoints, capabilities, payment handlers, and JWK signing keys (`keys[]`, with `ES256` as the mandatory baseline and optional `Ed25519` for Web Bot Auth interop). For provenance, UCP enforces **Namespace Authority Binding**—the hostname of a capability's `schema` URL must match its reverse-domain namespace (e.g., `dev.ucp.*` $\rightarrow$ `ucp.dev`).
+
+Permissionless request authentication across HTTP transports (REST and streamable HTTP MCP) uses **HTTP Message Signatures ([RFC 9421](https://www.rfc-editor.org/rfc/rfc9421))** (`Signature-Input`, `Signature`, and `Content-Digest` per RFC 9530), resolved directly against the public keys in each party's profile.
 
 When a Platform/Agent calls a Business, it advertises its own profile URL in the `UCP-Agent` HTTP header:
 
@@ -75,12 +83,14 @@ UCP uses a **server-selects** negotiation model:
 
 ## Checkout Lifecycle & Payment Flow
 
-The `dev.ucp.shopping.checkout` capability progresses through explicit states so an AI agent always knows whether it can complete the purchase autonomously or must hand off to the user:
+The `dev.ucp.shopping.checkout` capability progresses through six explicit states so an AI agent always knows whether it can complete the purchase autonomously or must hand off to the user:
 
 * `incomplete`: Missing required information (e.g., buyer email or fulfillment address).
-* `requires_escalation`: Requires direct buyer input via a `continue_url` handoff (e.g., custom configuration or step-up challenge).
+* `requires_escalation`: Requires direct buyer input via a `continue_url` handoff (e.g., custom configuration or 3DS challenge).
 * `ready_for_complete`: All line items, totals, and fulfillment details are finalized; ready for payment submission.
+* `complete_in_progress`: Checkout completion is currently executing (new `PUT` updates are rejected while in progress).
 * `completed`: Payment processed and `OrderConfirmation` (`order.id`, `order.permalink_url`) generated.
+* `canceled`: Checkout session was canceled (`POST /checkout-sessions/{id}/cancel`) or expired.
 
 <img src="images/ucp-checkout-flow.png" alt="UCP Checkout and Payment Flow" width="75%" />
 
@@ -91,7 +101,9 @@ All monetary amounts in UCP are expressed in **minor currency units (cents)** (e
 **UCP** and **[AP2 (Agent Payments Protocol)](../ap2/)** are complementary standards in the agentic commerce stack:
 
 * **UCP** is the **commerce layer**: It standardizes how agents discover stores (`/.well-known/ucp`), browse catalogs, build carts, calculate shipping/discounts, and manage checkout sessions.
-* **AP2** is the **cryptographic trust & payment authorization layer**: Through the `dev.ucp.common.payment.ap2_mandate` extension, the Merchant signs the UCP `Checkout` object (`X-UCP-Checkout-Signature`), and the Agent submits cryptographically signed `CheckoutMandate` and `PaymentMandate` Verifiable Credentials (`SD-JWT` / `KB-SD-JWT`) bound to that exact checkout hash.
+* **AP2** is the **cryptographic trust & payment authorization layer**: When the `dev.ucp.common.payment.ap2_mandate` extension is negotiated in the capability intersection, the session is **Security Locked** (neither party can downgrade to an unsigned checkout):
+  1. **Business Authorization**: The Business signs the canonicalized (RFC 8785 JCS) Checkout payload (excluding `ap2`) and embeds a detached JWS (`<header>..<signature>`) at `checkout.ap2.merchant_authorization`.
+  2. **Platform Mandate Submission**: On `POST /checkout-sessions/{id}/complete`, the Platform submits a cryptographically signed `CheckoutMandate` (`ap2.checkout_mandate`) containing the signed checkout and a `PaymentMandate` (`payment.instruments[*].credential.token`) as `SD-JWT` / `KB-SD-JWT` credentials.
 
 <img src="images/ucp-ap2-checkout-flow.png" alt="UCP and AP2 Checkout Flow" width="85%" />
 

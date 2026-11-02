@@ -63,6 +63,16 @@ In autonomous flows, the User signs the root **Open Mandate** (`SD-JWT`), embedd
 
 <img src="images/mandate_chain_example.svg" alt="AP2 Mandate Delegation Chain" width="85%" />
 
+AP2 defines two trust models in [`agent_authorization.md`](https://github.com/google-agentic-commerce/AP2/blob/main/docs/ap2/agent_authorization.md) for how the root Mandate is issued on the **Trusted Surface**:
+
+* **User Credential Model**: Relies on an external Issuer (e.g., an EMVCo Digital Payment Credential `com.emvco.dpc` in a digital wallet) presented via **OpenID4VP** (`transaction_data` with `type: "delegate"`) and the browser **Digital Credentials API (`dc_api`)**. A single User Credential can delegate mandates to many different agents without requiring the verifier to pre-establish trust with each agent.
+* **Trusted Agent Provider Model**: The provider of the Shopping Agent operates the non-agentic Trusted Surface directly and signs the root Mandate using the Agent Provider's key (e.g., published in its UCP `keys[]` profile).
+
+To preserve privacy and prevent replay/double-spend, AP2 v0.2 also enforces two normative presentation rules on the Shopping Agent:
+
+* **Selective Disclosure Minimization**: The Shopping Agent **MUST** present only the disclosures from the Open Mandates that are required to evaluate the Closed Mandate (keeping alternative acceptable merchants or unrelated prompt details private).
+* **Sequential Presentation (No Concurrent Reuse)**: The Shopping Agent **MUST NOT** present a subsequent Open Checkout or Payment Mandate for another checkout unless it has first received a rejection Receipt from the previous presentation.
+
 ### Open Mandate Constraints
 
 When a user delegates a task to an agent, Open Mandates restrict what the agent is allowed to approve using deterministic constraints:

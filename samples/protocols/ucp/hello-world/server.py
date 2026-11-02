@@ -73,6 +73,15 @@ CHECKOUT_STORE: dict[str, dict[str, Any]] = {}
 
 
 class LineItemInput(BaseModel):
+    """Simplified request input for the Hello World demo.
+
+    Note: In production UCP REST bindings, create/update/complete requests use
+    full UCP request envelopes (`line_items`, `buyer`, `discounts`, `fulfillment`,
+    `payment.instruments`) and discover platform capabilities by dereferencing the
+    `UCP-Agent` profile URL. All responses below validate against the full official
+    `ucp_sdk` `BusinessProfile` and `Checkout` Pydantic models.
+    """
+
     sku: str
     quantity: int = 1
 
