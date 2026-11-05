@@ -42,11 +42,9 @@ The core principle of AP2 is **"Verifiable Intent, Not Inferred Action."** Inste
 
 ### Evolution from v0.1 to v0.2
 
-In early AP2 overviews (v0.1), mandates were described conceptually as three objects: **Intent Mandate**, **Cart Mandate**, and **Payment Mandate**:
+In early AP2 overviews (v0.1), mandates were described conceptually as three objects: **Intent Mandate**, **Cart Mandate**, and **Payment Mandate**. In the **AP2 v0.2 specification** (and the official `ap2.sdk` Python package), this model is formalized into **two linked Mandate families**—**Checkout Mandates** (securing *what* is being purchased) and **Payment Mandates** (securing *how* it is paid)—each supporting an **Open** state (replacing `IntentMandate` with typed constraints for autonomous agents) and a **Closed** state (bound to a specific checkout/transaction), paired with signed **Receipts**:
 
 ![AP2 Mandates Overview](images/ap2_mandates.png)
-
-In the **AP2 v0.2 specification** (and the official `ap2.sdk` Python package), this model is formalized into **two linked Mandate families**—**Checkout Mandates** (securing *what* is being purchased) and **Payment Mandates** (securing *how* it is paid)—each supporting an **Open** state (replacing `IntentMandate` with typed constraints for autonomous agents) and a **Closed** state (bound to a specific checkout/transaction), paired with signed **Receipts**:
 
 | Credential / Object | Schema (`vct`) | Purpose |
 | :--- | :--- | :--- |
@@ -61,7 +59,7 @@ In the **AP2 v0.2 specification** (and the official `ap2.sdk` Python package), t
 
 In autonomous flows, the User signs the root **Open Mandate** (`SD-JWT`), embedding the Shopping Agent's public key in the `cnf` (confirmation) claim. When the Shopping Agent finds a matching product, it signs a **Closed Mandate** (`KB-SD-JWT`) using its own private key and appends it to the user's open mandate (`open_sd_jwt~~closed_kb_sd_jwt~`), binding them via `sd_hash`:
 
-<img src="images/mandate_chain_example.svg" alt="AP2 Mandate Delegation Chain" width="85%" />
+![AP2 Mandate Delegation Chain](images/mandate_chain_example.png)
 
 AP2 defines two trust models in [`agent_authorization.md`](https://github.com/google-agentic-commerce/AP2/blob/main/docs/ap2/agent_authorization.md) for how the root Mandate is issued on the **Trusted Surface**:
 
