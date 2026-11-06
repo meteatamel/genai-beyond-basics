@@ -1,0 +1,4 @@
+a2ui-agent-sdk>=0.10.0
+google-genai>=1.0.0
+fastapi>=0.115.0
+uvicorn>=0.30.0

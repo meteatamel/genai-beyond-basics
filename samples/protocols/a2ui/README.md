@@ -162,6 +162,30 @@ flow from documentation.
 }
 ``` 
 
+## Swappable Inference Formats and A2UI Express
+
+While standard JSON is the wire protocol that client renderers consume, having an LLM generate raw JSON (`DirectJsonFormatFactory`) token-by-token is verbose and adds latency.
+
+A2UI's Agent SDKs (`a2ui-agent-sdk` in Python, `@a2ui/agent` in TypeScript, and `a2ui_agent` in Dart) decouple the **inference format** (what the model writes) from the **wire format** (the standard A2UI JSON sent over the wire).
+
+The new default inference format is **A2UI Express** (`ExpressFormatFactory`), a compact, Python-like positional DSL enclosed in `<a2ui>...</a2ui>` tags that cuts output tokens by ~3x, reduces prompt tokens by ~50%, and lowers inference latency by up to 3x—even with model thinking turned off (`thinking_budget=0`).
+
+For example, steps 1–3 of the Restaurant Booking flow above can be written by the model in just 8 lines of A2UI Express:
+
+```text
+<a2ui>
+surface("booking")
+$/reservation/datetime = "2025-12-16T19:00:00Z"
+$/reservation/guests = "2"
+root = Column([header, guests_field, submit_btn])
+header = Text("Confirm Reservation", "h1")
+guests_field = TextField("Guests", $/reservation/guests)
+submit_btn = Button(Text("Confirm"), "primary", Event("confirm", {details: $/reservation}))
+</a2ui>
+```
+
+On the server, `A2uiRequestProcessor` compiles and validates this `<a2ui>` block into the exact same `createSurface`, `updateComponents`, and `updateDataModel` JSON messages shown above, so client renderers require zero changes. See the [A2UI Express sample](./a2ui-express/) for a hands-on walkthrough and live benchmark.
+
 ## Transport Options
 
 A2UI is transport-agnostic, meaning any mechanism that can deliver JSON messages works. Currently, A2A and AG UI are
@@ -191,6 +215,7 @@ A2UI](https://www.copilotkit.ai/ag-ui-and-a2ui) for more details.
 Follow these steps to learn more:
 
 * [A2UI with Agent Development Kit (ADK)](./adk/)
+* [A2UI Express & Swappable Inference Formats](./a2ui-express/)
 * [A2UI with CopilotKit and Agent Development Kit (ADK)](./copilotkit)
 * Play with CopilotKit's [A2UI Composer](https://a2ui-composer.ag-ui.com/) to experiment with A2UI components.
 
@@ -205,9 +230,11 @@ There's a [presentation](https://speakerdeck.com/meteatamel/agent-user-interacti
 ## References
 
 * [Docs: A2UI protocol](https://a2ui.org/)
+* [Docs: Swappable Inference Formats](https://a2ui.org/concepts/inference-formats/)
 * [GitHub: A2UI](https://github.com/google/A2UI) & [A2UI protocol spec](https://github.com/google/A2UI/tree/main/specification)
 * [Blog: Introducing A2UI: An open project for agent-driven interfaces](https://developers.googleblog.com/introducing-a2ui-an-open-project-for-agent-driven-interfaces/)
 * [Blog: A2UI v0.9: The New Standard for Portable, Framework-Agnostic Generative UI](https://developers.googleblog.com/a2ui-v0-9-generative-ui/)
+* [Blog: Fast, reliable A2UI, with swappable inference formats](https://developers.googleblog.com/fast-reliable-a2ui/)
 * [AG-UI and A2UI](https://www.copilotkit.ai/ag-ui-and-a2ui)
 * [AG-UI and Generative UI Specs](https://docs.ag-ui.com/concepts/generative-ui-specs)
 * [Agent UI Ecosystem](https://a2ui.org/introduction/agent-ui-ecosystem/)

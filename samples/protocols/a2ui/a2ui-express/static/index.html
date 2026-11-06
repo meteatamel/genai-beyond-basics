@@ -1,0 +1,947 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>A2UI Swappable Inference Formats — Side-by-Side Explorer</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --panel: #ffffff;
+        --border: #e2e8f0;
+        --text: #0f172a;
+        --muted: #64748b;
+        --blue: #2563eb;
+        --blue-bg: #eff6ff;
+        --green: #059669;
+        --green-bg: #ecfdf5;
+        --amber: #d97706;
+        --amber-bg: #fffbeb;
+        --purple: #7c3aed;
+        --purple-bg: #f5f3ff;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        min-height: 100vh;
+        padding: 14px 20px 32px;
+      }
+
+      .container {
+        max-width: 1480px;
+        margin: 0 auto;
+      }
+
+      /* Header */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .brand h1 {
+        font-size: 1.2rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 3px 9px;
+        border-radius: 999px;
+        font-size: 0.74rem;
+        font-weight: 600;
+      }
+
+      .badge-blue {
+        background: var(--blue-bg);
+        color: var(--blue);
+        border: 1px solid #bfdbfe;
+      }
+
+      .badge-green {
+        background: var(--green-bg);
+        color: var(--green);
+        border: 1px solid #a7f3d0;
+      }
+
+      .badge-amber {
+        background: var(--amber-bg);
+        color: var(--amber);
+        border: 1px solid #fde68a;
+      }
+
+      .badge-purple {
+        background: var(--purple-bg);
+        color: var(--purple);
+        border: 1px solid #ddd6fe;
+      }
+
+      /* Controls Bar */
+      .controls-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .controls-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .button-group {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+
+      .group-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        margin-right: 4px;
+      }
+
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        border-radius: 7px;
+        font-size: 0.81rem;
+        font-weight: 600;
+        transition: all 0.15s ease;
+      }
+
+      .pill-btn {
+        background: #f1f5f9;
+        color: #334155;
+        border: 1px solid #cbd5e1;
+        padding: 5px 11px;
+      }
+
+      .pill-btn:hover {
+        background: #e2e8f0;
+      }
+
+      .pill-btn.active {
+        background: var(--blue);
+        color: #ffffff;
+        border-color: var(--blue);
+      }
+
+      .pill-btn.active-green {
+        background: var(--green);
+        color: #ffffff;
+        border-color: var(--green);
+      }
+
+      .prompt-row {
+        display: flex;
+        gap: 8px;
+        align-items: stretch;
+      }
+
+      .prompt-input {
+        flex: 1;
+        padding: 7px 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 7px;
+        font-family: inherit;
+        font-size: 0.83rem;
+        color: var(--text);
+        background: #f8fafc;
+      }
+
+      .prompt-input:focus {
+        outline: 2px solid var(--blue);
+        background: #ffffff;
+      }
+
+      .generate-btn {
+        background: #0f172a;
+        color: #ffffff;
+        border: none;
+        padding: 7px 14px;
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .generate-btn:hover:not(:disabled) {
+        background: #1e293b;
+      }
+
+      .generate-btn:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+
+      /* Summary Comparison Banner */
+      .summary-banner {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .summary-tile {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 10px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+      }
+
+      .summary-tile-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+      }
+
+      .summary-tile-value {
+        font-size: 1.08rem;
+        font-weight: 700;
+        color: var(--text);
+        margin-top: 1px;
+      }
+
+      .summary-tile-sub {
+        font-size: 0.74rem;
+        color: var(--muted);
+      }
+
+      /* Comparison Grid */
+      .comparison-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .comparison-grid.grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      @media (min-width: 1400px) {
+        .comparison-grid.grid-4 {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+      }
+
+      .column-card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 0 2px 5px rgba(15, 23, 42, 0.04);
+        min-width: 0;
+      }
+
+      .column-card.express-col {
+        border: 2px solid #10b981;
+      }
+
+      .column-card.alt-col {
+        border: 2px solid #8b5cf6;
+      }
+
+      .column-header {
+        padding: 10px 14px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        background: #f8fafc;
+      }
+
+      .express-col .column-header {
+        background: #ecfdf5;
+        border-bottom-color: #a7f3d0;
+      }
+
+      .alt-col .column-header {
+        background: #f5f3ff;
+        border-bottom-color: #ddd6fe;
+      }
+
+      .column-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .column-title h2 {
+        font-size: 0.94rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .tag-pill {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        padding: 2px 6px;
+        border-radius: 5px;
+        background: #e2e8f0;
+        color: #334155;
+      }
+
+      .express-col .tag-pill {
+        background: #d1fae5;
+        color: #065f46;
+      }
+
+      .alt-col .tag-pill {
+        background: #ede9fe;
+        color: #5b21b6;
+      }
+
+      /* Metrics Strip */
+      .metrics-strip {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        border-bottom: 1px solid var(--border);
+        background: #ffffff;
+      }
+
+      .metric-box {
+        padding: 8px 10px;
+        border-right: 1px solid var(--border);
+      }
+
+      .metric-box:last-child {
+        border-right: none;
+      }
+
+      .metric-label {
+        font-size: 0.68rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 1px;
+      }
+
+      .metric-val {
+        font-size: 0.88rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+      }
+
+      .express-col .metric-val.highlight {
+        color: var(--green);
+      }
+
+      .alt-col .metric-val.highlight {
+        color: var(--purple);
+      }
+
+      /* Section Labels */
+      .section-label {
+        padding: 8px 14px 4px;
+        font-size: 0.72rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      /* Code Panes (Placed FIRST so you immediately see the format difference!) */
+      .code-wrapper {
+        margin: 0 14px 8px;
+        border: 1px solid #1e293b;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #0f172a;
+      }
+
+      .code-header {
+        background: #1e293b;
+        color: #cbd5e1;
+        padding: 5px 10px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      pre.code-block {
+        padding: 10px 12px;
+        color: #f8fafc;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.75rem;
+        line-height: 1.45;
+        overflow-x: auto;
+        height: 175px;
+        overflow-y: auto;
+      }
+
+      .wire-wrapper {
+        margin: 0 14px 8px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #f8fafc;
+      }
+
+      .wire-header {
+        background: #e2e8f0;
+        color: #334155;
+        padding: 5px 10px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      pre.wire-code-block {
+        padding: 10px 12px;
+        color: #0f172a;
+        background: #ffffff;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.74rem;
+        line-height: 1.45;
+        overflow-x: auto;
+        height: 145px;
+        overflow-y: auto;
+      }
+
+      .flow-arrow {
+        text-align: center;
+        font-size: 0.72rem;
+        font-weight: 600;
+        color: var(--muted);
+        padding: 2px 0;
+      }
+
+      /* Rendered Surface Viewport */
+      .surface-stage {
+        margin: 0 14px 10px;
+        padding: 14px;
+        background: #f1f5f9;
+        border: 1px dashed #cbd5e1;
+        border-radius: 9px;
+        min-height: 210px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        /* Official @a2ui/lit/v0_9 CSS custom properties */
+        --a2ui-color-primary: #2563eb;
+        --a2ui-color-primary-hover: #1d4ed8;
+        --a2ui-color-on-primary: #ffffff;
+        --a2ui-color-surface: #ffffff;
+        --a2ui-color-on-surface: #0f172a;
+        --a2ui-color-border: #cbd5e1;
+        --a2ui-color-on-background: #0f172a;
+        --a2ui-text-caption-color: #64748b;
+        --a2ui-border-radius: 10px;
+        --a2ui-spacing-s: 6px;
+        --a2ui-spacing-m: 12px;
+        --a2ui-spacing-l: 16px;
+        --a2ui-card-background: #ffffff;
+        --a2ui-card-border: 1px solid #e2e8f0;
+        --a2ui-card-border-radius: 10px;
+        --a2ui-card-padding: 16px;
+        --a2ui-card-box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+      }
+
+      .surface-stage a2ui-surface {
+        display: block;
+        width: 100%;
+        max-width: 420px;
+      }
+
+      /* Render <a2ui-basic-icon> text using Material Symbols font */
+      a2ui-basic-icon {
+        font-family: 'Material Symbols Outlined';
+        font-size: 28px;
+        color: var(--blue);
+        line-height: 1;
+      }
+
+      .action-toast {
+        margin: 0 14px 10px;
+        padding: 7px 10px;
+        border-radius: 7px;
+        background: #0f172a;
+        color: #38bdf8;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.73rem;
+        display: none;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+
+      .action-toast.visible {
+        display: block;
+      }
+
+      details.wire-details {
+        margin: 0 14px 12px;
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        background: #f8fafc;
+      }
+
+      details.wire-details summary {
+        padding: 6px 10px;
+        font-size: 0.74rem;
+        font-weight: 600;
+        color: var(--muted);
+        cursor: pointer;
+      }
+
+      details.wire-details pre {
+        padding: 8px 10px;
+        border-top: 1px solid var(--border);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.72rem;
+        max-height: 180px;
+        overflow: auto;
+        background: #ffffff;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="brand">
+          <h1>A2UI Swappable Inference Formats Explorer</h1>
+          <span class="badge badge-green">Direct JSON • A2UI Express • Atom • Elemental</span>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <span id="api-key-badge" class="badge badge-amber">Checking API key...</span>
+          <div id="mode-indicator" class="badge badge-blue">Instant Preset Mode</div>
+        </div>
+      </header>
+
+      <!-- Controls -->
+      <section class="controls-card">
+        <div class="controls-top">
+          <div class="button-group" id="preset-buttons">
+            <span class="group-label">UI Example:</span>
+          </div>
+          <div class="button-group" id="view-buttons">
+            <span class="group-label">Compare:</span>
+            <button class="pill-btn active-green" data-view="express">
+              Direct JSON vs. A2UI Express (Default)
+            </button>
+            <button class="pill-btn" data-view="atom">
+              Direct JSON vs. Atom (Lisp S-Expressions)
+            </button>
+            <button class="pill-btn" data-view="elemental">
+              Direct JSON vs. Elemental (HTML Elements)
+            </button>
+          </div>
+        </div>
+        <div class="prompt-row">
+          <input
+            id="prompt-input"
+            class="prompt-input"
+            type="text"
+            placeholder="Describe a UI to generate live with Gemini (thinking_budget=0)..."
+          />
+          <button id="generate-live-btn" class="generate-btn">
+            <span>⚡ Generate Live with Gemini (thinking_budget=0)</span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Delta Summary Banner -->
+      <section class="summary-banner">
+        <div class="summary-tile">
+          <div>
+            <div class="summary-tile-label" id="delta-tokens-title">Output Token Reduction (Express vs. JSON)</div>
+            <div class="summary-tile-value" id="delta-tokens">—</div>
+            <div class="summary-tile-sub" id="delta-tokens-sub">Express vs. Direct JSON</div>
+          </div>
+          <span class="badge badge-green" id="delta-tokens-pct">Compact DSL</span>
+        </div>
+        <div class="summary-tile">
+          <div>
+            <div class="summary-tile-label" id="delta-latency-label">Inference Latency Speedup</div>
+            <div class="summary-tile-value" id="delta-latency">—</div>
+            <div class="summary-tile-sub" id="delta-latency-sub">With thinking_budget=0</div>
+          </div>
+          <span class="badge badge-green" id="delta-latency-badge">Faster UI</span>
+        </div>
+        <div class="summary-tile">
+          <div>
+            <div class="summary-tile-label">System Prompt Footprint</div>
+            <div class="summary-tile-value" id="delta-prompt">—</div>
+            <div class="summary-tile-sub" id="delta-prompt-sub">Function signatures vs. JSON Schema</div>
+          </div>
+          <span class="badge badge-blue" id="wire-match-badge">Same Wire JSON Output</span>
+        </div>
+      </section>
+
+      <!-- Dynamic Comparison Grid -->
+      <main class="comparison-grid" id="comparison-grid"></main>
+    </div>
+
+    <script type="module">
+      import {
+        basicCatalog,
+        Context,
+        ContextProvider,
+        MessageProcessor,
+        renderMarkdown,
+      } from '/static/a2ui-lit-bundle.js';
+
+      // Provide markdown rendering context to all <a2ui-surface> elements on the page
+      new ContextProvider(document.body, {
+        context: Context.markdown,
+        initialValue: (value, options) => Promise.resolve(renderMarkdown(value, options)),
+      });
+
+      let presets = [];
+      let activePresetId = 'reservation_form';
+      let activeView = 'express'; // 'express' | 'all' | 'atom' | 'elemental'
+      let currentData = null;
+      let promptStats = null;
+
+      function renderA2uiSurface(stageEl, toastEl, wireMessages, label, uniqueSuffix) {
+        stageEl.innerHTML = '';
+        toastEl.classList.remove('visible');
+        toastEl.textContent = '';
+
+        if (!wireMessages || wireMessages.length === 0) {
+          stageEl.innerHTML =
+            '<div style="color:#dc2626;font-size:0.82rem;padding:12px;">No valid A2UI surface messages</div>';
+          return;
+        }
+
+        // Namespace surfaceId per column so multiple surfaces on the page never collide
+        const namespacedMessages = structuredClone(wireMessages).map((msg) => {
+          const copy = {...msg};
+          for (const key of ['createSurface', 'updateComponents', 'updateDataModel', 'deleteSurface']) {
+            if (copy[key] && copy[key].surfaceId) {
+              copy[key] = {...copy[key], surfaceId: `${copy[key].surfaceId}_${uniqueSuffix}`};
+            }
+          }
+          return copy;
+        });
+
+        const surfaceEl = document.createElement('a2ui-surface');
+        stageEl.appendChild(surfaceEl);
+
+        const processor = new MessageProcessor([basicCatalog], (action) => {
+          toastEl.textContent = `[${label} Action Dispatched] ${JSON.stringify(action)}`;
+          toastEl.classList.add('visible');
+        });
+
+        processor.onSurfaceCreated((surface) => {
+          surfaceEl.surface = surface;
+        });
+
+        processor.processMessages(namespacedMessages);
+      }
+
+      function buildColumnCard(fmt, isLive) {
+        const isJson = fmt.key === 'direct_json';
+        const isExpress = fmt.key === 'express';
+        const cardClass = isJson ? 'column-card' : isExpress ? 'column-card express-col' : 'column-card alt-col';
+        const badgeClass = isJson ? 'badge-amber' : isExpress ? 'badge-green' : 'badge-purple';
+        const highlightClass = isJson ? '' : 'highlight';
+        const latLabel = isLive ? 'Gemini Latency' : 'Est. Decode Time';
+
+        const card = document.createElement('div');
+        card.className = cardClass;
+        card.innerHTML = `
+          <div class="column-header">
+            <div class="column-title">
+              <h2>${fmt.title}</h2>
+              <span class="tag-pill"></span>
+            </div>
+            <span class="badge ${badgeClass}">${fmt.badge}</span>
+          </div>
+          <div class="metrics-strip">
+            <div class="metric-box">
+              <div class="metric-label">${latLabel}</div>
+              <div class="metric-val ${highlightClass}">${fmt.latency_s}s</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">Output Tokens</div>
+              <div class="metric-val ${highlightClass}">${fmt.output_tokens.toLocaleString()} tok</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">Input Tokens</div>
+              <div class="metric-val ${highlightClass}">${fmt.input_tokens.toLocaleString()} tok</div>
+            </div>
+            <div class="metric-box">
+              <div class="metric-label">Format Size</div>
+              <div class="metric-val ${highlightClass}">${fmt.lines} lines (${fmt.chars.toLocaleString()} ch)</div>
+            </div>
+          </div>
+
+          <div class="section-label">
+            <span>1. Python Agent SDK Code (a2ui-agent-sdk)</span>
+            <span>Swappable Format Factory</span>
+          </div>
+          <div class="code-wrapper">
+            <div class="code-header">
+              <span>Agent Setup &amp; Compilation (${fmt.badge})</span>
+              <span>Python</span>
+            </div>
+            <pre class="code-block sdk-code-pre" style="height:155px;"></pre>
+          </div>
+
+          <div class="flow-arrow">
+            ↓ processor.prompt_snippet sent to Gemini → LLM generates ${fmt.sentinel_tag} ↓
+          </div>
+
+          <div class="section-label">
+            <span class="subtitle-label"></span>
+            <span>${fmt.lines} lines • ${fmt.chars.toLocaleString()} chars</span>
+          </div>
+          <div class="code-wrapper">
+            <div class="code-header">
+              <span>Inference Output (${fmt.badge})</span>
+              <span>${fmt.output_tokens.toLocaleString()} tokens</span>
+            </div>
+            <pre class="code-block raw-code-pre"></pre>
+          </div>
+
+          <div class="flow-arrow">
+            ↓ ${isJson ? 'processor.parse_response() validates JSON' : 'processor.parse_response() compiles DSL → Standard Wire JSON'} ↓
+          </div>
+
+          <div class="section-label">
+            <span>3. What the Renderer Gets (Validated A2UI v0.9 Wire JSON)</span>
+            <span class="wire-stats-label"></span>
+          </div>
+          <div class="wire-wrapper">
+            <div class="wire-header">
+              <span>Standard A2UI Wire Protocol (Identical Across All Formats)</span>
+              <span>${fmt.wire_messages.length} wire messages</span>
+            </div>
+            <pre class="wire-code-block wire-code-pre"></pre>
+          </div>
+
+          <div class="flow-arrow">
+            ↓ MessageProcessor + &lt;a2ui-surface&gt; renders Wire JSON ↓
+          </div>
+
+          <div class="section-label">
+            <span>4. Rendered UI (@a2ui/lit v0.9)</span>
+            <span>Interactive</span>
+          </div>
+          <div class="surface-stage"></div>
+          <div class="action-toast"></div>
+        `;
+
+        const wireJsonStr = JSON.stringify(fmt.wire_messages, null, 2);
+        card.querySelector('.tag-pill').textContent = fmt.sentinel_tag;
+        card.querySelector('.sdk-code-pre').textContent = fmt.sdk_code || '';
+        card.querySelector('.subtitle-label').textContent = `2. What the LLM Generates (${fmt.subtitle})`;
+        card.querySelector('.raw-code-pre').textContent = fmt.raw_output;
+        card.querySelector('.wire-code-pre').textContent = wireJsonStr;
+        card.querySelector('.wire-stats-label').textContent =
+          `${wireJsonStr.split('\n').length} lines • ${wireJsonStr.length.toLocaleString()} chars`;
+
+        const stageEl = card.querySelector('.surface-stage');
+        const toastEl = card.querySelector('.action-toast');
+        renderA2uiSurface(stageEl, toastEl, fmt.wire_messages, fmt.title, fmt.key);
+
+        return card;
+      }
+
+      function renderCurrentComparison() {
+        if (!currentData) return;
+        const formatsMap = currentData.formats;
+        const dj = formatsMap.direct_json;
+        const targetKey = activeView === 'all' ? 'express' : activeView;
+        const cmp = formatsMap[targetKey] || formatsMap.express;
+        const cmpName = cmp.title.replace(/\s*\(.*\)/, '');
+        const isLive = currentData.mode === 'live';
+
+        const modeBadge = document.getElementById('mode-indicator');
+        if (isLive) {
+          modeBadge.textContent = `Live Gemini (${currentData.model}, thinking_budget=0)`;
+          modeBadge.className = 'badge badge-green';
+        } else {
+          modeBadge.textContent = `Preset: ${currentData.preset.title}`;
+          modeBadge.className = 'badge badge-blue';
+        }
+
+        // Update top summary tiles comparing Direct JSON against the active target format
+        document.getElementById('delta-tokens-title').textContent =
+          `Output Token Reduction (${cmpName} vs. JSON)`;
+        const tokenRatio = (dj.output_tokens / Math.max(1, cmp.output_tokens)).toFixed(1);
+        const tokenPct = Math.round((1 - cmp.output_tokens / Math.max(1, dj.output_tokens)) * 100);
+        document.getElementById('delta-tokens').textContent = `${tokenRatio}x fewer tokens`;
+        document.getElementById('delta-tokens-sub').textContent =
+          `${cmp.output_tokens.toLocaleString()} (${cmpName}) vs. ${dj.output_tokens.toLocaleString()} (Direct JSON)`;
+        document.getElementById('delta-tokens-pct').textContent = `-${tokenPct}% tokens`;
+
+        document.getElementById('delta-latency-label').textContent = isLive
+          ? 'Measured Gemini Speedup'
+          : 'Estimated Decode Speedup';
+        const latencyRatio = (dj.latency_s / Math.max(0.01, cmp.latency_s)).toFixed(1);
+        document.getElementById('delta-latency').textContent = `${latencyRatio}x faster`;
+        document.getElementById('delta-latency-sub').textContent =
+          `${cmp.latency_s}s (${cmpName}) vs. ${dj.latency_s}s (Direct JSON)`;
+        document.getElementById('delta-latency-badge').textContent = isLive ? 'Live Benchmark' : 'Token Proportional';
+
+        const inPct = Math.round((1 - cmp.input_tokens / Math.max(1, dj.input_tokens)) * 100);
+        document.getElementById('delta-prompt').textContent = `-${inPct}% prompt size`;
+        document.getElementById('delta-prompt-sub').textContent =
+          `${cmp.input_tokens.toLocaleString()} vs. ${dj.input_tokens.toLocaleString()} input tokens`;
+
+        const wireExact =
+          JSON.stringify(dj.wire_messages) === JSON.stringify(cmp.wire_messages);
+        const wireBadge = document.getElementById('wire-match-badge');
+        if (wireExact) {
+          wireBadge.textContent = '✓ 100% Identical Wire JSON';
+          wireBadge.className = 'badge badge-green';
+        } else {
+          wireBadge.textContent = '2 Independent LLM Calls';
+          wireBadge.className = 'badge badge-blue';
+        }
+
+        // Render 2-column side-by-side comparison (Direct JSON vs. selected format)
+        const gridEl = document.getElementById('comparison-grid');
+        gridEl.innerHTML = '';
+        for (const k of ['direct_json', activeView]) {
+          if (formatsMap[k]) {
+            gridEl.appendChild(buildColumnCard(formatsMap[k], isLive));
+          }
+        }
+      }
+
+      async function selectPreset(presetId) {
+        activePresetId = presetId;
+        document.querySelectorAll('#preset-buttons .pill-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.id === presetId);
+        });
+        const res = await fetch('/api/compare-preset', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({preset_id: presetId}),
+        });
+        currentData = await res.json();
+        document.getElementById('prompt-input').value = currentData.preset.prompt;
+        renderCurrentComparison();
+      }
+
+      function selectView(viewMode) {
+        activeView = viewMode;
+        document.querySelectorAll('#view-buttons .pill-btn').forEach((btn) => {
+          btn.classList.toggle('active-green', btn.dataset.view === viewMode);
+        });
+        renderCurrentComparison();
+      }
+
+      async function runLiveGeneration() {
+        const btn = document.getElementById('generate-live-btn');
+        const prompt = document.getElementById('prompt-input').value.trim();
+        if (!prompt) return;
+
+        const formatsToRun = ['direct_json', 'express', 'atom', 'elemental'];
+
+        const origHtml = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span>⏳ Calling Gemini (thinking_budget=0)...</span>';
+        try {
+          const res = await fetch('/api/generate-live', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({prompt, model: 'gemini-2.5-flash', formats: formatsToRun}),
+          });
+          if (!res.ok) {
+            const err = await res.json();
+            alert(err.detail || 'Live generation failed');
+            return;
+          }
+          currentData = await res.json();
+          renderCurrentComparison();
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = origHtml;
+        }
+      }
+
+      async function init() {
+        const res = await fetch('/api/presets');
+        const info = await res.json();
+        presets = info.presets;
+        promptStats = info.prompt_stats;
+
+        const keyBadge = document.getElementById('api-key-badge');
+        if (info.has_api_key) {
+          keyBadge.textContent = '✓ GEMINI_API_KEY Ready';
+          keyBadge.className = 'badge badge-green';
+        } else {
+          keyBadge.textContent = 'Offline Mode (Set GEMINI_API_KEY for Live LLM)';
+          keyBadge.className = 'badge badge-amber';
+        }
+
+        const btnContainer = document.getElementById('preset-buttons');
+        for (const p of presets) {
+          const btn = document.createElement('button');
+          btn.className = 'pill-btn';
+          btn.dataset.id = p.id;
+          btn.textContent = p.title;
+          btn.addEventListener('click', () => selectPreset(p.id));
+          btnContainer.appendChild(btn);
+        }
+
+        document.querySelectorAll('#view-buttons .pill-btn').forEach((btn) => {
+          btn.addEventListener('click', () => selectView(btn.dataset.view));
+        });
+
+        document.getElementById('generate-live-btn').addEventListener('click', runLiveGeneration);
+        await selectPreset(activePresetId);
+      }
+
+      init();
+    </script>
+  </body>
+</html>
