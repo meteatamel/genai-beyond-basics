@@ -65,32 +65,45 @@ Then open **http://127.0.0.1:8080** in your browser.
 
 ## What to Look For in the Explorer
 
-### 1. Static Pipeline Comparison (100% Identical Wire JSON)
+### Controls & Summary Metrics
 
-When you open `http://127.0.0.1:8080`, the explorer loads the **Restaurant Reservation Form** example comparing **Direct JSON** (`<a2ui-json>`) on the left against **A2UI Express** (`<a2ui>`) on the right:
+At the top of the page, you can switch between the 3 built-in **UI Examples** (*Restaurant Reservation Form*, *Login Form with Validation*, *Notification Permission Card*), toggle which format to **Compare** against Direct JSON (*A2UI Express*, *Atom*, or *Elemental*), or enter any custom UI prompt and click **`⚡ Generate Live with gemini-3.8-flash (thinking_budget=0)`** to run a live benchmark:
 
-![A2UI Swappable Inference Formats Pipeline](images/explorer-pipeline.png)
+![Explorer Controls and Summary Metrics](images/controls-and-metrics.png)
 
-Here is what to look for as you explore the page:
+Below the controls, the summary tiles highlight the **Output Token Reduction** (e.g., `4.0x fewer tokens`), **Decode / Gemini Latency Speedup**, and **System Prompt Footprint** (`-55% prompt size`, replacing full JSON Schemas with compact function signatures).
 
-* **Switch UI Examples & Formats**: Use the **UI Example** buttons (*Restaurant Reservation Form*, *Login Form with Validation*, *Notification Permission Card*) and the **Compare** toggle (*A2UI Express*, *Atom*, *Elemental*) to inspect how the same UI is expressed across formats.
-* **Top Summary Metrics**: Notice how **A2UI Express** shrinks the system prompt by **55%** (`6,059` vs. `13,424` input tokens—replacing verbose JSON Schemas with compact function signatures) and expresses the reservation form in **20 lines (`262` tokens)** instead of **168 lines (`1,054` tokens)** of JSON (**4.0x fewer tokens**).
-* **Follow the 4-Step Pipeline Top-to-Bottom**:
-  1. **1. Python Agent SDK Code**: Shows the `A2uiGenerator` setup for each column—the only change is swapping `inference_format_factory`.
-  2. **2. What the LLM Generates**: Compare the deeply nested `<a2ui-json>` array on the left with the concise Python-like `<a2ui>` statements on the right.
-  3. **3. What the Renderer Gets**: After `processor.parse_response()`, both columns produce the **exact same `166`-line (`3,766`-char) validated A2UI v0.9 Wire JSON** (`✓ 100% Identical Wire JSON`).
-  4. **4. Rendered UI (`@a2ui/lit` v0.9)**: Both `<a2ui-surface>` components render the identical interactive card. Try switching to **Login Form with Validation** to test client-side validation checks (`?required`, `?email`, `?length`) live in both cards.
+---
 
-### 2. Live Generation Benchmark with `gemini-3.8-flash`
+### Step 1: Python Agent SDK Code (`a2ui-agent-sdk`)
 
-Click **`⚡ Generate Live with gemini-3.8-flash (thinking_budget=0)`** (or type any custom UI prompt into the input box) to call `gemini-3.8-flash` live across the formats:
+Each column begins with its format metrics and the Python `a2ui-agent-sdk` setup. Notice that the agent code is virtually identical—the only difference is passing `DirectJsonFormatFactory()` on the left vs. `ExpressFormatFactory()` (now the default) on the right, while canonical JSON examples are automatically decompiled into the target format:
 
-![Live Gemini 3.8 Flash Benchmark and Action Dispatch](images/explorer-live-gemini.png)
+![Step 1: Python Agent SDK Code](images/step1-sdk-code.png)
 
-What to look for in Live Gemini mode:
+---
 
-* **Measured Latency & Token Counts**: Instead of estimates, the summary banner and column headers now display real `gemini-3.8-flash` usage metadata and wall-clock latency—for example, **3.0x faster** (`4.75s` with A2UI Express vs. `14.38s` with Direct JSON) and **2.8x fewer output tokens** (`343` vs. `977` tokens), even with thinking turned off (`thinking_budget=0`).
-* **Interactive Client Actions**: Edit the form fields in either rendered `<a2ui-surface>` card and click **Confirm Booking**—you'll see the dispatched A2UI v0.9 client `action` event logged directly below the surface with its bound data-model context.
+### Step 2: What the LLM Generates (`<a2ui-json>` vs. `<a2ui>`)
+
+Next, compare what the LLM actually has to generate token-by-token. On the left, **Direct JSON** requires **168 lines (`3,796` chars / `1,054` tokens)** of deeply nested JSON keys (`"id"`, `"component"`, `"path"`). On the right, **A2UI Express** expresses the exact same reservation form in **20 lines (`945` chars / `262` tokens)** using Python-like assignments (`root = Card(main_col)`, `$/reservation/name = "Alice"`):
+
+![Step 2: What the LLM Generates](images/step2-llm-output.png)
+
+---
+
+### Step 3: What the Renderer Gets (Validated A2UI v0.9 Wire JSON)
+
+On the server, `processor.parse_response()` validates `<a2ui-json>` on the left and compiles the `<a2ui>` Express DSL on the right into standard A2UI v0.9 wire messages (`createSurface`, `updateComponents`, `updateDataModel`). Look at the line and character counts—both columns produce the **exact same `166`-line (`3,766`-char) Wire JSON**:
+
+![Step 3: Validated A2UI v0.9 Wire JSON](images/step3-wire-json.png)
+
+---
+
+### Step 4: Rendered UI (`@a2ui/lit` v0.9)
+
+Finally, both columns feed their Wire JSON into `@a2ui/web_core`'s `MessageProcessor` and render live interactive `<a2ui-surface>` Web Components (`@a2ui/lit` v0.9). Try editing the form inputs (or testing validation rules on **Login Form with Validation**) and clicking **Confirm Booking** to inspect the dispatched A2UI client `action` payload with its bound data-model context:
+
+![Step 4: Rendered UI and Dispatched Client Action](images/step4-rendered-ui.png)
 
 ## Under the Hood
 
