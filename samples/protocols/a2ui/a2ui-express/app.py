@@ -171,7 +171,7 @@ processor = generator.create_processor(client_capabilities)
 
 # 1. Inject JSON Schema instructions into LLM system prompt
 response = client.models.generate_content(
-    model="gemini-2.5-flash",
+    model="gemini-3.8-flash",
     contents=user_prompt,
     config=GenerateContentConfig(system_instruction=processor.prompt_snippet),
 )
@@ -199,7 +199,7 @@ processor = generator.create_processor(client_capabilities)
 
 # 1. Inject compact function signatures into LLM system prompt
 response = client.models.generate_content(
-    model="gemini-2.5-flash",
+    model="gemini-3.8-flash",
     contents=user_prompt,
     config=GenerateContentConfig(system_instruction=processor.prompt_snippet),
 )
@@ -228,7 +228,7 @@ processor = generator.create_processor(client_capabilities)
 
 # 1. Inject Atom S-expression instructions into LLM system prompt
 response = client.models.generate_content(
-    model="gemini-2.5-flash",
+    model="gemini-3.8-flash",
     contents=user_prompt,
     config=GenerateContentConfig(system_instruction=processor.prompt_snippet),
 )
@@ -257,7 +257,7 @@ processor = generator.create_processor(client_capabilities)
 
 # 1. Inject Elemental HTML tag instructions into LLM system prompt
 response = client.models.generate_content(
-    model="gemini-2.5-flash",
+    model="gemini-3.8-flash",
     contents=user_prompt,
     config=GenerateContentConfig(system_instruction=processor.prompt_snippet),
 )
@@ -325,9 +325,121 @@ def estimate_tokens(text: str) -> int:
     return max(1, round(len(text) / 3.6))
 
 
-def has_valid_api_key() -> bool:
-    key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
-    return bool(key and not key.startswith("PASTE_") and not key.startswith("your_"))
+DEFAULT_MODEL = "gemini-3.8-flash"
+DEFAULT_VERTEX_LOCATION = "global"
+_ADC_CACHE: tuple[object | None, str | None] | None = None
+
+
+def _get_adc_credentials() -> tuple[object | None, str | None]:
+    global _ADC_CACHE
+    if _ADC_CACHE is None:
+        try:
+            import google.auth
+
+            creds, default_project = google.auth.default()
+            _ADC_CACHE = (creds, default_project)
+        except Exception:
+            _ADC_CACHE = (None, None)
+    return _ADC_CACHE
+
+
+def resolve_genai_auth(
+    auth_mode: str = "auto",
+    api_key_override: str | None = None,
+    project_override: str | None = None,
+    location_override: str | None = None,
+) -> dict:
+    """Resolves either Gemini API Key or Google Cloud / Vertex AI ADC."""
+    creds, adc_project = _get_adc_credentials()
+    env_project = os.environ.get("GOOGLE_CLOUD_PROJECT") or adc_project
+    env_location = os.environ.get("GOOGLE_CLOUD_LOCATION") or DEFAULT_VERTEX_LOCATION
+
+    # Explicit UI overrides
+    mode = (auth_mode or "auto").strip().lower()
+    if mode == "api_key":
+        key = (api_key_override or "").strip()
+        if key:
+            return {
+                "ready": True,
+                "mode": "api_key",
+                "api_key": key,
+                "label": "✓ Gemini API Key Ready (UI)",
+            }
+        return {
+            "ready": False,
+            "mode": "none",
+            "label": "Enter a Gemini API Key in Credentials",
+        }
+
+    if mode == "vertexai":
+        proj = (project_override or "").strip() or env_project
+        loc = (location_override or "").strip() or env_location
+        if creds and proj:
+            return {
+                "ready": True,
+                "mode": "vertexai",
+                "project": proj,
+                "location": loc,
+                "label": f"✓ Vertex AI Ready ({proj} • {loc})",
+            }
+        if not creds:
+            return {
+                "ready": False,
+                "mode": "none",
+                "label": "ADC not found — run `gcloud auth application-default login`",
+            }
+        return {
+            "ready": False,
+            "mode": "none",
+            "label": "Enter a Google Cloud Project ID in Credentials",
+        }
+
+    # Auto mode: check environment variables, then fall back to ADC
+    use_vertex_env = os.environ.get("GOOGLE_GENAI_USE_VERTEXAI", "").strip().lower()
+    raw_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY") or ""
+    valid_key = (
+        raw_key
+        if (raw_key and not raw_key.startswith("PASTE_") and not raw_key.startswith("your_"))
+        else ""
+    )
+
+    if use_vertex_env in ("1", "true", "yes"):
+        if creds and env_project:
+            return {
+                "ready": True,
+                "mode": "vertexai",
+                "project": env_project,
+                "location": env_location,
+                "label": f"✓ Vertex AI Ready ({env_project} • {env_location})",
+            }
+        return {
+            "ready": False,
+            "mode": "none",
+            "label": "Configure Credentials (Vertex AI ADC or Gemini API Key)",
+        }
+
+    if valid_key:
+        return {
+            "ready": True,
+            "mode": "api_key",
+            "api_key": valid_key,
+            "label": "✓ Gemini API Key Ready",
+        }
+
+    if use_vertex_env not in ("0", "false", "no") and creds and env_project:
+        return {
+            "ready": True,
+            "mode": "vertexai",
+            "project": env_project,
+            "location": env_location,
+            "label": f"✓ Vertex AI Ready ({env_project} • {env_location})",
+        }
+
+    return {
+        "ready": False,
+        "mode": "none",
+        "label": "Configure Credentials (Gemini API Key or Vertex AI)",
+    }
 
 
 app = FastAPI(title="A2UI Swappable Inference Formats Explorer")
@@ -340,8 +452,12 @@ class CompareRequest(BaseModel):
 
 class LiveGenerateRequest(BaseModel):
     prompt: str
-    model: str = "gemini-2.5-flash"
+    model: str = DEFAULT_MODEL
     formats: list[str] = ["direct_json", "express", "atom", "elemental"]
+    auth_mode: str = "auto"
+    api_key: str | None = None
+    project: str | None = None
+    location: str | None = None
 
 
 @app.get("/")
@@ -351,10 +467,21 @@ def index():
 
 @app.get("/api/presets")
 def get_presets():
+    creds, adc_project = _get_adc_credentials()
+    auth = resolve_genai_auth()
     json_prompt_chars = len(PROCESSORS["direct_json"].prompt_snippet)
     express_prompt_chars = len(PROCESSORS["express"].prompt_snippet)
     return {
-        "has_api_key": has_valid_api_key(),
+        "default_model": DEFAULT_MODEL,
+        "has_api_key": auth["ready"],
+        "auth": {
+            "ready": auth["ready"],
+            "mode": auth["mode"],
+            "label": auth["label"],
+            "adc_available": creds is not None,
+            "default_project": os.environ.get("GOOGLE_CLOUD_PROJECT") or adc_project or "",
+            "default_location": os.environ.get("GOOGLE_CLOUD_LOCATION") or DEFAULT_VERTEX_LOCATION,
+        },
         "prompt_stats": {
             "direct_json_chars": json_prompt_chars,
             "express_chars": express_prompt_chars,
@@ -442,17 +569,29 @@ def compare_preset(req: CompareRequest):
 
 @app.post("/api/generate-live")
 def generate_live(req: LiveGenerateRequest):
-    if not has_valid_api_key():
+    auth = resolve_genai_auth(
+        auth_mode=req.auth_mode,
+        api_key_override=req.api_key,
+        project_override=req.project,
+        location_override=req.location,
+    )
+    if not auth["ready"]:
         raise HTTPException(
             status_code=400,
-            detail="GEMINI_API_KEY is not set. Export GEMINI_API_KEY to run live Gemini generation, or use the Instant Preset buttons.",
+            detail=auth["label"],
         )
 
     from google import genai
     from google.genai import types
 
-    api_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
-    client = genai.Client(api_key=api_key, vertexai=False)
+    if auth["mode"] == "vertexai":
+        client = genai.Client(
+            vertexai=True,
+            project=auth["project"],
+            location=auth["location"],
+        )
+    else:
+        client = genai.Client(api_key=auth["api_key"], vertexai=False)
 
     role_instruction = (
         "You are an A2UI assistant. Respond ONLY with the requested A2UI UI block "

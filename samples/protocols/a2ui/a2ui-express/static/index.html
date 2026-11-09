@@ -547,6 +547,66 @@
         overflow: auto;
         background: #ffffff;
       }
+
+      /* Collapsible Credentials & Model Panel */
+      .auth-toggle-btn {
+        cursor: pointer;
+        border-radius: 999px;
+        padding: 4px 11px;
+        font-size: 0.76rem;
+        font-weight: 600;
+      }
+
+      .auth-panel {
+        display: none;
+        background: var(--panel);
+        border: 1px solid #cbd5e1;
+        border-radius: 10px;
+        padding: 12px 16px;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+      }
+
+      .auth-panel.open {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .auth-row {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .auth-field {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .auth-field label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--muted);
+      }
+
+      .auth-input,
+      .auth-select {
+        padding: 5px 10px;
+        border: 1px solid #cbd5e1;
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 0.8rem;
+        color: var(--text);
+        background: #f8fafc;
+      }
+
+      .auth-note {
+        font-size: 0.74rem;
+        color: var(--muted);
+      }
     </style>
   </head>
   <body>
@@ -557,10 +617,59 @@
           <span class="badge badge-green">Direct JSON • A2UI Express • Atom • Elemental</span>
         </div>
         <div style="display:flex;gap:8px;align-items:center;">
-          <span id="api-key-badge" class="badge badge-amber">Checking API key...</span>
-          <div id="mode-indicator" class="badge badge-blue">Instant Preset Mode</div>
+          <span id="model-badge" class="badge badge-blue">Model: gemini-3.8-flash</span>
+          <button id="api-key-badge" class="badge badge-amber auth-toggle-btn" type="button">
+            ⚙️ Checking credentials... ▾
+          </button>
         </div>
       </header>
+
+      <!-- Collapsible Credentials Settings -->
+      <section class="auth-panel" id="auth-panel">
+        <div class="auth-row">
+          <span class="group-label">Credentials:</span>
+          <select id="auth-mode-select" class="auth-select">
+            <option value="auto">Auto (.env / Shell / gcloud ADC)</option>
+            <option value="api_key">Gemini API Key (AI Studio)</option>
+            <option value="vertexai">Google Cloud Vertex AI (ADC)</option>
+          </select>
+
+          <div class="auth-field" id="auth-apikey-group" style="display:none;">
+            <label for="auth-apikey-input">API Key:</label>
+            <input
+              id="auth-apikey-input"
+              class="auth-input"
+              type="password"
+              placeholder="Paste GEMINI_API_KEY..."
+              style="width:240px;"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="auth-field" id="auth-vertex-group" style="display:none;">
+            <label for="auth-project-input">Project ID:</label>
+            <input
+              id="auth-project-input"
+              class="auth-input"
+              type="text"
+              placeholder="your-gcp-project-id"
+              style="width:175px;"
+            />
+            <label for="auth-location-input">Location:</label>
+            <input
+              id="auth-location-input"
+              class="auth-input"
+              type="text"
+              value="global"
+              style="width:95px;"
+            />
+          </div>
+        </div>
+        <div class="auth-note" id="auth-note">
+          Values entered here stay in browser memory only (never saved to disk). Vertex AI mode uses your local
+          <code>gcloud auth application-default login</code> session on the server.
+        </div>
+      </section>
 
       <!-- Controls -->
       <section class="controls-card">
@@ -589,7 +698,7 @@
             placeholder="Describe a UI to generate live with Gemini (thinking_budget=0)..."
           />
           <button id="generate-live-btn" class="generate-btn">
-            <span>⚡ Generate Live with Gemini (thinking_budget=0)</span>
+            <span id="generate-live-label">⚡ Generate Live with gemini-3.8-flash (thinking_budget=0)</span>
           </button>
         </div>
       </section>
@@ -643,9 +752,11 @@
 
       let presets = [];
       let activePresetId = 'reservation_form';
-      let activeView = 'express'; // 'express' | 'all' | 'atom' | 'elemental'
+      let activeView = 'express'; // 'express' | 'atom' | 'elemental'
       let currentData = null;
       let promptStats = null;
+      let serverAuthInfo = null;
+      let activeModel = 'gemini-3.8-flash';
 
       function renderA2uiSurface(stageEl, toastEl, wireMessages, label, uniqueSuffix) {
         stageEl.innerHTML = '';
@@ -802,15 +913,6 @@
         const cmpName = cmp.title.replace(/\s*\(.*\)/, '');
         const isLive = currentData.mode === 'live';
 
-        const modeBadge = document.getElementById('mode-indicator');
-        if (isLive) {
-          modeBadge.textContent = `Live Gemini (${currentData.model}, thinking_budget=0)`;
-          modeBadge.className = 'badge badge-green';
-        } else {
-          modeBadge.textContent = `Preset: ${currentData.preset.title}`;
-          modeBadge.className = 'badge badge-blue';
-        }
-
         // Update top summary tiles comparing Direct JSON against the active target format
         document.getElementById('delta-tokens-title').textContent =
           `Output Token Reduction (${cmpName} vs. JSON)`;
@@ -879,24 +981,77 @@
         renderCurrentComparison();
       }
 
+      function updateAuthBadgeAndFields() {
+        const mode = document.getElementById('auth-mode-select').value;
+        const apiKeyVal = document.getElementById('auth-apikey-input').value.trim();
+        const projVal = document.getElementById('auth-project-input').value.trim();
+        const locVal = document.getElementById('auth-location-input').value.trim() || 'global';
+        const keyBadge = document.getElementById('api-key-badge');
+
+        document.getElementById('auth-apikey-group').style.display = mode === 'api_key' ? 'inline-flex' : 'none';
+        document.getElementById('auth-vertex-group').style.display = mode === 'vertexai' ? 'inline-flex' : 'none';
+
+        if (mode === 'api_key') {
+          if (apiKeyVal) {
+            keyBadge.textContent = '⚙️ ✓ Gemini API Key Ready (UI) ▾';
+            keyBadge.className = 'badge badge-green auth-toggle-btn';
+          } else {
+            keyBadge.textContent = '⚙️ Enter Gemini API Key ▾';
+            keyBadge.className = 'badge badge-amber auth-toggle-btn';
+          }
+        } else if (mode === 'vertexai') {
+          if (serverAuthInfo?.adc_available && projVal) {
+            keyBadge.textContent = `⚙️ ✓ Vertex AI Ready (${projVal} • ${locVal}) ▾`;
+            keyBadge.className = 'badge badge-green auth-toggle-btn';
+          } else if (!serverAuthInfo?.adc_available) {
+            keyBadge.textContent = '⚙️ Run gcloud auth application-default login ▾';
+            keyBadge.className = 'badge badge-amber auth-toggle-btn';
+          } else {
+            keyBadge.textContent = '⚙️ Enter GCP Project ID ▾';
+            keyBadge.className = 'badge badge-amber auth-toggle-btn';
+          }
+        } else {
+          if (serverAuthInfo?.ready) {
+            keyBadge.textContent = `⚙️ ${serverAuthInfo.label} ▾`;
+            keyBadge.className = 'badge badge-green auth-toggle-btn';
+          } else {
+            keyBadge.textContent = '⚙️ Configure Credentials ▾';
+            keyBadge.className = 'badge badge-amber auth-toggle-btn';
+          }
+        }
+      }
+
       async function runLiveGeneration() {
         const btn = document.getElementById('generate-live-btn');
         const prompt = document.getElementById('prompt-input').value.trim();
         if (!prompt) return;
 
+        const authMode = document.getElementById('auth-mode-select').value;
+        const apiKey = document.getElementById('auth-apikey-input').value.trim();
+        const project = document.getElementById('auth-project-input').value.trim();
+        const location = document.getElementById('auth-location-input').value.trim() || 'global';
         const formatsToRun = ['direct_json', 'express', 'atom', 'elemental'];
 
         const origHtml = btn.innerHTML;
         btn.disabled = true;
-        btn.innerHTML = '<span>⏳ Calling Gemini (thinking_budget=0)...</span>';
+        btn.innerHTML = `<span>⏳ Calling ${activeModel} (thinking_budget=0)...</span>`;
         try {
           const res = await fetch('/api/generate-live', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({prompt, model: 'gemini-2.5-flash', formats: formatsToRun}),
+            body: JSON.stringify({
+              prompt,
+              model: activeModel,
+              formats: formatsToRun,
+              auth_mode: authMode,
+              api_key: apiKey || null,
+              project: project || null,
+              location: location || null,
+            }),
           });
           if (!res.ok) {
             const err = await res.json();
+            document.getElementById('auth-panel').classList.add('open');
             alert(err.detail || 'Live generation failed');
             return;
           }
@@ -913,15 +1068,30 @@
         const info = await res.json();
         presets = info.presets;
         promptStats = info.prompt_stats;
+        serverAuthInfo = info.auth || {};
 
-        const keyBadge = document.getElementById('api-key-badge');
-        if (info.has_api_key) {
-          keyBadge.textContent = '✓ GEMINI_API_KEY Ready';
-          keyBadge.className = 'badge badge-green';
-        } else {
-          keyBadge.textContent = 'Offline Mode (Set GEMINI_API_KEY for Live LLM)';
-          keyBadge.className = 'badge badge-amber';
+        if (serverAuthInfo.default_project) {
+          document.getElementById('auth-project-input').value = serverAuthInfo.default_project;
         }
+        if (serverAuthInfo.default_location) {
+          document.getElementById('auth-location-input').value = serverAuthInfo.default_location;
+        }
+        if (info.default_model) {
+          activeModel = info.default_model;
+          document.getElementById('model-badge').textContent = `Model: ${activeModel}`;
+          document.getElementById('generate-live-label').textContent =
+            `⚡ Generate Live with ${activeModel} (thinking_budget=0)`;
+        }
+
+        updateAuthBadgeAndFields();
+
+        document.getElementById('api-key-badge').addEventListener('click', () => {
+          document.getElementById('auth-panel').classList.toggle('open');
+        });
+        document.getElementById('auth-mode-select').addEventListener('change', updateAuthBadgeAndFields);
+        document.getElementById('auth-apikey-input').addEventListener('input', updateAuthBadgeAndFields);
+        document.getElementById('auth-project-input').addEventListener('input', updateAuthBadgeAndFields);
+        document.getElementById('auth-location-input').addEventListener('input', updateAuthBadgeAndFields);
 
         const btnContainer = document.getElementById('preset-buttons');
         for (const p of presets) {
