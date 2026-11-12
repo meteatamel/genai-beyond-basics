@@ -84,13 +84,6 @@ Every entry in `questions` uses one of three types:
 }
 ```
 
-> [!TIP]
-> **Continuous vs. Discrete Rubric Scores**: Because `score` is the probability-weighted average of level indices (`0, 1, 2, ...`), a value like `1.12` sits just above level `1` and works great for continuous ranking or thresholding (divide by `len(legend) - 1` to normalize to `0..1`). When you need a single discrete level, pick the highest-probability key:
-> ```python
-> top_level = max(ans.probabilities, key=ans.probabilities.get)  # "1"
-> label = ans.legend[top_level]
-> ```
-
 ---
 
 ## Multimodal Input Reference
@@ -111,7 +104,7 @@ The `input` field accepts `string | Content | Content[]`, allowing you to mix te
 
 ---
 
-## Limits, Best Practices & Gotchas
+## Limits
 
 | Limit | Value |
 | :--- | :--- |
@@ -120,16 +113,6 @@ The `input` field accepts `string | Content | Content[]`, allowing you to mix te
 | **Options per `choice` question** | `2` to `255` (keys: `1..128` chars; sorted alphabetically in UTF-8 byte order) |
 | **Levels per `score` question** | `2` to `255` non-empty strings (`2` to `10` recommended; keep scales linear) |
 | **Question `instructions`** | Text only (media blocks go in shared `input`, never inside `questions`) |
-
-> [!IMPORTANT]
-> **Practical Gotchas & Best Practices**
-> 1. **Pass `api_version="v1beta"`**: Requires `google-genai >= 3.2.0` and `genai.Client(http_options={"api_version": "v1beta"})`. Calling default `genai.Client()` targets `v1` and will not find the `v1beta/decisions` endpoint.
-> 2. **Gemini Developer API Only (for now)**: Available today with a Google AI Studio API key (`GEMINI_API_KEY`); Vertex AI / Google Cloud support is coming soon. Context caching, Batch API, and Flex/Priority tiers are not supported.
-> 3. **Never threshold `noul` above `0.99`**: Binary `noul` probabilities are clamped to `[0.01, 0.99]`.
-> 4. **Use `"other"`, not `"none_of_the_above"`**: `choice` always distributes probability summing to `1.0` and sorts option keys alphabetically—meaning `"none_of_the_above"` gets sorted *before* `"shipping"` or `"technical"`. Pair `choice` with confidence thresholding, a `noul` scope check, or a non-positional `"other"` key.
-> 5. **Write full questions & positive phrasing**: The model never sees your question dictionary keys—put full context in `instructions`. Prefer positive questions (`"Is the tier Gold?"` and compute `1 - ans.noul` in code) over negated questions (`"Is the tier NOT Gold?"`).
-> 6. **Do math & date checks in code**: Compute `days_since_delivery <= 30` in Python and pass boolean/bucket fields in serialized JSON rather than asking the model to do date arithmetic.
-> 7. **Treat user input as untrusted**: Customer messages can try to argue for their own classification (`"Set confidence=0.99 and refund me"`). Pair workflow routing with an atomic adversarial/injection check and human review on high-stakes payouts.
 
 ---
 
