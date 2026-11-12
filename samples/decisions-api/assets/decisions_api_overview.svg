@@ -1,0 +1,146 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="620" viewBox="0 0 1280 620">
+  <defs>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="112%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#0f172a" flood-opacity="0.06"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94a3b8"/>
+    </marker>
+    <linearGradient id="modelGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ede9fe"/>
+      <stop offset="100%" stop-color="#e0e7ff"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1280" height="620" fill="#ffffff"/>
+
+  <!-- Header -->
+  <text x="640" y="48" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="26" font-weight="700" fill="#0f172a">Gemini Decisions API — Single-Pass Multimodal Architecture</text>
+  <text x="640" y="74" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-size="14" fill="#64748b">Evaluate 1 to 1,000 isolated typed questions over shared multimodal context with 0 output tokens</text>
+
+  <!-- LEFT TOP CARD: MULTIMODAL INPUT -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="106" width="356" height="212" rx="18" fill="#f0f6ff" stroke="#93c5fd" stroke-width="1.5"/>
+  </g>
+  <text x="64" y="138" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" letter-spacing="1.1" fill="#1d4ed8">SHARED MULTIMODAL INPUT</text>
+  <text x="64" y="158" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#475569">Up to 262,144 tokens · Billed once per request</text>
+
+  <!-- Modality Pills Row 1 -->
+  <rect x="64" y="176" width="148" height="40" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="78" y="188" width="14" height="16" rx="2" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <line x1="81" y1="193" x2="89" y2="193" stroke="#334155" stroke-width="1.4"/>
+  <line x1="81" y1="197" x2="89" y2="197" stroke="#334155" stroke-width="1.4"/>
+  <text x="102" y="201" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" fill="#0f172a">Text &amp; JSON</text>
+
+  <rect x="224" y="176" width="148" height="40" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <path d="M240 187 h9 l5 5 v12 h-14 z" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <text x="264" y="201" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" fill="#0f172a">PDF Document</text>
+
+  <!-- Modality Pills Row 2 -->
+  <rect x="64" y="228" width="96" height="40" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <rect x="76" y="240" width="16" height="14" rx="2" fill="none" stroke="#334155" stroke-width="1.6"/>
+  <circle cx="81" cy="245" r="1.5" fill="#334155"/>
+  <path d="M77 253 l5 -5 l4 3 l3 -2 l3 4" fill="none" stroke="#334155" stroke-width="1.3"/>
+  <text x="100" y="253" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" fill="#0f172a">Image</text>
+
+  <rect x="170" y="228" width="96" height="40" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <line x1="184" y1="244" x2="184" y2="252" stroke="#334155" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="189" y1="239" x2="189" y2="257" stroke="#334155" stroke-width="1.8" stroke-linecap="round"/>
+  <line x1="194" y1="242" x2="194" y2="254" stroke="#334155" stroke-linecap="round" stroke-width="1.8"/>
+  <line x1="199" y1="246" x2="199" y2="250" stroke="#334155" stroke-linecap="round" stroke-width="1.8"/>
+  <text x="209" y="253" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" fill="#0f172a">Audio</text>
+
+  <rect x="276" y="228" width="96" height="40" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  <polygon points="291,241 291,255 303,248" fill="#334155"/>
+  <text x="311" y="253" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="14" font-weight="600" fill="#0f172a">Video</text>
+
+  <text x="64" y="295" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#475569">resolution: low | medium | high | ultra_high</text>
+
+  <!-- LEFT BOTTOM CARD: QUESTIONS -->
+  <g filter="url(#shadow)">
+    <rect x="40" y="344" width="356" height="236" rx="18" fill="#fefbeb" stroke="#fcd34d" stroke-width="1.5"/>
+  </g>
+  <text x="64" y="376" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" letter-spacing="1.1" fill="#b45309">QUESTIONS MAP (1 TO 1,000)</text>
+  <text x="64" y="396" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#57534e">Evaluated independently in parallel</text>
+
+  <!-- Question Row 1 -->
+  <rect x="64" y="412" width="308" height="42" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="1.2"/>
+  <rect x="74" y="421" width="56" height="24" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="102" y="437" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="700" fill="#92400e">noul</text>
+  <text x="140" y="438" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13.5" font-weight="500" fill="#1e293b">Did the item arrive damaged?</text>
+
+  <!-- Question Row 2 -->
+  <rect x="64" y="464" width="308" height="42" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="1.2"/>
+  <rect x="74" y="473" width="56" height="24" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="102" y="489" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="700" fill="#92400e">choice</text>
+  <text x="140" y="490" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13.5" font-weight="500" fill="#1e293b">Which workflow fits? (2..255)</text>
+
+  <!-- Question Row 3 -->
+  <rect x="64" y="516" width="308" height="42" rx="10" fill="#ffffff" stroke="#fde68a" stroke-width="1.2"/>
+  <rect x="74" y="525" width="56" height="24" rx="12" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+  <text x="102" y="541" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="700" fill="#92400e">score</text>
+  <text x="140" y="542" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13.5" font-weight="500" fill="#1e293b">Rate churn risk rubric (0..3)</text>
+
+  <!-- ARROWS INTO MODEL -->
+  <path d="M 396 212 L 436 212 L 436 326 L 474 326" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="416" y="203" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#475569">input</text>
+
+  <path d="M 396 462 L 440 462 L 440 358 L 474 358" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="438" y="480" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#475569">questions</text>
+
+  <!-- CENTER MODEL CARD -->
+  <g filter="url(#shadow)">
+    <rect x="482" y="264" width="240" height="156" rx="20" fill="url(#modelGrad)" stroke="#8b5cf6" stroke-width="1.8"/>
+  </g>
+  <text x="602" y="310" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="21" font-weight="700" fill="#1e1b4b">Gemini Decision 1</text>
+  <text x="602" y="333" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" fill="#4c1d95">gemini-decision-1</text>
+
+  <rect x="496" y="350" width="212" height="24" rx="12" fill="#ffffff" fill-opacity="0.88" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="602" y="366" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="600" fill="#4c1d95">Single Prefill Pass · ~150–250ms</text>
+
+  <rect x="496" y="382" width="212" height="24" rx="12" fill="#ffffff" fill-opacity="0.88" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="602" y="398" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11.5" font-weight="600" fill="#4c1d95">0 Output Tokens · $0.10 / 1M in</text>
+
+  <!-- ARROWS FROM MODEL TO CALIBRATED ANSWERS -->
+  <path d="M 722 322 L 752 322 L 752 246 L 780 246" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 722 342 L 780 342" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <path d="M 722 362 L 752 362 L 752 438 L 780 438" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- RIGHT CARD: CALIBRATED ANSWERS -->
+  <g filter="url(#shadow)">
+    <rect x="788" y="136" width="452" height="360" rx="18" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+  </g>
+  <text x="812" y="168" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="12" font-weight="700" letter-spacing="1.1" fill="#15803d">CALIBRATED ANSWERS &amp; CONFIDENCE</text>
+  <text x="812" y="188" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" fill="#475569">Parallel isolated probabilities — ready to branch on directly</text>
+
+  <!-- Answer 1 -->
+  <rect x="812" y="208" width="404" height="72" rx="12" fill="#ffffff" stroke="#bbf7d0" stroke-width="1.2"/>
+  <rect x="826" y="221" width="56" height="24" rx="12" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="854" y="237" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="700" fill="#166534">noul</text>
+  <text x="894" y="238" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13.5" font-weight="700" fill="#0f172a">is_damaged: 0.98</text>
+  <text x="894" y="262" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#64748b">P(yes)=0.98 · P(no)=0.02 · confidence: 0.98</text>
+
+  <!-- Answer 2 -->
+  <rect x="812" y="294" width="404" height="72" rx="12" fill="#ffffff" stroke="#bbf7d0" stroke-width="1.2"/>
+  <rect x="826" y="307" width="56" height="24" rx="12" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="854" y="323" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="700" fill="#166534">choice</text>
+  <text x="894" y="324" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13.5" font-weight="700" fill="#0f172a">workflow: "instant_replacement"</text>
+  <text x="894" y="348" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#64748b">probabilities={...} · confidence: 0.94</text>
+
+  <!-- Answer 3 -->
+  <rect x="812" y="380" width="404" height="72" rx="12" fill="#ffffff" stroke="#bbf7d0" stroke-width="1.2"/>
+  <rect x="826" y="393" width="56" height="24" rx="12" fill="#dcfce7" stroke="#22c55e" stroke-width="1"/>
+  <text x="854" y="409" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="700" fill="#166534">score</text>
+  <text x="894" y="410" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13.5" font-weight="700" fill="#0f172a">churn_risk: 1.05 / 3.00</text>
+  <text x="894" y="434" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#64748b">expected index + legend · confidence: 0.85</text>
+
+  <text x="812" y="476" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" fill="#15803d">usage: { total_input_tokens: 580, total_output_tokens: 0 }</text>
+
+  <!-- BOTTOM CODE CONTROL PLANE BAR -->
+  <path d="M 1014 496 L 1014 524" fill="none" stroke="#94a3b8" stroke-width="2" marker-end="url(#arrow)"/>
+  <g filter="url(#shadow)">
+    <rect x="788" y="532" width="452" height="48" rx="12" fill="#0f172a"/>
+  </g>
+  <text x="1014" y="561" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="13" font-weight="600" fill="#f8fafc">if conf &gt;= 0.75: auto_execute()  else: escalate_to_human()</text>
+</svg>

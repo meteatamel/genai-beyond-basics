@@ -45,6 +45,7 @@ A collection of Generate AI related samples.
 * [Response schema and pydantic (LangChain)](./samples/controlled-generation/langchain)
 * [Context caching](./samples/context-caching)
 * [Batch generation of content](./samples/batch-generation)
+* [Calibrated decisions with Gemini Decisions API](./samples/decisions-api)
 
 ### Evaluation
 
